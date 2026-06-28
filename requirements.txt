@@ -1,0 +1,11 @@
+# --- Core app runtime (Milestone 1) ---
+fastapi>=0.115
+uvicorn[standard]>=0.30
+qdrant-client>=1.12
+anthropic>=0.40
+pydantic>=2.7
+pydantic-settings>=2.4
+python-dotenv>=1.0
+
+# --- ML / ingestion deps (added in later milestones; kept out of the
+#     first build so it stays fast). See requirements-ml.txt. ---
