@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import os
 from functools import lru_cache
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi.responses import RedirectResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from app.config import settings
@@ -80,3 +82,13 @@ def verse(verse_id: str) -> Verse:
     if v is None:
         raise HTTPException(status_code=404, detail=f"verse {verse_id} not found")
     return v
+
+
+@app.get("/")
+def root() -> RedirectResponse:
+    return RedirectResponse(url="/ui/")
+
+
+# Serve the chat web UI (mounted last so it doesn't shadow the API routes).
+if os.path.isdir("web"):
+    app.mount("/ui", StaticFiles(directory="web", html=True), name="ui")

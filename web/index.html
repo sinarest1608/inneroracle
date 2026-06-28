@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>InnerOracle</title>
+<style>
+  :root { --bg:#f4f1ea; --ink:#2b2622; --muted:#7a7065; --accent:#9c5b34; --card:#fbf9f4; --line:#e4ddcf; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         background:var(--bg); color:var(--ink); display:flex; flex-direction:column; height:100vh; }
+  header { padding:16px 20px; border-bottom:1px solid var(--line); }
+  header h1 { margin:0; font-family:Georgia,serif; font-size:20px; font-weight:600; }
+  header p { margin:2px 0 0; color:var(--muted); font-size:13px; }
+  #chat { flex:1; overflow-y:auto; padding:20px; max-width:760px; width:100%; margin:0 auto; }
+  .msg { margin-bottom:20px; line-height:1.55; }
+  .msg.user .who { color:var(--accent); }
+  .who { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:4px; }
+  .bubble { white-space:pre-wrap; }
+  .cite { color:var(--accent); cursor:pointer; border-bottom:1px dotted var(--accent); font-weight:500; }
+  .badge { display:inline-block; margin-top:8px; font-size:12px; padding:2px 8px; border-radius:10px; }
+  .badge.ok { background:#e7efe3; color:#3c5d34; }
+  .badge.warn { background:#f6e7df; color:#8a3f1d; }
+  .shloka { margin-top:8px; background:var(--card); border:1px solid var(--line); border-radius:8px;
+            padding:10px 12px; font-size:14px; }
+  .shloka .dev { font-size:18px; line-height:1.5; }
+  .shloka .tl { color:var(--muted); font-style:italic; margin-top:4px; }
+  .shloka .tr { margin-top:6px; }
+  form { display:flex; gap:8px; padding:14px 20px; border-top:1px solid var(--line); max-width:760px; width:100%; margin:0 auto; }
+  input { flex:1; padding:11px 13px; border:1px solid var(--line); border-radius:8px; font-size:15px; background:#fff; }
+  button { padding:11px 18px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-size:15px; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:default; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>InnerOracle</h1>
+    <p>Life questions, answered from the Bhagavad Gita &amp; Ashtavakra Gita. Tap a citation to see the shloka.</p>
+  </header>
+  <div id="chat"></div>
+  <form id="form">
+    <input id="q" placeholder="Ask a question…" autocomplete="off" />
+    <button id="send" type="submit">Ask</button>
+  </form>
+
+<script>
+const chat = document.getElementById('chat');
+const form = document.getElementById('form');
+const input = document.getElementById('q');
+const sendBtn = document.getElementById('send');
+
+function el(cls, html){ const d=document.createElement('div'); d.className=cls; if(html!==undefined) d.innerHTML=html; return d; }
+function scroll(){ chat.scrollTop = chat.scrollHeight; }
+function escapeHtml(s){ return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+// Turn [BG 2.47] / [AG-1.15] into clickable spans (verse_id BG-2.47).
+function linkify(text){
+  return escapeHtml(text).replace(/\[(BG|AG)[ \-]?(\d+\.[\w\-]+)\]/g,
+    (m,b,n)=>`<span class="cite" data-id="${b}-${n}">[${b} ${n}]</span>`);
+}
+
+async function fetchVerse(id, mount){
+  if(mount.dataset.loaded){ mount.style.display = mount.style.display==='none'?'block':'none'; return; }
+  const r = await fetch('/verse/'+encodeURIComponent(id));
+  if(!r.ok){ mount.innerHTML='<div class="shloka">Verse not found.</div>'; mount.dataset.loaded='1'; return; }
+  const v = await r.json();
+  let h='<div class="shloka">';
+  if(v.sanskrit) h+=`<div class="dev">${escapeHtml(v.sanskrit)}</div>`;
+  if(v.transliteration) h+=`<div class="tl">${escapeHtml(v.transliteration)}</div>`;
+  if(v.translation) h+=`<div class="tr">${escapeHtml(v.translation)}</div>`;
+  h+='</div>';
+  mount.innerHTML=h; mount.dataset.loaded='1';
+}
+
+chat.addEventListener('click', e=>{
+  const c = e.target.closest('.cite'); if(!c) return;
+  let panel = c.closest('.msg').querySelector('.shloka-mount[data-for="'+c.dataset.id+'"]');
+  if(!panel){
+    panel = el('shloka-mount'); panel.dataset.for=c.dataset.id;
+    c.closest('.bubble').after(panel);
+  }
+  fetchVerse(c.dataset.id, panel);
+});
+
+async function ask(question){
+  chat.appendChild(el('msg user', `<div class="who">You</div><div class="bubble">${escapeHtml(question)}</div>`));
+  const aMsg = el('msg assistant', '<div class="who">InnerOracle</div>');
+  const bubble = el('bubble',''); aMsg.appendChild(bubble);
+  chat.appendChild(aMsg); scroll();
+
+  let answer='';
+  const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({question})});
+  const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
+  while(true){
+    const {value, done} = await reader.read(); if(done) break;
+    buf += dec.decode(value, {stream:true});
+    const parts = buf.split('\n\n'); buf = parts.pop();
+    for(const p of parts){
+      const line = p.split('\n').find(l=>l.startsWith('data:')); if(!line) continue;
+      const ev = JSON.parse(line.slice(5).trim());
+      if(ev.type==='token'){ answer+=ev.text; bubble.textContent=answer; scroll(); }
+      else if(ev.type==='verification'){
+        const ok = ev.grounded;
+        const badge = el('badge '+(ok?'ok':'warn'),
+          ok ? '✓ grounded in the texts'
+             : '⚠ check sources'+(ev.invalid_citations.length?` (unknown: ${ev.invalid_citations.join(', ')})`:''));
+        aMsg.appendChild(badge);
+      }
+    }
+  }
+  bubble.innerHTML = linkify(answer); // make citations tappable once complete
+  scroll();
+}
+
+form.addEventListener('submit', async e=>{
+  e.preventDefault();
+  const q = input.value.trim(); if(!q) return;
+  input.value=''; sendBtn.disabled=true; input.disabled=true;
+  try { await ask(q); } catch(err){ chat.appendChild(el('msg assistant', '<div class="bubble">Error: '+escapeHtml(String(err))+'</div>')); }
+  finally { sendBtn.disabled=false; input.disabled=false; input.focus(); }
+});
+</script>
+</body>
+</html>
