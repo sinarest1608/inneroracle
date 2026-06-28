@@ -40,11 +40,20 @@ class Verifier(Protocol):
         ...
 
 
-VERIFIER_SYSTEM = """You verify whether an ANSWER is faithful to the provided VERSES.
-Set grounded=true only if every substantive claim in the answer is supported by the \
-verses. Put any claim that is not supported by the verses into unsupported_claims. \
-Ordinary connective or framing language does not need a citation; focus on factual \
-claims about what the texts teach."""
+VERIFIER_SYSTEM = """You check an ANSWER for faithfulness to the provided VERSES \
+(each verse includes its translation and commentary).
+
+A claim is SUPPORTED if it is a reasonable reading, paraphrase, or synthesis of one of \
+the provided verses or its commentary — it does NOT need to use the same words, and \
+interpretation is fine as long as a cited verse plausibly backs it.
+
+Set grounded=true unless the answer does one of these:
+- attributes a teaching to the texts that NONE of the provided verses support, or
+- states something that CONTRADICTS the verses, or
+- cites a verse that clearly doesn't say what the answer claims.
+
+Only list genuine problems of those kinds in unsupported_claims. Do not flag ordinary \
+framing, connective language, or fair interpretation of a cited verse."""
 
 
 class HaikuVerifier:

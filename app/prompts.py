@@ -44,10 +44,12 @@ def _verse_block(rv: RetrievedVerse, commentary_max: int = 1200) -> str:
     return "\n".join(lines)
 
 
-def format_context(verses: list[RetrievedVerse]) -> str:
+def format_context(
+    verses: list[RetrievedVerse], commentary_max: int = 1200
+) -> str:
     if not verses:
         return "(No relevant verses were found.)"
-    blocks = [_verse_block(rv) for rv in verses]
+    blocks = [_verse_block(rv, commentary_max) for rv in verses]
     return "Verses to answer from:\n\n" + "\n\n".join(blocks)
 
 

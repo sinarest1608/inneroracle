@@ -39,8 +39,11 @@ async def stream_answer(
     answer = "".join(chunks)
 
     valid_ids = {rv.verse.verse_id for rv in verses}
+    # Give the verifier fuller commentary than the answer model saw, so it can
+    # confirm paraphrased claims instead of false-flagging them.
+    verifier_context = format_context(verses, commentary_max=4000)
     verification = await verify_answer(
-        query, answer, format_context(verses), valid_ids, verifier
+        query, answer, verifier_context, valid_ids, verifier
     )
 
     yield {"type": "citations", "verse_ids": parse_citations(answer)}
