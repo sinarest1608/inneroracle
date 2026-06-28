@@ -31,26 +31,28 @@ class LexicalReranker:
 
 
 class BGEReranker:
-    """Cross-encoder reranker (bge-reranker-v2-m3). FlagEmbedding imported lazily."""
+    """Cross-encoder reranker (bge-reranker-v2-m3).
 
-    def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3", use_fp16: bool = False):
+    Uses sentence-transformers' CrossEncoder (compatible with current
+    transformers) rather than FlagEmbedding's FlagReranker, whose slow-tokenizer
+    path breaks on transformers 5.x. Same model weights. Imported lazily.
+    """
+
+    def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3"):
         self._model_name = model_name
-        self._use_fp16 = use_fp16
         self._model = None
 
     def _load(self):
         if self._model is None:
-            from FlagEmbedding import FlagReranker
+            from sentence_transformers import CrossEncoder
 
-            self._model = FlagReranker(self._model_name, use_fp16=self._use_fp16)
+            self._model = CrossEncoder(self._model_name)
         return self._model
 
     def rerank(self, query: str, docs: list[str]) -> list[float]:
         if not docs:
             return []
-        scores = self._load().compute_score([[query, d] for d in docs])
-        if isinstance(scores, (int, float)):
-            scores = [scores]
+        scores = self._load().predict([(query, d) for d in docs])
         return [float(s) for s in scores]
 
 
