@@ -14,17 +14,20 @@ def run(
     source_edition: str,
     out_db: str | None = None,
     limit_chapters: int | None = None,
+    sections: list[int] | None = None,
     dry_run: bool = False,
 ) -> None:
     chapters = load_chapters(path)
+    if sections:
+        wanted = set(sections)
+        chapters = [c for c in chapters if c.order in wanted]
     if limit_chapters:
         chapters = chapters[:limit_chapters]
     print(f"Parsed {len(chapters)} chapter section(s) from {path}")
 
     if dry_run:
-        for c in chapters[:5]:
-            preview = c.raw_text[:120].replace("\n", " ")
-            print(f"  [{c.order}] {c.title!r} ({len(c.raw_text)} chars): {preview}…")
+        for c in chapters:
+            print(f"  [{c.order:>3}] {len(c.raw_text):>7} chars  {c.title[:60]!r}")
         print("(dry-run: no LLM calls made)")
         return
 

@@ -55,6 +55,27 @@ def test_to_verses_assigns_id_and_merges_windows():
     assert merged.source_edition == "Test Edition"
 
 
+def test_chapter_verse_normalization():
+    # Ashtavakra-style "C.V" numbering -> split into chapter + verse.
+    extracts = [
+        VerseExtract(chapter=1, verse_no="1.1", translation="Janaka asks."),
+        VerseExtract(chapter=1, verse_no="2.4", translation="On the self."),
+        VerseExtract(chapter=1, verse_no="20.1", translation="Final chapter."),
+    ]
+    by_id = {v.verse_id: v for v in to_verses(extracts, "ashtavakra_gita", "JR")}
+    assert set(by_id) == {"AG-1.1", "AG-2.4", "AG-20.1"}
+    assert by_id["AG-2.4"].chapter == 2 and by_id["AG-2.4"].verse_no == "4"
+
+    # BG-style numbering is untouched (no leading "<int>.").
+    bg = to_verses(
+        [VerseExtract(chapter=2, verse_no="47", translation="x"),
+         VerseExtract(chapter=1, verse_no="42-43", translation="y")],
+        "bhagavad_gita", "AsItIs",
+    )
+    bg_ids = {v.verse_id for v in bg}
+    assert bg_ids == {"BG-2.47", "BG-1.42-43"}
+
+
 class _FakeMessages:
     def parse(self, **kwargs):
         class _Resp:

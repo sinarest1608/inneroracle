@@ -13,8 +13,12 @@ venv/
 # Generated data
 data/qdrant_local/
 data/verses.db
+data/bm25.json
 data/sources/*
 !data/sources/.gitkeep
+
+# Source books (copyrighted; never commit)
+epubs/
 
 # Local-only planning doc (kept on disk, not tracked)
 PLAN.md

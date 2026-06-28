@@ -8,9 +8,24 @@ import-safe and unit-tested without any API calls.
 
 from __future__ import annotations
 
+import re
+
 from pydantic import BaseModel
 
 from app.models import Verse, make_verse_id
+
+# Some editions print verse numbers as "chapter.verse" (e.g. the John Richards
+# Ashtavakra: "1.1", "2.4"). The model then puts the whole thing in verse_no and
+# defaults chapter=1. Normalize that back to (chapter, verse). Safe for BG, whose
+# verse_no is "47" / "42-43" (no leading "<int>.") and won't match.
+_CHAPTER_VERSE_RE = re.compile(r"^(\d+)\.(.+)$")
+
+
+def _normalize_chapter_verse(chapter: int, verse_no: str) -> tuple[int, str]:
+    m = _CHAPTER_VERSE_RE.match(verse_no)
+    if m:
+        return int(m.group(1)), m.group(2).strip()
+    return chapter, verse_no
 
 EXTRACTION_SYSTEM = """You are a careful editor digitizing classical Indian scripture \
 (the Bhagavad Gita and the Ashtavakra Gita).
@@ -102,12 +117,12 @@ def to_verses(
     """Assign verse_id/book/source and de-dup by verse_id (merging windows)."""
     merged: dict[str, Verse] = {}
     for e in extracts:
-        verse_no = e.verse_no.strip()
-        vid = make_verse_id(book, e.chapter, verse_no)
+        chapter, verse_no = _normalize_chapter_verse(e.chapter, e.verse_no.strip())
+        vid = make_verse_id(book, chapter, verse_no)
         v = Verse(
             verse_id=vid,
             book=book,
-            chapter=e.chapter,
+            chapter=chapter,
             verse_no=verse_no,
             sanskrit=e.sanskrit.strip(),
             transliteration=e.transliteration.strip(),

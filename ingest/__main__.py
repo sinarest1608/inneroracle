@@ -15,14 +15,23 @@ def main() -> None:
     p.add_argument("--edition", default="", help="Edition label stored on each verse")
     p.add_argument("--out", default=None, help="Output SQLite path (default: settings)")
     p.add_argument("--limit-chapters", type=int, default=None)
+    p.add_argument(
+        "--sections",
+        default=None,
+        help="Comma-separated section indices to ingest (e.g. '10' or '9,10,11')",
+    )
     p.add_argument("--dry-run", action="store_true", help="Parse only; no LLM calls")
     a = p.parse_args()
+    sections = (
+        [int(s) for s in a.sections.split(",") if s.strip()] if a.sections else None
+    )
     run(
         path=a.path,
         book=a.book,
         source_edition=a.edition or a.path,
         out_db=a.out,
         limit_chapters=a.limit_chapters,
+        sections=sections,
         dry_run=a.dry_run,
     )
 
