@@ -1,13 +1,3 @@
-# Heavy ML + ingestion dependencies, loaded in the app container.
-# Installed in Milestones 2–4 (ingestion, embeddings, reranking).
-# Kept separate so the Milestone-1 scaffold builds quickly.
-
-# Ingestion
-ebooklib>=0.18
-beautifulsoup4>=4.12
-lxml>=5.0
-pymupdf>=1.24            # PDF fallback parsing
-
-# Embeddings + reranking (BGE-M3 dense, bge-reranker-v2-m3)
-FlagEmbedding>=1.2
-# torch is pulled in by FlagEmbedding; pin a CPU build in the Dockerfile if needed.
+# Aggregate of the heavy/optional dependency groups.
+-r requirements-ingest.txt
+-r requirements-embed.txt

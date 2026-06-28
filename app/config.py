@@ -11,6 +11,12 @@ class Settings(BaseSettings):
     answer_model: str = "claude-sonnet-4-6"
     verifier_model: str = "claude-haiku-4-5"
     expansion_model: str = "claude-haiku-4-5"
+    ingest_model: str = "claude-sonnet-4-6"  # structured verse extraction
+
+    # Embeddings: bge (BGE-M3 local) | stub (dependency-free, for dev without torch)
+    embedder: str = "bge"
+    # Reranker: bge (cross-encoder) | lexical (token overlap, dev) | none
+    reranker: str = "bge"
 
     # Qdrant — empty url => embedded local mode (dev without Docker)
     qdrant_url: str = ""
@@ -19,6 +25,7 @@ class Settings(BaseSettings):
 
     # Storage
     sqlite_path: str = "data/verses.db"
+    bm25_path: str = "data/bm25.json"
 
     # Simple shared-token auth gate (enforced once exposed)
     access_token: str = ""

@@ -1,0 +1,2 @@
+# Embedding + reranking deps (Milestone 3). Heavy (pulls torch).
+FlagEmbedding>=1.2
