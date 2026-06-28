@@ -1,0 +1,53 @@
+"""Chat orchestration: balanced retrieve → grounded prompt → stream → verify.
+
+Yields event dicts the API serializes as SSE:
+  {"type": "token", "text": ...}       streamed answer text
+  {"type": "citations", "verse_ids":}  resolved verse_ids cited in the answer
+  {"type": "verification", ...}        groundedness + invalid citations
+  {"type": "done"}
+"""
+
+from __future__ import annotations
+
+from collections.abc import AsyncIterator
+
+from app.citations import parse_citations
+from app.llm.base import LLMProvider
+from app.prompts import ANSWER_SYSTEM, build_user_message, format_context
+from app.retrieval.search import RetrievalService
+from app.verify import Verifier, verify_answer
+
+
+async def stream_answer(
+    query: str,
+    *,
+    retrieval: RetrievalService,
+    provider: LLMProvider,
+    verifier: Verifier,
+    per_book: int = 3,
+) -> AsyncIterator[dict]:
+    verses = retrieval.retrieve_balanced(query, per_book=per_book)
+    system = [
+        {"type": "text", "text": ANSWER_SYSTEM, "cache_control": {"type": "ephemeral"}}
+    ]
+    messages = [{"role": "user", "content": build_user_message(query, verses)}]
+
+    chunks: list[str] = []
+    async for token in provider.stream(system, messages):
+        chunks.append(token)
+        yield {"type": "token", "text": token}
+    answer = "".join(chunks)
+
+    valid_ids = {rv.verse.verse_id for rv in verses}
+    verification = await verify_answer(
+        query, answer, format_context(verses), valid_ids, verifier
+    )
+
+    yield {"type": "citations", "verse_ids": parse_citations(answer)}
+    yield {
+        "type": "verification",
+        "grounded": verification.grounded,
+        "invalid_citations": verification.invalid_citations,
+        "unsupported_claims": verification.unsupported_claims,
+    }
+    yield {"type": "done"}

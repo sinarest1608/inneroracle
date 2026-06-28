@@ -79,3 +79,19 @@ class RetrievalService:
         scores = self.reranker.rerank(query, [verse_document(v) for v in ordered])
         ranked = sorted(zip(ordered, scores), key=lambda t: t[1], reverse=True)
         return [RetrievedVerse(verse=v, score=s) for v, s in ranked[:top_k]]
+
+    def retrieve_balanced(
+        self, query: str, *, per_book: int = 3, candidates: int = 20,
+    ) -> list[RetrievedVerse]:
+        """Retrieve top verses from EACH book so neither dominates the context.
+
+        BG is far larger than AG; a single fused top-k could come back all-BG.
+        This guarantees both texts are represented when relevant, which is what
+        lets the answer contrast "BG says… / AG says…".
+        """
+        results: list[RetrievedVerse] = []
+        for book in ("bhagavad_gita", "ashtavakra_gita"):
+            results.extend(
+                self.retrieve(query, top_k=per_book, candidates=candidates, book=book)
+            )
+        return results
