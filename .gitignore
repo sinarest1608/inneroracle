@@ -16,5 +16,8 @@ data/verses.db
 data/sources/*
 !data/sources/.gitkeep
 
+# Local-only planning doc (kept on disk, not tracked)
+PLAN.md
+
 # OS
 .DS_Store
