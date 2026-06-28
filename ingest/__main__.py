@@ -20,6 +20,12 @@ def main() -> None:
         default=None,
         help="Comma-separated section indices to ingest (e.g. '10' or '9,10,11')",
     )
+    p.add_argument(
+        "--chapter-from-title",
+        action="store_true",
+        help="Force chapter number from section heading (carry forward across "
+        "untitled continuations) instead of trusting the model. Use for As It Is.",
+    )
     p.add_argument("--dry-run", action="store_true", help="Parse only; no LLM calls")
     a = p.parse_args()
     sections = (
@@ -32,6 +38,7 @@ def main() -> None:
         out_db=a.out,
         limit_chapters=a.limit_chapters,
         sections=sections,
+        chapter_from_title_heading=a.chapter_from_title,
         dry_run=a.dry_run,
     )
 

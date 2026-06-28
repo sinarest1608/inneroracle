@@ -10,10 +10,10 @@ venv/
 # Secrets / env
 .env
 
-# Generated data
+# Generated data (verses.db, verses_haiku*.db, bm25.json, etc.)
 data/qdrant_local/
-data/verses.db
-data/bm25.json
+data/*.db
+data/*.json
 data/sources/*
 !data/sources/.gitkeep
 

@@ -112,12 +112,22 @@ def _merge(a: Verse, b: Verse) -> Verse:
 
 
 def to_verses(
-    extracts: list[VerseExtract], book: str, source_edition: str
+    extracts: list[VerseExtract],
+    book: str,
+    source_edition: str,
+    force_chapter: int | None = None,
 ) -> list[Verse]:
-    """Assign verse_id/book/source and de-dup by verse_id (merging windows)."""
+    """Assign verse_id/book/source and de-dup by verse_id (merging windows).
+
+    If `force_chapter` is given, the chapter is taken from it (the known section
+    heading) instead of the model — the model only supplies the verse number and
+    the field separation. This eliminates chapter-numbering mistakes entirely.
+    """
     merged: dict[str, Verse] = {}
     for e in extracts:
         chapter, verse_no = _normalize_chapter_verse(e.chapter, e.verse_no.strip())
+        if force_chapter is not None:
+            chapter = force_chapter
         vid = make_verse_id(book, chapter, verse_no)
         v = Verse(
             verse_id=vid,

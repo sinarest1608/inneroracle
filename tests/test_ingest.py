@@ -76,6 +76,28 @@ def test_chapter_verse_normalization():
     assert bg_ids == {"BG-2.47", "BG-1.42-43"}
 
 
+def test_chapter_from_title():
+    from ingest.sources import chapter_from_title
+    assert chapter_from_title("Chapter-2") == 2
+    assert chapter_from_title("Chapter 18") == 18
+    assert chapter_from_title("CHAPTER-7") == 7
+    assert chapter_from_title("Introduction") is None
+    assert chapter_from_title("") is None
+    assert chapter_from_title("text/part0015.html") is None  # continuation section
+
+
+def test_force_chapter_overrides_model():
+    # Model mislabels the chapter (says 1); force it to 2 from the section heading.
+    extracts = [
+        VerseExtract(chapter=1, verse_no="3", translation="a"),     # wrong chapter
+        VerseExtract(chapter=1, verse_no="1.4", translation="b"),   # wrong, C.V form
+    ]
+    out = to_verses(extracts, "bhagavad_gita", "AsItIs", force_chapter=2)
+    ids = {v.verse_id for v in out}
+    assert ids == {"BG-2.3", "BG-2.4"}
+    assert all(v.chapter == 2 for v in out)
+
+
 class _FakeMessages:
     def parse(self, **kwargs):
         class _Resp:

@@ -5,7 +5,7 @@ from __future__ import annotations
 from app.config import settings
 from app.store import VerseStore
 from ingest.extract_verses import extract_chapter, to_verses
-from ingest.sources import load_chapters
+from ingest.sources import chapter_from_title, load_chapters
 
 
 def run(
@@ -15,6 +15,7 @@ def run(
     out_db: str | None = None,
     limit_chapters: int | None = None,
     sections: list[int] | None = None,
+    chapter_from_title_heading: bool = False,
     dry_run: bool = False,
 ) -> None:
     chapters = load_chapters(path)
@@ -39,11 +40,17 @@ def run(
     client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
     store = VerseStore(out_db or settings.sqlite_path)
     total = 0
+    current_chapter: int | None = None
     for c in chapters:
+        force_chapter = None
+        if chapter_from_title_heading:
+            current_chapter = chapter_from_title(c.title) or current_chapter
+            force_chapter = current_chapter
         extracts = extract_chapter(c.raw_text, client, settings.ingest_model)
-        verses = to_verses(extracts, book, source_edition)
+        verses = to_verses(extracts, book, source_edition, force_chapter=force_chapter)
         n = store.upsert(verses)
         total += n
-        print(f"  chapter {c.order} {c.title[:40]!r}: {n} verses")
+        ch = f"ch{force_chapter}" if force_chapter else c.title[:30]
+        print(f"  section {c.order} [{ch}]: {n} verses")
     print(f"Done. {total} verse rows written. Counts by book: {store.count_by_book()}")
     store.close()

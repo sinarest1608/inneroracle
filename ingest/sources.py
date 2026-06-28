@@ -24,6 +24,19 @@ def clean_text(text: str) -> str:
     return text.strip()
 
 
+_CHAPTER_TITLE_RE = re.compile(r"chapter[-\s]*(\d+)", re.IGNORECASE)
+
+
+def chapter_from_title(title: str) -> int | None:
+    """Extract a chapter number from a section heading like 'Chapter-2'.
+
+    Returns None for front matter or untitled continuation sections (the caller
+    carries the previous chapter forward for those).
+    """
+    m = _CHAPTER_TITLE_RE.search(title or "")
+    return int(m.group(1)) if m else None
+
+
 def load_chapters(path: str) -> list[Chapter]:
     suffix = Path(path).suffix.lower()
     if suffix == ".epub":
