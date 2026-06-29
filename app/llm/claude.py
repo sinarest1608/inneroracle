@@ -11,7 +11,7 @@ from app.config import settings
 
 
 class ClaudeProvider:
-    def __init__(self, model: str | None = None, max_tokens: int = 2048):
+    def __init__(self, model: str | None = None, max_tokens: int = 800):
         self.model = model or settings.answer_model
         self.max_tokens = max_tokens
         self._client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
