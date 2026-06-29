@@ -63,6 +63,11 @@ def test_parse_citations_handles_both_forms():
     assert parse_citations(text) == ["BG-2.47", "AG-1.15"]
 
 
+def test_parse_citations_handles_grouped_brackets():
+    text = "Your nature is already free [AG 15.20, AG 2.12]; act anyway [BG 2.47; BG 3.1]."
+    assert parse_citations(text) == ["AG-15.20", "AG-2.12", "BG-2.47", "BG-3.1"]
+
+
 def test_find_invalid_citations():
     answer = "See [BG 2.47] and [BG 9.99]."
     invalid = find_invalid_citations(answer, {"BG-2.47", "AG-1.1"})

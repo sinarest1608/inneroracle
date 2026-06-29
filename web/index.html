@@ -112,10 +112,14 @@ function escapeHtml(s){ return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','
 
 marked.setOptions({ breaks:true });
 
-// Turn [BG 2.47] / [AG-1.15] into clickable spans (verse_id BG-2.47).
+// Turn citations into clickable spans, including grouped ones like
+// [AG 15.20, AG 2.12]. Each verse becomes its own clickable span (id BG-2.47).
 function linkify(html){
-  return html.replace(/\[(BG|AG)[ \-]?(\d+\.[\w\-]+)\]/g,
-    (m,b,n)=>`<span class="cite" data-id="${b}-${n}">[${b} ${n}]</span>`);
+  return html.replace(/\[([^\]]*(?:BG|AG)[ \-]?\d+\.[\w\-]+[^\]]*)\]/g, (m, inner)=>{
+    const linked = inner.replace(/(BG|AG)[ \-]?(\d+\.[\w\-]+)/g,
+      (mm,b,n)=>`<span class="cite" data-id="${b}-${n}">${b} ${n}</span>`);
+    return '['+linked+']';
+  });
 }
 function renderMarkdown(text){
   return linkify(DOMPurify.sanitize(marked.parse(text)));
