@@ -166,6 +166,25 @@ def test_condenser_skipped_without_history(service):
     assert condenser.calls == []  # no history → no rewrite
 
 
+# ---- carry-forward of earlier-cited verses ----
+
+def test_carry_forward_refetches_prior_citations(service):
+    from app.chat import _carry_forward
+
+    history = [{"role": "assistant", "content": "As taught [BG 2.47]."}]
+    carried = _carry_forward(service, history, fresh_ids=set())
+    assert [rv.verse.verse_id for rv in carried] == ["BG-2.47"]
+
+
+def test_carry_forward_skips_fresh_and_fabricated(service):
+    from app.chat import _carry_forward
+
+    history = [{"role": "assistant", "content": "See [BG 2.47] and fake [BG 9.99]."}]
+    # BG-2.47 already retrieved this turn, BG-9.99 doesn't exist → nothing carried.
+    carried = _carry_forward(service, history, fresh_ids={"BG-2.47"})
+    assert carried == []
+
+
 # ---- HaikuCondenser unit (offline, fake anthropic client) ----
 
 class _Block:

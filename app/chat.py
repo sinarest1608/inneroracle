@@ -15,8 +15,27 @@ from app.citations import parse_citations
 from app.llm.base import LLMProvider
 from app.llm.condense import Condenser
 from app.prompts import ANSWER_SYSTEM, build_user_message, format_context
-from app.retrieval.search import RetrievalService
+from app.retrieval.search import RetrievalService, RetrievedVerse
 from app.verify import Verifier, verify_answer
+
+# Cap on verses carried over from earlier turns, to bound context growth.
+CARRY_LIMIT = 8
+
+
+def _carry_forward(
+    retrieval: RetrievalService, history: list[dict], fresh_ids: set[str]
+) -> list[RetrievedVerse]:
+    """Re-fetch verses the assistant cited earlier so the model can elaborate on
+    and re-cite them this turn (each turn otherwise sees only its own retrieval)."""
+    cited: list[str] = []
+    for m in history:
+        if m.get("role") == "assistant":
+            for cid in parse_citations(m["content"]):
+                if cid not in fresh_ids and cid not in cited:
+                    cited.append(cid)
+    cited = cited[-CARRY_LIMIT:]
+    by_id = retrieval.store.get_many(cited)
+    return [RetrievedVerse(verse=by_id[c], score=0.0) for c in cited if c in by_id]
 
 
 async def stream_answer(
@@ -36,12 +55,17 @@ async def stream_answer(
     if history and condenser is not None:
         search_query = await condenser.condense(query, history)
 
-    verses = retrieval.retrieve_balanced(search_query, per_book=per_book)
+    fresh = retrieval.retrieve_balanced(search_query, per_book=per_book)
+    fresh_ids = {rv.verse.verse_id for rv in fresh}
+    # Add back verses cited earlier in this conversation so "elaborate on that"
+    # has the text to work from and prior citations stay valid.
+    verses = fresh + _carry_forward(retrieval, history, fresh_ids)
+
     system = [
         {"type": "text", "text": ANSWER_SYSTEM, "cache_control": {"type": "ephemeral"}}
     ]
     # Prior turns (plain Q/A text) give the model memory; the current turn carries the
-    # freshly retrieved verse context.
+    # verse context (freshly retrieved + carried-forward).
     messages = [*history, {"role": "user", "content": build_user_message(query, verses)}]
 
     chunks: list[str] = []
