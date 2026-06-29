@@ -5,60 +5,150 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>InnerOracle</title>
 <style>
-  :root { --bg:#f4f1ea; --ink:#2b2622; --muted:#7a7065; --accent:#9c5b34; --card:#fbf9f4; --line:#e4ddcf; }
+  :root { --bg:#f4f1ea; --ink:#2b2622; --muted:#7a7065; --accent:#9c5b34; --accent-soft:#c98a63;
+          --card:#fbf9f4; --line:#e4ddcf; --user:#efe7da; }
   * { box-sizing:border-box; }
+  html, body { height:100%; }
   body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
          background:var(--bg); color:var(--ink); display:flex; flex-direction:column; height:100vh; }
-  header { padding:16px 20px; border-bottom:1px solid var(--line); }
+  header { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center;
+           gap:12px; background:var(--card); }
+  header .title { flex:1; }
   header h1 { margin:0; font-family:Georgia,serif; font-size:20px; font-weight:600; }
   header p { margin:2px 0 0; color:var(--muted); font-size:13px; }
-  #chat { flex:1; overflow-y:auto; padding:20px; max-width:760px; width:100%; margin:0 auto; }
-  .msg { margin-bottom:20px; line-height:1.55; }
+  #reset { border:1px solid var(--line); background:#fff; color:var(--muted); font-size:13px;
+           padding:7px 12px; border-radius:8px; cursor:pointer; transition:.15s; white-space:nowrap; }
+  #reset:hover { color:var(--accent); border-color:var(--accent-soft); }
+
+  #chat { flex:1; overflow-y:auto; padding:24px 20px; }
+  .wrap { max-width:720px; margin:0 auto; }
+  .empty { color:var(--muted); text-align:center; margin-top:14vh; line-height:1.7; }
+  .empty .om { font-size:34px; }
+  .empty .ex { display:inline-block; margin:4px; padding:6px 12px; background:var(--card);
+               border:1px solid var(--line); border-radius:16px; font-size:13px; cursor:pointer; transition:.15s; }
+  .empty .ex:hover { border-color:var(--accent-soft); color:var(--accent); }
+
+  .msg { margin-bottom:22px; line-height:1.6; animation:rise .25s ease; }
+  @keyframes rise { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  .who { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:5px; }
   .msg.user .who { color:var(--accent); }
-  .who { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:4px; }
-  .bubble { white-space:pre-wrap; }
-  .cite { color:var(--accent); cursor:pointer; border-bottom:1px dotted var(--accent); font-weight:500; }
-  .badge { display:inline-block; margin-top:8px; font-size:12px; padding:2px 8px; border-radius:10px; }
+  .msg.user .bubble { background:var(--user); border-radius:12px; padding:10px 14px; display:inline-block; }
+  .bubble { word-wrap:break-word; }
+  .bubble p { margin:0 0 10px; }
+  .bubble p:last-child { margin-bottom:0; }
+  .bubble ul, .bubble ol { margin:0 0 10px; padding-left:22px; }
+  .bubble li { margin:3px 0; }
+  .bubble strong { color:#1f1b18; }
+  .bubble code { background:var(--card); border:1px solid var(--line); border-radius:4px; padding:1px 5px; font-size:.9em; }
+  .bubble blockquote { margin:0 0 10px; padding:4px 14px; border-left:3px solid var(--accent-soft); color:var(--muted); }
+
+  .cite { color:var(--accent); cursor:pointer; border-bottom:1px dotted var(--accent); font-weight:500; white-space:nowrap; }
+  .badge { display:inline-flex; align-items:center; gap:5px; margin-top:10px; font-size:12px;
+           padding:3px 10px; border-radius:11px; }
   .badge.ok { background:#e7efe3; color:#3c5d34; }
   .badge.warn { background:#f6e7df; color:#8a3f1d; }
-  .shloka { margin-top:8px; background:var(--card); border:1px solid var(--line); border-radius:8px;
-            padding:10px 12px; font-size:14px; }
+  .shloka-mount { margin-top:8px; }
+  .shloka { background:var(--card); border:1px solid var(--line); border-radius:8px;
+            padding:10px 12px; font-size:14px; animation:rise .2s ease; }
   .shloka .dev { font-size:18px; line-height:1.5; }
   .shloka .tl { color:var(--muted); font-style:italic; margin-top:4px; }
   .shloka .tr { margin-top:6px; }
-  form { display:flex; gap:8px; padding:14px 20px; border-top:1px solid var(--line); max-width:760px; width:100%; margin:0 auto; }
-  input { flex:1; padding:11px 13px; border:1px solid var(--line); border-radius:8px; font-size:15px; background:#fff; }
-  button { padding:11px 18px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-size:15px; cursor:pointer; }
-  button:disabled { opacity:.5; cursor:default; }
+
+  .thinking { display:inline-flex; gap:5px; padding:4px 2px; }
+  .thinking span { width:7px; height:7px; border-radius:50%; background:var(--accent-soft);
+                   animation:pulse 1.2s infinite ease-in-out; }
+  .thinking span:nth-child(2) { animation-delay:.2s; }
+  .thinking span:nth-child(3) { animation-delay:.4s; }
+  @keyframes pulse { 0%,80%,100% { opacity:.25; transform:scale(.8); } 40% { opacity:1; transform:scale(1); } }
+
+  form { display:flex; gap:8px; padding:14px 20px; border-top:1px solid var(--line);
+         background:var(--card); }
+  .form-inner { display:flex; gap:8px; max-width:720px; width:100%; margin:0 auto; }
+  input { flex:1; padding:12px 14px; border:1px solid var(--line); border-radius:10px; font-size:15px;
+          background:#fff; outline:none; transition:.15s; }
+  input:focus { border-color:var(--accent-soft); }
+  button.send { padding:12px 20px; border:none; border-radius:10px; background:var(--accent); color:#fff;
+                font-size:15px; cursor:pointer; transition:.15s; }
+  button.send:hover:not(:disabled) { background:#86492a; }
+  button.send:disabled { opacity:.45; cursor:default; }
 </style>
 </head>
 <body>
   <header>
-    <h1>InnerOracle</h1>
-    <p>Life questions, answered from the Bhagavad Gita &amp; Ashtavakra Gita. Tap a citation to see the shloka.</p>
+    <div class="title">
+      <h1>🪔 InnerOracle</h1>
+      <p>Life questions, answered from the Bhagavad Gita &amp; Ashtavakra Gita.</p>
+    </div>
+    <button id="reset" title="Start a new conversation">New chat</button>
   </header>
-  <div id="chat"></div>
+
+  <div id="chat"><div class="wrap" id="stream"></div></div>
+
   <form id="form">
-    <input id="q" placeholder="Ask a question…" autocomplete="off" />
-    <button id="send" type="submit">Ask</button>
+    <div class="form-inner">
+      <input id="q" placeholder="Ask a question…" autocomplete="off" />
+      <button class="send" id="send" type="submit">Ask</button>
+    </div>
   </form>
 
+<script src="/ui/marked.min.js"></script>
+<script src="/ui/dompurify.min.js"></script>
 <script>
+const STORE_KEY = 'inneroracle.history.v1';
+const stream = document.getElementById('stream');
 const chat = document.getElementById('chat');
 const form = document.getElementById('form');
 const input = document.getElementById('q');
 const sendBtn = document.getElementById('send');
 
+// Conversation history (plain Q/A text), persisted across reloads.
+let history = load();
+function load(){ try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; } }
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(history)); }
+
 function el(cls, html){ const d=document.createElement('div'); d.className=cls; if(html!==undefined) d.innerHTML=html; return d; }
-function scroll(){ chat.scrollTop = chat.scrollHeight; }
+function scrollDown(){ chat.scrollTop = chat.scrollHeight; }
 function escapeHtml(s){ return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 
+marked.setOptions({ breaks:true });
+
 // Turn [BG 2.47] / [AG-1.15] into clickable spans (verse_id BG-2.47).
-function linkify(text){
-  return escapeHtml(text).replace(/\[(BG|AG)[ \-]?(\d+\.[\w\-]+)\]/g,
+function linkify(html){
+  return html.replace(/\[(BG|AG)[ \-]?(\d+\.[\w\-]+)\]/g,
     (m,b,n)=>`<span class="cite" data-id="${b}-${n}">[${b} ${n}]</span>`);
 }
+function renderMarkdown(text){
+  return linkify(DOMPurify.sanitize(marked.parse(text)));
+}
 
+function addMsg(role, who){
+  const m = el('msg '+role, `<div class="who">${who}</div>`);
+  const bubble = el('bubble',''); m.appendChild(bubble);
+  stream.appendChild(m); scrollDown();
+  return { m, bubble };
+}
+
+function renderEmpty(){
+  if(history.length) return;
+  const examples = ['How do I deal with anxiety about results?','What is the self?','How should I handle anger?'];
+  const e = el('empty',
+    `<div class="om">🕉️</div><p>Ask anything. Answers come only from the two texts,<br>with tappable citations to the original shloka.</p>`);
+  examples.forEach(x=>{ const c=el('ex'); c.textContent=x; c.onclick=()=>{ input.value=x; form.requestSubmit(); }; e.appendChild(c); });
+  stream.appendChild(e);
+}
+
+// Replay persisted history on load.
+function restore(){
+  stream.innerHTML='';
+  for(const turn of history){
+    const who = turn.role==='user' ? 'You' : 'InnerOracle';
+    const {bubble} = addMsg(turn.role==='user'?'user':'assistant', who);
+    bubble.innerHTML = turn.role==='user' ? escapeHtml(turn.content) : renderMarkdown(turn.content);
+  }
+  renderEmpty();
+}
+
+// ---- shloka-on-demand ----
 async function fetchVerse(id, mount){
   if(mount.dataset.loaded){ mount.style.display = mount.style.display==='none'?'block':'none'; return; }
   const r = await fetch('/verse/'+encodeURIComponent(id));
@@ -69,10 +159,9 @@ async function fetchVerse(id, mount){
   if(v.transliteration) h+=`<div class="tl">${escapeHtml(v.transliteration)}</div>`;
   if(v.translation) h+=`<div class="tr">${escapeHtml(v.translation)}</div>`;
   h+='</div>';
-  mount.innerHTML=h; mount.dataset.loaded='1';
+  mount.innerHTML=h; mount.dataset.loaded='1'; scrollDown();
 }
-
-chat.addEventListener('click', e=>{
+stream.addEventListener('click', e=>{
   const c = e.target.closest('.cite'); if(!c) return;
   let panel = c.closest('.msg').querySelector('.shloka-mount[data-for="'+c.dataset.id+'"]');
   if(!panel){
@@ -82,15 +171,18 @@ chat.addEventListener('click', e=>{
   fetchVerse(c.dataset.id, panel);
 });
 
+// ---- ask ----
 async function ask(question){
-  chat.appendChild(el('msg user', `<div class="who">You</div><div class="bubble">${escapeHtml(question)}</div>`));
-  const aMsg = el('msg assistant', '<div class="who">InnerOracle</div>');
-  const bubble = el('bubble',''); aMsg.appendChild(bubble);
-  chat.appendChild(aMsg); scroll();
+  const emptyEl = stream.querySelector('.empty'); if(emptyEl) emptyEl.remove();
+  addMsg('user','You').bubble.textContent = question;
 
-  let answer='';
+  const { m: aMsg, bubble } = addMsg('assistant','InnerOracle');
+  const thinking = el('thinking','<span></span><span></span><span></span>');
+  bubble.appendChild(thinking);
+
+  let answer='', started=false;
   const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({question})});
+    body: JSON.stringify({question, history})});
   const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
   while(true){
     const {value, done} = await reader.read(); if(done) break;
@@ -99,27 +191,42 @@ async function ask(question){
     for(const p of parts){
       const line = p.split('\n').find(l=>l.startsWith('data:')); if(!line) continue;
       const ev = JSON.parse(line.slice(5).trim());
-      if(ev.type==='token'){ answer+=ev.text; bubble.textContent=answer; scroll(); }
-      else if(ev.type==='verification'){
+      if(ev.type==='token'){
+        if(!started){ bubble.textContent=''; started=true; }   // drop the thinking dots
+        answer+=ev.text; bubble.textContent=answer; scrollDown();
+      } else if(ev.type==='verification'){
         const ok = ev.grounded;
-        const badge = el('badge '+(ok?'ok':'warn'),
+        aMsg.appendChild(el('badge '+(ok?'ok':'warn'),
           ok ? '✓ grounded in the texts'
-             : '⚠ check sources'+(ev.invalid_citations.length?` (unknown: ${ev.invalid_citations.join(', ')})`:''));
-        aMsg.appendChild(badge);
+             : '⚠ check sources'+(ev.invalid_citations.length?` (unknown: ${ev.invalid_citations.join(', ')})`:'')));
       }
     }
   }
-  bubble.innerHTML = linkify(answer); // make citations tappable once complete
-  scroll();
+  if(!started) bubble.textContent='';
+  bubble.innerHTML = renderMarkdown(answer);   // markdown + tappable citations
+  scrollDown();
+
+  // Persist the turn (plain text — the model's memory).
+  history.push({role:'user', content:question});
+  history.push({role:'assistant', content:answer});
+  save();
 }
 
 form.addEventListener('submit', async e=>{
   e.preventDefault();
   const q = input.value.trim(); if(!q) return;
   input.value=''; sendBtn.disabled=true; input.disabled=true;
-  try { await ask(q); } catch(err){ chat.appendChild(el('msg assistant', '<div class="bubble">Error: '+escapeHtml(String(err))+'</div>')); }
+  try { await ask(q); }
+  catch(err){ addMsg('assistant','InnerOracle').bubble.textContent='Error: '+String(err); }
   finally { sendBtn.disabled=false; input.disabled=false; input.focus(); }
 });
+
+document.getElementById('reset').addEventListener('click', ()=>{
+  history = []; save(); restore(); input.focus();
+});
+
+restore();
+input.focus();
 </script>
 </body>
 </html>
