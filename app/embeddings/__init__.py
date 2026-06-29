@@ -1,4 +1,4 @@
-"""Embedder selection. EMBEDDER=bge (default) | stub."""
+"""Embedder selection. EMBEDDER=fastembed (default) | bge | stub."""
 
 from __future__ import annotations
 
@@ -14,6 +14,10 @@ def get_embedder() -> DenseEmbedder:
         from app.embeddings.stub import StubEmbedder
 
         return StubEmbedder()
-    from app.embeddings.bge import BGEM3Embedder
+    if settings.embedder == "bge":
+        from app.embeddings.bge import BGEM3Embedder
 
-    return BGEM3Embedder()
+        return BGEM3Embedder()
+    from app.embeddings.fastembed import FastEmbedEmbedder
+
+    return FastEmbedEmbedder()

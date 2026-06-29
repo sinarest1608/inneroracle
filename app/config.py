@@ -13,10 +13,10 @@ class Settings(BaseSettings):
     expansion_model: str = "claude-haiku-4-5"
     ingest_model: str = "claude-sonnet-4-6"  # structured verse extraction
 
-    # Embeddings: bge (BGE-M3 local) | stub (dependency-free, for dev without torch)
-    embedder: str = "bge"
-    # Reranker: bge (cross-encoder) | lexical (token overlap, dev) | none
-    reranker: str = "bge"
+    # Embeddings: fastembed (BGE-M3 via ONNX, default) | bge (torch) | stub
+    embedder: str = "fastembed"
+    # Reranker: none (rely on RRF fusion, default) | bge (cross-encoder) | lexical
+    reranker: str = "none"
 
     # Qdrant — empty url => embedded local mode (dev without Docker)
     qdrant_url: str = ""

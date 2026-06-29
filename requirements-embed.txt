@@ -1,2 +1,7 @@
-# Embedding + reranking deps (Milestone 3). Heavy (pulls torch).
-FlagEmbedding>=1.2
+# Embedding deps. Default path: fastembed (BGE-M3 via ONNX) — light, no torch.
+fastembed>=0.3
+
+# Optional heavy backends (only needed for EMBEDDER=bge / RERANKER=bge|lexical,
+# which pull torch). Left commented so the default install stays lean.
+# FlagEmbedding>=1.2
+# sentence-transformers>=3.0
