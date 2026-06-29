@@ -44,6 +44,18 @@ class FakeVerifier:
         return self.result
 
 
+class FakeCondenser:
+    """Records the call and returns a fixed standalone query."""
+
+    def __init__(self, rewritten="rewritten standalone query"):
+        self.rewritten = rewritten
+        self.calls = []
+
+    async def condense(self, query, history):
+        self.calls.append((query, list(history)))
+        return self.rewritten
+
+
 # ---- citation parsing / deterministic check ----
 
 def test_parse_citations_handles_both_forms():
@@ -114,9 +126,80 @@ def test_stream_answer_flow(service):
     verif = next(e for e in events if e["type"] == "verification")
     assert verif["grounded"] is True and verif["invalid_citations"] == []
 
-    # balanced retrieval put BOTH books into the prompt context
-    ctx = provider.seen_messages[0]["content"]
+    # balanced retrieval put BOTH books into the current-turn prompt context
+    ctx = provider.seen_messages[-1]["content"]
     assert "Bhagavad Gita" in ctx and "Ashtavakra Gita" in ctx
+
+
+def test_stream_answer_includes_history_and_condenses(service):
+    from app.chat import stream_answer
+
+    provider = FakeProvider("Stay the witness [AG 1.15].")
+    condenser = FakeCondenser()
+    history = [
+        {"role": "user", "content": "what is non-attachment?"},
+        {"role": "assistant", "content": "Act without clinging to fruits [BG 2.47]."},
+    ]
+    _collect(stream_answer(
+        "tell me more", retrieval=service, provider=provider,
+        verifier=FakeVerifier(grounded=True), history=history,
+        condenser=condenser, per_book=1,
+    ))
+
+    # Follow-up was condensed before retrieval.
+    assert condenser.calls and condenser.calls[0][0] == "tell me more"
+    # Prior turns precede the current question, giving the model memory.
+    msgs = provider.seen_messages
+    assert [m["content"] for m in msgs[:2]] == [h["content"] for h in history]
+    assert "tell me more" in msgs[-1]["content"]
+
+
+def test_condenser_skipped_without_history(service):
+    from app.chat import stream_answer
+
+    provider = FakeProvider("Answer [BG 2.47].")
+    condenser = FakeCondenser()
+    _collect(stream_answer(
+        "first question", retrieval=service, provider=provider,
+        verifier=FakeVerifier(grounded=True), condenser=condenser, per_book=1,
+    ))
+    assert condenser.calls == []  # no history → no rewrite
+
+
+# ---- HaikuCondenser unit (offline, fake anthropic client) ----
+
+class _Block:
+    type = "text"
+    def __init__(self, text): self.text = text
+
+class _Resp:
+    def __init__(self, text): self.content = [_Block(text)]
+
+class _FakeMessages:
+    def __init__(self, text): self._text = text
+    async def create(self, **kw): return _Resp(self._text)
+
+class _FakeAnthropic:
+    def __init__(self, text): self.messages = _FakeMessages(text)
+
+
+def test_haiku_condenser_no_history_short_circuits():
+    from app.llm.condense import HaikuCondenser
+
+    c = HaikuCondenser()
+    c._client = _FakeAnthropic("should not be used")
+    assert asyncio.run(c.condense("what is dharma?", [])) == "what is dharma?"
+
+
+def test_haiku_condenser_rewrites_with_history():
+    from app.llm.condense import HaikuCondenser
+
+    c = HaikuCondenser()
+    c._client = _FakeAnthropic("standalone: how to handle anger")
+    out = asyncio.run(c.condense(
+        "what about that?", [{"role": "user", "content": "I struggle with anger"}]
+    ))
+    assert out == "standalone: how to handle anger"
 
 
 def test_stream_answer_flags_fabricated_citation(service):

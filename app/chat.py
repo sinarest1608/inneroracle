@@ -9,10 +9,11 @@ Yields event dicts the API serializes as SSE:
 
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Sequence
 
 from app.citations import parse_citations
 from app.llm.base import LLMProvider
+from app.llm.condense import Condenser
 from app.prompts import ANSWER_SYSTEM, build_user_message, format_context
 from app.retrieval.search import RetrievalService
 from app.verify import Verifier, verify_answer
@@ -24,13 +25,24 @@ async def stream_answer(
     retrieval: RetrievalService,
     provider: LLMProvider,
     verifier: Verifier,
+    history: Sequence[dict] = (),
+    condenser: Condenser | None = None,
     per_book: int = 3,
 ) -> AsyncIterator[dict]:
-    verses = retrieval.retrieve_balanced(query, per_book=per_book)
+    history = list(history)
+    # Follow-ups ("tell me more") retrieve poorly alone — rewrite to a standalone
+    # query using the conversation before searching.
+    search_query = query
+    if history and condenser is not None:
+        search_query = await condenser.condense(query, history)
+
+    verses = retrieval.retrieve_balanced(search_query, per_book=per_book)
     system = [
         {"type": "text", "text": ANSWER_SYSTEM, "cache_control": {"type": "ephemeral"}}
     ]
-    messages = [{"role": "user", "content": build_user_message(query, verses)}]
+    # Prior turns (plain Q/A text) give the model memory; the current turn carries the
+    # freshly retrieved verse context.
+    messages = [*history, {"role": "user", "content": build_user_message(query, verses)}]
 
     chunks: list[str] = []
     async for token in provider.stream(system, messages):

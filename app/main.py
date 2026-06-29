@@ -28,14 +28,26 @@ def _store() -> VerseStore:
 def _services():
     """Lazily build the retrieval + LLM stack (heavy: embedder, index, clients)."""
     from app.llm.claude import ClaudeProvider
+    from app.llm.condense import HaikuCondenser
     from app.retrieval.search import RetrievalService
     from app.verify import HaikuVerifier
 
-    return RetrievalService.from_settings(), ClaudeProvider(), HaikuVerifier()
+    return (
+        RetrievalService.from_settings(),
+        ClaudeProvider(),
+        HaikuVerifier(),
+        HaikuCondenser(),
+    )
+
+
+class Message(BaseModel):
+    role: str  # "user" | "assistant"
+    content: str
 
 
 class ChatRequest(BaseModel):
     question: str
+    history: list[Message] = []
     per_book: int = 3
 
 
@@ -60,7 +72,8 @@ def health() -> dict:
 async def chat(req: ChatRequest) -> StreamingResponse:
     from app.chat import stream_answer
 
-    retrieval, provider, verifier = _services()
+    retrieval, provider, verifier, condenser = _services()
+    history = [m.model_dump() for m in req.history]
 
     async def gen():
         async for event in stream_answer(
@@ -68,6 +81,8 @@ async def chat(req: ChatRequest) -> StreamingResponse:
             retrieval=retrieval,
             provider=provider,
             verifier=verifier,
+            history=history,
+            condenser=condenser,
             per_book=req.per_book,
         ):
             yield f"data: {json.dumps(event)}\n\n"
