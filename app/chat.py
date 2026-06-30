@@ -23,10 +23,18 @@ CARRY_LIMIT = 8
 
 
 def _carry_forward(
-    retrieval: RetrievalService, history: list[dict], fresh_ids: set[str]
+    retrieval: RetrievalService,
+    history: list[dict],
+    fresh_ids: set[str],
+    book: str | None = None,
 ) -> list[RetrievedVerse]:
     """Re-fetch verses the assistant cited earlier so the model can elaborate on
-    and re-cite them this turn (each turn otherwise sees only its own retrieval)."""
+    and re-cite them this turn (each turn otherwise sees only its own retrieval).
+
+    When the user has scoped the answer to one book, only carry verses from that
+    book — otherwise the prior book's verses leak back in and the answer ignores
+    the selection.
+    """
     cited: list[str] = []
     for m in history:
         if m.get("role") == "assistant":
@@ -35,7 +43,13 @@ def _carry_forward(
                     cited.append(cid)
     cited = cited[-CARRY_LIMIT:]
     by_id = retrieval.store.get_many(cited)
-    return [RetrievedVerse(verse=by_id[c], score=0.0) for c in cited if c in by_id]
+    out: list[RetrievedVerse] = []
+    for c in cited:
+        v = by_id.get(c)
+        if v is None or (book and v.book != book):
+            continue
+        out.append(RetrievedVerse(verse=v, score=0.0))
+    return out
 
 
 async def stream_answer(
@@ -63,8 +77,9 @@ async def stream_answer(
         fresh = retrieval.retrieve_balanced(search_query, per_book=per_book)
     fresh_ids = {rv.verse.verse_id for rv in fresh}
     # Add back verses cited earlier in this conversation so "elaborate on that"
-    # has the text to work from and prior citations stay valid.
-    verses = fresh + _carry_forward(retrieval, history, fresh_ids)
+    # has the text to work from and prior citations stay valid — but respect the
+    # book filter so a single-book turn doesn't drag the other book back in.
+    verses = fresh + _carry_forward(retrieval, history, fresh_ids, book)
 
     system = [
         {"type": "text", "text": ANSWER_SYSTEM, "cache_control": {"type": "ephemeral"}}

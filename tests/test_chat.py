@@ -190,6 +190,15 @@ def test_carry_forward_skips_fresh_and_fabricated(service):
     assert carried == []
 
 
+def test_carry_forward_respects_book_filter(service):
+    from app.chat import _carry_forward
+
+    # A prior turn cited verses from BOTH books; scoping to one book must drop the other.
+    history = [{"role": "assistant", "content": "As in [BG 2.47] and [AG 1.15]."}]
+    carried = _carry_forward(service, history, fresh_ids=set(), book="ashtavakra_gita")
+    assert [rv.verse.verse_id for rv in carried] == ["AG-1.15"]
+
+
 # ---- HaikuCondenser unit (offline, fake anthropic client) ----
 
 class _Block:
