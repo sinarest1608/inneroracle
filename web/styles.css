@@ -4,7 +4,7 @@
   --brd:rgba(255,255,255,.18); --brd-soft:rgba(255,255,255,.10);
   --ink:rgba(255,255,255,.95); --muted:rgba(255,255,255,.60);
   --accent:#f0a878; --accent-ink:#3a2114; --user:rgba(240,168,120,.20);
-  --shadow:rgba(0,0,0,.30);
+  --shadow:rgba(0,0,0,.30); --pop:rgba(44,30,23,.96);
   /* warm "day" backdrop */
   --b1:#e8a06a; --b2:#c25578; --b3:#7a4a3a; --b4a:#b9764e; --b4b:#6e4636;
 }
@@ -12,7 +12,7 @@
   --glass:rgba(255,255,255,.07); --glass-strong:rgba(255,255,255,.11);
   --brd:rgba(255,255,255,.13); --brd-soft:rgba(255,255,255,.07);
   --ink:rgba(255,255,255,.92); --muted:rgba(255,255,255,.52);
-  --accent:#e89466; --user:rgba(232,148,102,.16); --shadow:rgba(0,0,0,.5);
+  --accent:#e89466; --user:rgba(232,148,102,.16); --shadow:rgba(0,0,0,.5); --pop:rgba(20,17,14,.97);
   /* deep "night" backdrop */
   --b1:#c9683a; --b2:#5a3a6e; --b3:#2a1c2e; --b4a:#241a22; --b4b:#141110;
 }
@@ -157,11 +157,11 @@ header p { margin:2px 0 0; color:var(--muted); font-size:12.5px; white-space:now
              border-radius:50%; cursor:pointer; font-size:13px; font-style:italic; font-family:Georgia,serif;
              transition:color .15s, border-color .15s; }
 .about-btn:hover { color:var(--accent); }
-.about-pop { position:absolute; bottom:38px; left:0; width:330px; max-width:80vw; padding:14px 16px; font-size:13px;
-            line-height:1.5; border-radius:14px; border:1px solid var(--brd); color:var(--ink);
-            background:var(--glass-strong); backdrop-filter:blur(28px) saturate(1.3);
-            -webkit-backdrop-filter:blur(28px) saturate(1.3);
-            box-shadow:0 12px 40px var(--shadow); animation:fadeIn .2s ease; }
+.about-pop { position:absolute; bottom:38px; right:0; left:auto; width:330px; max-width:calc(100vw - 28px);
+            padding:14px 16px; font-size:13px; line-height:1.5; border-radius:14px; border:1px solid var(--brd);
+            color:var(--ink); background:var(--pop); backdrop-filter:blur(14px) saturate(1.2);
+            -webkit-backdrop-filter:blur(14px) saturate(1.2);
+            box-shadow:0 14px 44px var(--shadow); animation:fadeIn .2s ease; }
 .about-pop h4 { margin:0 0 3px; font-family:Georgia,serif; font-size:14px; color:var(--accent); }
 .about-pop .blurb { margin:0 0 11px; }
 .about-pop .note { margin:0; color:var(--muted); font-size:12px; }
