@@ -1,11 +1,12 @@
-# Pinned to 3.12-slim for broad wheel availability (ML deps in later milestones).
+# Pinned to 3.12-slim for broad wheel availability (fastembed/onnxruntime).
 FROM python:3.12-slim
 
 WORKDIR /app
 
-# Core deps first for layer caching.
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Deps first for layer caching. requirements-embed brings fastembed (ONNX) —
+# required by the default embedder at both serving and indexing time.
+COPY requirements.txt requirements-embed.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-embed.txt
 
 COPY . .
 

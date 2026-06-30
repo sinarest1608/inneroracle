@@ -2,8 +2,9 @@ services:
   qdrant:
     image: qdrant/qdrant:latest
     restart: unless-stopped
-    ports:
-      - "6333:6333"
+    # Internal only — reached by the app over the compose network, never public.
+    expose:
+      - "6333"
     volumes:
       - qdrant_storage:/qdrant/storage
 
@@ -14,12 +15,25 @@ services:
     environment:
       # Inside compose the app talks to Qdrant over the internal network.
       - QDRANT_URL=http://qdrant:6333
+    # Bind to localhost only — the public entry point is the Cloudflare tunnel.
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       - qdrant
     volumes:
       - ./data:/app/data
+
+  # Cloudflare Tunnel — the only public ingress. Create the tunnel in the
+  # Cloudflare dashboard (Zero Trust > Networks > Tunnels), set its public
+  # hostname to service http://app:8000, and put the token in .env (TUNNEL_TOKEN).
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    depends_on:
+      - app
 
 volumes:
   qdrant_storage:

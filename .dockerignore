@@ -1,0 +1,15 @@
+# Keep the build context tiny — none of this belongs in the image.
+.git/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+data/
+epubs/
+tasks/
+.vscode/
+.env
+*.md
+PLAN.md
