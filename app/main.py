@@ -48,6 +48,7 @@ class Message(BaseModel):
 class ChatRequest(BaseModel):
     question: str
     history: list[Message] = []
+    book: str | None = None  # "bhagavad_gita" | "ashtavakra_gita" | None (both)
     per_book: int = 3
 
 
@@ -83,6 +84,7 @@ async def chat(req: ChatRequest) -> StreamingResponse:
             verifier=verifier,
             history=history,
             condenser=condenser,
+            book=req.book,
             per_book=req.per_book,
         ):
             yield f"data: {json.dumps(event)}\n\n"

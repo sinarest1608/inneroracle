@@ -46,6 +46,7 @@ async def stream_answer(
     verifier: Verifier,
     history: Sequence[dict] = (),
     condenser: Condenser | None = None,
+    book: str | None = None,
     per_book: int = 3,
 ) -> AsyncIterator[dict]:
     history = list(history)
@@ -55,7 +56,11 @@ async def stream_answer(
     if history and condenser is not None:
         search_query = await condenser.condense(query, history)
 
-    fresh = retrieval.retrieve_balanced(search_query, per_book=per_book)
+    # Restrict to one book when the user picked one; otherwise balance across both.
+    if book:
+        fresh = retrieval.retrieve(search_query, book=book, top_k=per_book * 2)
+    else:
+        fresh = retrieval.retrieve_balanced(search_query, per_book=per_book)
     fresh_ids = {rv.verse.verse_id for rv in fresh}
     # Add back verses cited earlier in this conversation so "elaborate on that"
     # has the text to work from and prior citations stay valid.

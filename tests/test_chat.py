@@ -226,6 +226,19 @@ def test_haiku_condenser_rewrites_with_history():
     assert out == "standalone: how to handle anger"
 
 
+def test_stream_answer_book_filter_restricts_context(service):
+    from app.chat import stream_answer
+
+    provider = FakeProvider("Right to action, not its fruits [BG 2.47].")
+    _collect(stream_answer(
+        "how do I act?", retrieval=service, provider=provider,
+        verifier=FakeVerifier(grounded=True), book="bhagavad_gita", per_book=1,
+    ))
+    # Only the Bhagavad Gita verse reached the prompt context; AG was filtered out.
+    ctx = provider.seen_messages[-1]["content"]
+    assert "Bhagavad Gita" in ctx and "Ashtavakra Gita" not in ctx
+
+
 def test_stream_answer_flags_fabricated_citation(service):
     from app.chat import stream_answer
 
