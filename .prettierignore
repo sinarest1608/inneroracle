@@ -1,0 +1,9 @@
+# Vendored third-party libraries — keep them minified, never reformat.
+web/marked.min.js
+web/dompurify.min.js
+**/*.min.js
+**/*.min.css
+
+# Generated / data / deps
+.venv/
+data/
