@@ -6,6 +6,7 @@ anthropic>=0.40
 pydantic>=2.7
 pydantic-settings>=2.4
 python-dotenv>=1.0
+python-multipart>=0.0.9   # /login form posts
 
 # --- ML / ingestion deps (added in later milestones; kept out of the
 #     first build so it stays fast). See requirements-ml.txt. ---

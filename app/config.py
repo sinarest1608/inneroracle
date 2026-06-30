@@ -27,8 +27,11 @@ class Settings(BaseSettings):
     sqlite_path: str = "data/verses.db"
     bm25_path: str = "data/bm25.json"
 
-    # Simple shared-token auth gate (enforced once exposed)
+    # Simple shared-token auth gate (enforced once exposed; empty => gate off)
     access_token: str = ""
+    # Mark the session cookie Secure (HTTPS-only). Keep True in prod (behind
+    # Cloudflare HTTPS); set False only for local http testing.
+    cookie_secure: bool = True
 
     @property
     def qdrant_mode(self) -> str:
