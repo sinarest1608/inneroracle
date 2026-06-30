@@ -25,3 +25,7 @@ PLAN.md
 
 # OS
 .DS_Store
+
+# tasks
+tasks/
+tasks/todo.md
