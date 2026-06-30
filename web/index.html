@@ -5,27 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>InnerOracle</title>
 <style>
-  :root { --bg:#f4f1ea; --ink:#2b2622; --muted:#7a7065; --accent:#9c5b34; --accent-soft:#c98a63;
-          --card:#fbf9f4; --line:#e4ddcf; --user:#efe7da; }
+  :root {
+    --bg:#f4f1ea; --ink:#2b2622; --muted:#7a7065; --accent:#9c5b34; --accent-soft:#c98a63;
+    --card:#fbf9f4; --line:#e4ddcf; --user:#efe7da; --side:#efeae0; --side-active:#e2d8c6;
+    --shadow:rgba(60,50,40,.18);
+  }
+  :root[data-theme="dark"] {
+    --bg:#1c1a17; --ink:#ece6dc; --muted:#9a9082; --accent:#d98a5b; --accent-soft:#b06a40;
+    --card:#26231f; --line:#3a352e; --user:#322d26; --side:#211e1a; --side-active:#322c24;
+    --shadow:rgba(0,0,0,.5);
+  }
   * { box-sizing:border-box; }
   html, body { height:100%; }
   body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-         background:var(--bg); color:var(--ink); display:flex; flex-direction:column; height:100vh; }
-  header { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center;
+         background:var(--bg); color:var(--ink); height:100vh; overflow:hidden; }
+  .app { display:flex; height:100vh; }
+
+  /* ---- sidebar ---- */
+  #sidebar { width:262px; flex:none; background:var(--side); border-right:1px solid var(--line);
+             display:flex; flex-direction:column; transition:transform .22s ease; }
+  #sidebar .new { margin:14px; padding:11px 14px; border:1px solid var(--line); border-radius:10px;
+                  background:var(--card); color:var(--ink); font-size:14px; cursor:pointer;
+                  display:flex; align-items:center; gap:8px; transition:.15s; }
+  #sidebar .new:hover { border-color:var(--accent-soft); color:var(--accent); }
+  #convs { flex:1; overflow-y:auto; padding:0 8px 12px; }
+  .conv { display:flex; align-items:center; gap:6px; padding:9px 10px; margin:2px 0; border-radius:8px;
+          cursor:pointer; font-size:13.5px; color:var(--ink); transition:.12s; }
+  .conv:hover { background:var(--side-active); }
+  .conv.active { background:var(--side-active); font-weight:600; }
+  .conv .t { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .conv .del { opacity:0; border:none; background:none; color:var(--muted); cursor:pointer;
+               font-size:15px; padding:0 2px; transition:.12s; }
+  .conv:hover .del { opacity:.7; }
+  .conv .del:hover { opacity:1; color:var(--accent); }
+  .side-foot { padding:10px 14px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; }
+
+  /* ---- main column ---- */
+  .main { flex:1; display:flex; flex-direction:column; min-width:0; }
+  header { padding:13px 18px; border-bottom:1px solid var(--line); display:flex; align-items:center;
            gap:12px; background:var(--card); }
-  header .title { flex:1; }
-  header h1 { margin:0; font-family:Georgia,serif; font-size:20px; font-weight:600; }
-  header p { margin:2px 0 0; color:var(--muted); font-size:13px; }
-  #reset { border:1px solid var(--line); background:#fff; color:var(--muted); font-size:13px;
-           padding:7px 12px; border-radius:8px; cursor:pointer; transition:.15s; white-space:nowrap; }
-  #reset:hover { color:var(--accent); border-color:var(--accent-soft); }
+  header .title { flex:1; min-width:0; }
+  header h1 { margin:0; font-family:Georgia,serif; font-size:19px; font-weight:600; }
+  header p { margin:2px 0 0; color:var(--muted); font-size:12.5px; white-space:nowrap;
+             overflow:hidden; text-overflow:ellipsis; }
+  .icon-btn { border:1px solid var(--line); background:var(--bg); color:var(--ink); width:38px; height:38px;
+              border-radius:9px; cursor:pointer; font-size:16px; flex:none; transition:.15s; }
+  .icon-btn:hover { border-color:var(--accent-soft); }
+  #hamburger { display:none; }
 
   #chat { flex:1; overflow-y:auto; padding:24px 20px; }
   .wrap { max-width:720px; margin:0 auto; }
-  .empty { color:var(--muted); text-align:center; margin-top:14vh; line-height:1.7; }
+  .empty { color:var(--muted); text-align:center; margin-top:12vh; line-height:1.7; }
   .empty .om { font-size:34px; }
-  .empty .ex { display:inline-block; margin:4px; padding:6px 12px; background:var(--card);
-               border:1px solid var(--line); border-radius:16px; font-size:13px; cursor:pointer; transition:.15s; }
+  .empty .ex { display:inline-block; margin:4px; padding:7px 13px; background:var(--card);
+               border:1px solid var(--line); border-radius:16px; font-size:13px; cursor:pointer;
+               color:var(--ink); transition:.15s; }
   .empty .ex:hover { border-color:var(--accent-soft); color:var(--accent); }
 
   .msg { margin-bottom:22px; line-height:1.6; animation:rise .25s ease; }
@@ -34,11 +68,10 @@
   .msg.user .who { color:var(--accent); }
   .msg.user .bubble { background:var(--user); border-radius:12px; padding:10px 14px; display:inline-block; }
   .bubble { word-wrap:break-word; }
-  .bubble p { margin:0 0 10px; }
-  .bubble p:last-child { margin-bottom:0; }
+  .bubble p { margin:0 0 10px; } .bubble p:last-child { margin-bottom:0; }
   .bubble ul, .bubble ol { margin:0 0 10px; padding-left:22px; }
   .bubble li { margin:3px 0; }
-  .bubble strong { color:#1f1b18; }
+  .bubble strong { color:var(--ink); }
   .bubble code { background:var(--card); border:1px solid var(--line); border-radius:4px; padding:1px 5px; font-size:.9em; }
   .bubble blockquote { margin:0 0 10px; padding:4px 14px; border-left:3px solid var(--accent-soft); color:var(--muted); }
 
@@ -47,6 +80,8 @@
            padding:3px 10px; border-radius:11px; }
   .badge.ok { background:#e7efe3; color:#3c5d34; }
   .badge.warn { background:#f6e7df; color:#8a3f1d; }
+  :root[data-theme="dark"] .badge.ok { background:#27331f; color:#9fc287; }
+  :root[data-theme="dark"] .badge.warn { background:#3a261c; color:#d99a6f; }
   .shloka-mount { margin-top:8px; }
   .shloka { background:var(--card); border:1px solid var(--line); border-radius:8px;
             padding:10px 12px; font-size:14px; animation:rise .2s ease; }
@@ -61,59 +96,168 @@
   .thinking span:nth-child(3) { animation-delay:.4s; }
   @keyframes pulse { 0%,80%,100% { opacity:.25; transform:scale(.8); } 40% { opacity:1; transform:scale(1); } }
 
-  form { display:flex; gap:8px; padding:14px 20px; border-top:1px solid var(--line);
-         background:var(--card); }
-  .form-inner { display:flex; gap:8px; max-width:720px; width:100%; margin:0 auto; }
-  input { flex:1; padding:12px 14px; border:1px solid var(--line); border-radius:10px; font-size:15px;
-          background:#fff; outline:none; transition:.15s; }
-  input:focus { border-color:var(--accent-soft); }
+  /* ---- composer ---- */
+  .composer { border-top:1px solid var(--line); background:var(--card); padding:12px 20px 16px; }
+  .composer-inner { max-width:720px; margin:0 auto; }
+  .controls { display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+  .pills { display:inline-flex; background:var(--bg); border:1px solid var(--line); border-radius:9px; padding:2px; }
+  .pill { border:none; background:none; color:var(--muted); font-size:12.5px; padding:5px 11px;
+          border-radius:7px; cursor:pointer; transition:.12s; white-space:nowrap; }
+  .pill.active { background:var(--accent); color:#fff; }
+  .about-btn { border:1px solid var(--line); background:var(--bg); color:var(--muted); width:26px; height:26px;
+               border-radius:50%; cursor:pointer; font-size:13px; font-style:italic; font-family:Georgia,serif; }
+  .about-btn:hover { color:var(--accent); border-color:var(--accent-soft); }
+  .about { position:relative; }
+  .about-pop { position:absolute; bottom:34px; left:0; width:320px; max-width:78vw; background:var(--card);
+              border:1px solid var(--line); border-radius:10px; padding:13px 15px; font-size:13px;
+              line-height:1.5; box-shadow:0 8px 26px var(--shadow); z-index:30; }
+  .about-pop h4 { margin:0 0 3px; font-family:Georgia,serif; font-size:14px; color:var(--accent); }
+  .about-pop .blurb { margin:0 0 11px; color:var(--ink); }
+  .about-pop .note { margin:0; color:var(--muted); font-size:12px; }
+  .composer form { display:flex; gap:8px; }
+  input.q { flex:1; padding:12px 14px; border:1px solid var(--line); border-radius:10px; font-size:15px;
+            background:var(--bg); color:var(--ink); outline:none; transition:.15s; }
+  input.q:focus { border-color:var(--accent-soft); }
   button.send { padding:12px 20px; border:none; border-radius:10px; background:var(--accent); color:#fff;
                 font-size:15px; cursor:pointer; transition:.15s; }
-  button.send:hover:not(:disabled) { background:#86492a; }
+  button.send:hover:not(:disabled) { filter:brightness(.94); }
   button.send:disabled { opacity:.45; cursor:default; }
+
+  #overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:18; }
+  @media (max-width:720px) {
+    #sidebar { position:fixed; inset:0 auto 0 0; z-index:20; transform:translateX(-100%); box-shadow:2px 0 20px var(--shadow); }
+    #sidebar.open { transform:translateX(0); }
+    #overlay.show { display:block; }
+    #hamburger { display:block; }
+    header p { display:none; }
+  }
 </style>
 </head>
 <body>
-  <header>
-    <div class="title">
-      <h1>🪔 InnerOracle</h1>
-      <p>Life questions, answered from the Bhagavad Gita &amp; Ashtavakra Gita.</p>
-    </div>
-    <button id="reset" title="Start a new conversation">New chat</button>
-  </header>
+  <div id="overlay"></div>
+  <div class="app">
+    <aside id="sidebar">
+      <button class="new" id="newChat">＋ New chat</button>
+      <div id="convs"></div>
+      <div class="side-foot">Grounded only in the two texts.</div>
+    </aside>
 
-  <div id="chat"><div class="wrap" id="stream"></div></div>
+    <div class="main">
+      <header>
+        <button class="icon-btn" id="hamburger" title="Conversations">☰</button>
+        <div class="title">
+          <h1>🪔 InnerOracle</h1>
+          <p>Life questions, answered from the Bhagavad Gita &amp; Ashtavakra Gita.</p>
+        </div>
+        <button class="icon-btn" id="theme" title="Toggle dark mode">🌙</button>
+      </header>
 
-  <form id="form">
-    <div class="form-inner">
-      <input id="q" placeholder="Ask a question…" autocomplete="off" />
-      <button class="send" id="send" type="submit">Ask</button>
+      <div id="chat"><div class="wrap" id="stream"></div></div>
+
+      <div class="composer">
+        <div class="composer-inner">
+          <div class="controls">
+            <div class="pills" id="pills">
+              <button class="pill active" data-book="">Both</button>
+              <button class="pill" data-book="bhagavad_gita">Bhagavad Gita</button>
+              <button class="pill" data-book="ashtavakra_gita">Ashtavakra Gita</button>
+            </div>
+            <div class="about">
+              <button class="about-btn" id="aboutBtn" title="About the texts">i</button>
+              <div class="about-pop" id="aboutPop" hidden>
+                <h4>Bhagavad Gita</h4>
+                <p class="blurb">A 700-verse dialogue between prince Arjuna and Krishna on the
+                  battlefield of Kurukshetra (part of the epic Mahabharata). Its heart is
+                  selfless action — doing your duty without clinging to the results.</p>
+                <h4>Ashtavakra Gita</h4>
+                <p class="blurb">A short, piercing dialogue between the sage Ashtavakra and
+                  King Janaka on non-dual awareness (Advaita). Its message is radical and direct:
+                  you are already free — pure awareness, never bound.</p>
+                <p class="note">Both are classical Sanskrit wisdom texts from the Indian
+                  contemplative tradition. Pick one to focus the answer, or “Both” to compare.</p>
+              </div>
+            </div>
+          </div>
+          <form id="form">
+            <input class="q" id="q" placeholder="Ask a question…" autocomplete="off" />
+            <button class="send" id="send" type="submit">Ask</button>
+          </form>
+        </div>
+      </div>
     </div>
-  </form>
+  </div>
 
 <script src="/ui/marked.min.js"></script>
 <script src="/ui/dompurify.min.js"></script>
 <script>
-const STORE_KEY = 'inneroracle.history.v1';
+// ---------- theme ----------
+const THEME_KEY = 'inneroracle.theme';
+function applyTheme(t){
+  document.documentElement.dataset.theme = t;
+  document.getElementById('theme').textContent = t === 'dark' ? '☀️' : '🌙';
+}
+applyTheme(localStorage.getItem(THEME_KEY) ||
+  (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+document.getElementById('theme').onclick = ()=>{
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, next); applyTheme(next);
+};
+
+// ---------- elements ----------
 const stream = document.getElementById('stream');
 const chat = document.getElementById('chat');
 const form = document.getElementById('form');
 const input = document.getElementById('q');
 const sendBtn = document.getElementById('send');
+const convsEl = document.getElementById('convs');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
 
-// Conversation history (plain Q/A text), persisted across reloads.
-let history = load();
-function load(){ try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; } }
-function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(history)); }
+// ---------- conversation store ----------
+const STORE = 'inneroracle.conversations.v1';
+const OLD = 'inneroracle.history.v1';
+let state = loadState();
 
+function loadState(){
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE));
+    if (s && Array.isArray(s.conversations)) return s;
+  } catch {}
+  // migrate a single old conversation, if present
+  let conversations = [];
+  try {
+    const old = JSON.parse(localStorage.getItem(OLD));
+    if (Array.isArray(old) && old.length) {
+      conversations = [mkConv(old)];
+      localStorage.removeItem(OLD);
+    }
+  } catch {}
+  return { conversations, activeId: conversations[0]?.id || null };
+}
+function save(){ localStorage.setItem(STORE, JSON.stringify(state)); }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function titleFrom(messages){
+  const first = messages.find(m=>m.role==='user');
+  const t = first ? first.content.trim() : 'New chat';
+  return t.length > 42 ? t.slice(0,42) + '…' : t;
+}
+function mkConv(messages){
+  return { id: uid(), title: titleFrom(messages||[]), messages: messages||[], updatedAt: Date.now() };
+}
+function activeConv(){
+  let c = state.conversations.find(c=>c.id===state.activeId);
+  if (!c){ c = mkConv([]); state.conversations.unshift(c); state.activeId = c.id; }
+  return c;
+}
+function pruneEmpty(keepId){
+  state.conversations = state.conversations.filter(c=>c.messages.length>0 || c.id===keepId);
+}
+
+// ---------- helpers ----------
 function el(cls, html){ const d=document.createElement('div'); d.className=cls; if(html!==undefined) d.innerHTML=html; return d; }
 function scrollDown(){ chat.scrollTop = chat.scrollHeight; }
 function escapeHtml(s){ return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
-
 marked.setOptions({ breaks:true });
-
-// Turn citations into clickable spans, including grouped ones like
-// [AG 15.20, AG 2.12]. Each verse becomes its own clickable span (id BG-2.47).
 function linkify(html){
   return html.replace(/\[([^\]]*(?:BG|AG)[ \-]?\d+\.[\w\-]+[^\]]*)\]/g, (m, inner)=>{
     const linked = inner.replace(/(BG|AG)[ \-]?(\d+\.[\w\-]+)/g,
@@ -121,10 +265,7 @@ function linkify(html){
     return '['+linked+']';
   });
 }
-function renderMarkdown(text){
-  return linkify(DOMPurify.sanitize(marked.parse(text)));
-}
-
+function renderMarkdown(text){ return linkify(DOMPurify.sanitize(marked.parse(text))); }
 function addMsg(role, who){
   const m = el('msg '+role, `<div class="who">${who}</div>`);
   const bubble = el('bubble',''); m.appendChild(bubble);
@@ -132,27 +273,89 @@ function addMsg(role, who){
   return { m, bubble };
 }
 
+// ---------- suggestions ----------
+const SUGGESTIONS = [
+  'How do I deal with anxiety about results?', 'What is the self?',
+  'How should I handle anger?', 'How do I find peace in difficult times?',
+  'What does it mean to act without attachment?', 'How do I face the fear of failure?',
+  'What is true freedom?', 'How should I cope with loss and grief?',
+  'How do I quiet a restless mind?', 'What is my duty when I feel torn?',
+  'How do I let go of control?', 'How do I overcome craving and desire?',
+  'How can I be content with what I have?', 'What is the path to lasting happiness?',
+  'How do I stay steady amid praise and blame?',
+];
+function pick3(){
+  const a = SUGGESTIONS.slice();
+  for (let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; [a[i],a[j]]=[a[j],a[i]]; }
+  return a.slice(0,3);
+}
 function renderEmpty(){
-  if(history.length) return;
-  const examples = ['How do I deal with anxiety about results?','What is the self?','How should I handle anger?'];
   const e = el('empty',
     `<div class="om">🕉️</div><p>Ask anything. Answers come only from the two texts,<br>with tappable citations to the original shloka.</p>`);
-  examples.forEach(x=>{ const c=el('ex'); c.textContent=x; c.onclick=()=>{ input.value=x; form.requestSubmit(); }; e.appendChild(c); });
+  pick3().forEach(x=>{ const c=el('ex'); c.textContent=x; c.onclick=()=>{ input.value=x; form.requestSubmit(); }; e.appendChild(c); });
   stream.appendChild(e);
 }
 
-// Replay persisted history on load.
-function restore(){
+// ---------- render conversation + sidebar ----------
+function renderActive(){
   stream.innerHTML='';
-  for(const turn of history){
+  const c = activeConv();
+  if (!c.messages.length){ renderEmpty(); return; }
+  for (const turn of c.messages){
     const who = turn.role==='user' ? 'You' : 'InnerOracle';
-    const {bubble} = addMsg(turn.role==='user'?'user':'assistant', who);
+    const { bubble } = addMsg(turn.role==='user'?'user':'assistant', who);
     bubble.innerHTML = turn.role==='user' ? escapeHtml(turn.content) : renderMarkdown(turn.content);
   }
-  renderEmpty();
+}
+function renderSidebar(){
+  convsEl.innerHTML='';
+  const list = state.conversations.filter(c=>c.messages.length>0)
+    .sort((a,b)=>b.updatedAt-a.updatedAt);
+  for (const c of list){
+    const row = el('conv' + (c.id===state.activeId?' active':''));
+    const t = el('t'); t.textContent = c.title; t.title = c.title;
+    const del = document.createElement('button'); del.className='del'; del.textContent='✕';
+    del.title='Delete'; del.onclick=(e)=>{ e.stopPropagation(); deleteConv(c.id); };
+    row.append(t, del);
+    row.onclick=()=>switchTo(c.id);
+    convsEl.appendChild(row);
+  }
+}
+function refresh(){ renderActive(); renderSidebar(); }
+
+function switchTo(id){
+  pruneEmpty(id); state.activeId=id; save(); refresh(); closeSidebar();
+}
+function newChat(){
+  pruneEmpty(null);
+  const c = mkConv([]); state.conversations.unshift(c); state.activeId=c.id;
+  save(); refresh(); input.focus(); closeSidebar();
+}
+function deleteConv(id){
+  state.conversations = state.conversations.filter(c=>c.id!==id);
+  if (state.activeId===id) state.activeId = state.conversations[0]?.id || null;
+  save(); refresh();
 }
 
-// ---- shloka-on-demand ----
+// ---------- book selector + about ----------
+let book = '';
+document.getElementById('pills').addEventListener('click', e=>{
+  const p = e.target.closest('.pill'); if(!p) return;
+  document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+  p.classList.add('active'); book = p.dataset.book;
+});
+const aboutPop = document.getElementById('aboutPop');
+document.getElementById('aboutBtn').onclick = (e)=>{ e.stopPropagation(); aboutPop.hidden = !aboutPop.hidden; };
+document.addEventListener('click', e=>{ if(!e.target.closest('.about')) aboutPop.hidden = true; });
+
+// ---------- sidebar toggle (mobile) ----------
+function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+document.getElementById('hamburger').onclick = openSidebar;
+overlay.onclick = closeSidebar;
+document.getElementById('newChat').onclick = newChat;
+
+// ---------- shloka on demand ----------
 async function fetchVerse(id, mount){
   if(mount.dataset.loaded){ mount.style.display = mount.style.display==='none'?'block':'none'; return; }
   const r = await fetch('/verse/'+encodeURIComponent(id));
@@ -168,15 +371,13 @@ async function fetchVerse(id, mount){
 stream.addEventListener('click', e=>{
   const c = e.target.closest('.cite'); if(!c) return;
   let panel = c.closest('.msg').querySelector('.shloka-mount[data-for="'+c.dataset.id+'"]');
-  if(!panel){
-    panel = el('shloka-mount'); panel.dataset.for=c.dataset.id;
-    c.closest('.bubble').after(panel);
-  }
+  if(!panel){ panel = el('shloka-mount'); panel.dataset.for=c.dataset.id; c.closest('.bubble').after(panel); }
   fetchVerse(c.dataset.id, panel);
 });
 
-// ---- ask ----
+// ---------- ask ----------
 async function ask(question){
+  const conv = activeConv();
   const emptyEl = stream.querySelector('.empty'); if(emptyEl) emptyEl.remove();
   addMsg('user','You').bubble.textContent = question;
 
@@ -184,9 +385,12 @@ async function ask(question){
   const thinking = el('thinking','<span></span><span></span><span></span>');
   bubble.appendChild(thinking);
 
+  // history = prior plain Q/A text from this conversation
+  const history = conv.messages.map(m=>({role:m.role, content:m.content}));
+
   let answer='', started=false;
   const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({question, history})});
+    body: JSON.stringify({question, history, book: book || null})});
   const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
   while(true){
     const {value, done} = await reader.read(); if(done) break;
@@ -196,7 +400,7 @@ async function ask(question){
       const line = p.split('\n').find(l=>l.startsWith('data:')); if(!line) continue;
       const ev = JSON.parse(line.slice(5).trim());
       if(ev.type==='token'){
-        if(!started){ bubble.textContent=''; started=true; }   // drop the thinking dots
+        if(!started){ bubble.textContent=''; started=true; }
         answer+=ev.text; bubble.textContent=answer; scrollDown();
       } else if(ev.type==='verification'){
         const ok = ev.grounded;
@@ -207,13 +411,15 @@ async function ask(question){
     }
   }
   if(!started) bubble.textContent='';
-  bubble.innerHTML = renderMarkdown(answer);   // markdown + tappable citations
+  bubble.innerHTML = renderMarkdown(answer);
   scrollDown();
 
-  // Persist the turn (plain text — the model's memory).
-  history.push({role:'user', content:question});
-  history.push({role:'assistant', content:answer});
-  save();
+  // persist the turn
+  conv.messages.push({role:'user', content:question});
+  conv.messages.push({role:'assistant', content:answer});
+  conv.title = titleFrom(conv.messages);
+  conv.updatedAt = Date.now();
+  save(); renderSidebar();
 }
 
 form.addEventListener('submit', async e=>{
@@ -225,11 +431,8 @@ form.addEventListener('submit', async e=>{
   finally { sendBtn.disabled=false; input.disabled=false; input.focus(); }
 });
 
-document.getElementById('reset').addEventListener('click', ()=>{
-  history = []; save(); restore(); input.focus();
-});
-
-restore();
+// ---------- boot ----------
+refresh();
 input.focus();
 </script>
 </body>
