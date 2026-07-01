@@ -1,27 +1,30 @@
 services:
-  qdrant:
-    image: qdrant/qdrant:latest
-    restart: unless-stopped
-    # Internal only — reached by the app over the compose network, never public.
-    expose:
-      - "6333"
-    volumes:
-      - qdrant_storage:/qdrant/storage
-
   app:
     build: .
     restart: unless-stopped
     env_file: .env
-    environment:
-      # Inside compose the app talks to Qdrant over the internal network.
-      - QDRANT_URL=http://qdrant:6333
+    # QDRANT_URL comes from .env:
+    #   empty  -> embedded Qdrant using the prebuilt ./data/qdrant_local (default;
+    #             no server-side embedding — ship the prebuilt index instead).
+    #   set    -> remote Qdrant container (see the `qdrant` service below); only
+    #             needed if you re-index on the server (heavy: ~3.6GB RAM).
     # Bind to localhost only — the public entry point is the Cloudflare tunnel.
     ports:
       - "127.0.0.1:8000:8000"
-    depends_on:
-      - qdrant
     volumes:
       - ./data:/app/data
+
+  # Optional remote Qdrant — only for re-indexing on the server. Start with
+  # `docker compose --profile server-index up -d` and set QDRANT_URL=http://qdrant:6333
+  # in .env. Default deployment uses embedded mode and does NOT run this.
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
+    profiles: ["server-index"]
+    expose:
+      - "6333"
+    volumes:
+      - qdrant_storage:/qdrant/storage
 
   # Cloudflare Tunnel — the only public ingress. Create the tunnel in the
   # Cloudflare dashboard (Zero Trust > Networks > Tunnels), set its public
