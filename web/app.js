@@ -4,8 +4,10 @@ import { input, form, sendBtn, overlay, addMsg } from './dom.js';
 import { initTheme } from './theme.js';
 import { refresh, newChat, openSidebar, closeSidebar } from './views.js';
 import { ask, initCitations } from './chat.js';
+import { ensureHuman } from './turnstile.js';
 
 initTheme();
+ensureHuman();   // background human-check → sets the /chat cookie before the first ask
 
 // ---- book selector + about popover ----
 let book = '';
