@@ -4,23 +4,22 @@ from __future__ import annotations
 
 import json
 import os
-import secrets
 from functools import lru_cache
 
-from fastapi import FastAPI, Form, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse, RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from app.auth import COOKIE, TokenAuthMiddleware
+from app.auth import HumanGateMiddleware
 from app.config import settings
-from app.login import LOGIN_PAGE
 from app.models import Verse
 from app.qdrant import get_qdrant
 from app.store import VerseStore
+from app.turnstile import COOKIE, sign_cookie, verify_token
 
 app = FastAPI(title="InnerOracle", version="0.1.0")
-app.add_middleware(TokenAuthMiddleware, token=settings.access_token)
+app.add_middleware(HumanGateMiddleware, enabled=bool(settings.turnstile_secret))
 
 
 @lru_cache(maxsize=1)
@@ -105,28 +104,27 @@ def verse(verse_id: str) -> Verse:
     return v
 
 
-@app.get("/login", response_class=HTMLResponse)
-def login_page(next: str = "/") -> str:
-    return LOGIN_PAGE.replace("{{NEXT}}", next if next.startswith("/") else "/")
+@app.get("/pubconfig")
+def pubconfig() -> dict:
+    """Public front-end config (Turnstile site key is not a secret)."""
+    return {"turnstile_site_key": settings.turnstile_site_key}
 
 
-@app.post("/login")
-def login(token: str = Form(""), next: str = Form("/")):
-    if not settings.access_token or not secrets.compare_digest(token, settings.access_token):
-        return RedirectResponse(url="/login?error=1", status_code=303)
-    dest = next if next.startswith("/") else "/"
-    resp = RedirectResponse(url=dest, status_code=303)
+class VerifyRequest(BaseModel):
+    token: str = ""
+
+
+@app.post("/verify-human")
+async def verify_human(req: VerifyRequest, request: Request):
+    """Exchange a Turnstile token for a short-lived signed human cookie."""
+    ip = request.headers.get("cf-connecting-ip") or (request.client.host if request.client else None)
+    if not await verify_token(req.token, ip):
+        raise HTTPException(status_code=403, detail="verification failed")
+    resp = JSONResponse({"ok": True})
     resp.set_cookie(
-        COOKIE, settings.access_token, max_age=30 * 24 * 3600,
+        COOKIE, sign_cookie(), max_age=12 * 3600,
         httponly=True, samesite="lax", secure=settings.cookie_secure,
     )
-    return resp
-
-
-@app.get("/logout")
-def logout() -> RedirectResponse:
-    resp = RedirectResponse(url="/login", status_code=303)
-    resp.delete_cookie(COOKIE)
     return resp
 
 
