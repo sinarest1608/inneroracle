@@ -40,11 +40,21 @@ original Sanskrit.
 
 ## See it in action
 
-**A grounded answer with citations and the verification badge**
+**A grounded answer** — inline citations to each verse and a *"grounded in the texts"*
+verification badge. Light and dark themes:
 
-![An answer with inline citations and a "grounded in the texts" badge](assets/answer.png)
+<table>
+  <tr>
+    <td width="50%"><img src="assets/answer.png" alt="Grounded answer — light theme" /></td>
+    <td width="50%"><img src="assets/answer-dark.png" alt="Grounded answer — dark theme" /></td>
+  </tr>
+</table>
 
-**Works on mobile, light & dark**
+**Welcome screen** — dark theme:
+
+![Welcome screen — dark theme](assets/hero-dark.png)
+
+**On mobile:**
 
 <img src="assets/mobile.png" alt="InnerOracle on mobile" width="320" />
 
