@@ -19,22 +19,14 @@ async function fetchVerse(id, mount){
   mount.innerHTML=h; mount.dataset.loaded='1'; scrollDown();
 }
 
-// Animated "thinking" indicator: a shimmering label that cycles through phrases
-// while we retrieve + wait for the first token. Returns a stop() to remove it.
-const THINKING_PHRASES = [
-  'Consulting the texts', 'Reflecting on your question',
-  'Finding relevant verses', 'Gathering the teachings',
-];
+// "Thinking" indicator shown while we retrieve + wait for the first token:
+// a single calm, breathing label beside the pulsing dots. Returns stop().
 function startThinking(bubble){
   const node = el('thinking',
-    '<span class="thinking-label"></span><span class="dots"><span></span><span></span><span></span></span>');
-  const label = node.querySelector('.thinking-label');
-  let i = 0;
-  const tick = ()=>{ label.textContent = THINKING_PHRASES[i++ % THINKING_PHRASES.length] + '…'; };
-  tick();
-  const timer = setInterval(tick, 2000);
+    '<span class="thinking-label">Consulting the texts…</span>'
+    + '<span class="dots"><span></span><span></span><span></span></span>');
   bubble.appendChild(node);
-  return ()=>clearInterval(timer);
+  return ()=>{};
 }
 
 // Wire tap-on-citation to load the original shloka inline.
