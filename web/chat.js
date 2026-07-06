@@ -45,12 +45,18 @@ export async function ask(question, book){
   addMsg('user','You').bubble.textContent = question;
 
   const { m: aMsg, bubble } = addMsg('assistant','InnerOracle');
-  const stopThinking = startThinking(bubble);
+  startThinking(bubble);
 
   const history = conv.messages.map(m=>({role:m.role, content:m.content}));
 
-  let answer='', started=false;
-  try {
+  // Keep "thinking" on screen until the first token arrives AND for at least
+  // MIN_THINKING ms, so it's always perceptible (never a flash, never a blank gap).
+  const MIN_THINKING = 650;
+  const t0 = performance.now();
+  let answer='', gotFirst=false, revealed=false;
+  const reveal = ()=>{ if(!revealed){ revealed=true; bubble.textContent=answer; scrollDown(); } };
+  const sleep = (ms)=> new Promise(r=>setTimeout(r, ms));
+
   const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({question, history, book: book || null})});
   const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
@@ -62,8 +68,12 @@ export async function ask(question, book){
       const line = p.split('\n').find(l=>l.startsWith('data:')); if(!line) continue;
       const ev = JSON.parse(line.slice(5).trim());
       if(ev.type==='token'){
-        if(!started){ stopThinking(); bubble.textContent=''; started=true; }
-        answer+=ev.text; bubble.textContent=answer; scrollDown();
+        answer+=ev.text;
+        if(!gotFirst){                          // first token: reveal once MIN has elapsed
+          gotFirst=true;
+          setTimeout(reveal, Math.max(0, MIN_THINKING - (performance.now() - t0)));
+        }
+        if(revealed){ bubble.textContent=answer; scrollDown(); }
       } else if(ev.type==='verification'){
         const ok = ev.grounded;
         aMsg.appendChild(el('badge '+(ok?'ok':'warn'),
@@ -72,9 +82,11 @@ export async function ask(question, book){
       }
     }
   }
-  } finally { stopThinking(); }
 
-  if(!started) bubble.textContent='';
+  // Ensure the minimum has passed (covers very fast/short answers), then render.
+  const remaining = MIN_THINKING - (performance.now() - t0);
+  if (gotFirst && remaining > 0) await sleep(remaining);
+  reveal();
   bubble.innerHTML = renderMarkdown(answer);
   scrollDown();
 
