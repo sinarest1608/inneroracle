@@ -1,41 +1,76 @@
-# InnerOracle
+<div align="center">
 
-A hybrid RAG assistant that answers life questions and explains the teachings of the
-**Bhagavad Gita** and **Ashtavakra Gita**, grounded only in those texts. Sanskrit
-shlokas are kept separate from translation/commentary at ingest and recombined into
-full verse context when answering. English-first answers; original shloka shown on
-demand via citations.
+# 🪔 InnerOracle
 
-See [`PLAN.md`](./PLAN.md) for the full design, cost model, and milestones.
+**Life questions, answered only from the Bhagavad Gita & the Ashtavakra Gita — with every claim cited to the verse it came from.**
 
-## Stack
-- **LLM:** Claude API — Sonnet 4.6 (answers) + Haiku 4.5 (verifier), behind a swappable
-  provider interface (move to a self-hosted model later).
-- **Retrieval:** Qdrant hybrid search — BGE-M3 dense + BM25 sparse, fused with RRF;
-  cross-encoder rerank.
-- **Store:** SQLite for canonical verses; Qdrant for chunk vectors.
-- **App:** FastAPI (SSE streaming) + a minimal web chat UI.
+### [→ Try it live at inneroracle.cc](https://inneroracle.cc)
 
-## Local development (no Docker required)
+</div>
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env          # add your ANTHROPIC_API_KEY
-uvicorn app.main:app --reload
-curl localhost:8000/health
+![InnerOracle — welcome screen](assets/hero.png)
+
+---
+
+## What it is
+
+InnerOracle is a grounded AI assistant for life questions. Instead of answering from a
+model's general knowledge, it retrieves relevant verses from two classical wisdom texts —
+the **Bhagavad Gita** and the **Ashtavakra Gita** — and answers *strictly* from them, citing
+each claim inline. When the two texts disagree, it shows both perspectives rather than
+blending them. When the texts don't cover something, it says so instead of guessing.
+
+Ask anything — *"How do I deal with anxiety about results?"*, *"What is the self?"*,
+*"How should I handle anger?"* — and get a concise, sourced answer you can trace back to the
+original Sanskrit.
+
+## What makes it different
+
+- **📖 Grounded, not guessed** — answers come only from the retrieved verses. Every
+  substantive claim carries an inline citation like `[BG 2.47]` or `[AG 1.15]`.
+- **✅ Self-checking** — a separate model verifies each answer against the source verses and
+  shows a *"grounded in the texts"* / *"check sources"* badge, so you know how trustworthy it is.
+- **🔍 Tap to see the shloka** — tap any citation to reveal the original Devanagari verse,
+  transliteration, and translation.
+- **⚖️ Honest contrast** — the Gita's path of selfless action vs. the Ashtavakra Gita's
+  non-dual "you were never the doer" — presented side by side. Focus on one text or compare both.
+- **💬 Remembers the conversation** — ask follow-ups like *"tell me more"* or *"what about anger?"*
+  and it keeps context.
+- **🔒 Private by design** — conversations live only in your browser; nothing is stored on a server.
+
+## See it in action
+
+**A grounded answer with citations and the verification badge**
+
+![An answer with inline citations and a "grounded in the texts" badge](assets/answer.png)
+
+**Works on mobile, light & dark**
+
+<img src="assets/mobile.png" alt="InnerOracle on mobile" width="320" />
+
+## How it works
+
+```
+your question
+   → (for follow-ups) rewritten into a standalone search query
+      → hybrid retrieval: dense semantic + keyword search, fused and balanced across both texts
+         → the model writes a concise answer grounded in those verses, streamed live
+            → a verifier checks the answer against the verses → "grounded" / "check sources" badge
 ```
 
-With `QDRANT_URL` empty, Qdrant runs in embedded local mode — no Docker needed for dev.
+Sanskrit shlokas are kept separate from translations and commentary when the texts are
+ingested, then recombined into full verse context at answer time — so retrieval stays precise
+while answers stay readable.
 
-## Docker (deployment)
+## Built with
 
-```bash
-cp .env.example .env          # fill in secrets
-docker compose up --build
-curl localhost:8000/health
-```
+**Retrieval-Augmented Generation** · **Anthropic Claude** (answers + verification) ·
+**FastAPI** with live token streaming · **Qdrant** hybrid vector search (semantic + keyword,
+RRF fusion) · **ONNX** embeddings · **SQLite** · a dependency-light **vanilla-JS** web app ·
+deployed with **Docker** behind a **Cloudflare Tunnel**.
 
-## Status
-Milestone 1 (scaffold + `/health`) complete. See `tasks/todo.md`.
+---
+
+<div align="center">
+<sub>Made with care for the texts. Answers are for reflection, not a substitute for a teacher.</sub>
+</div>
