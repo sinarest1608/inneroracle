@@ -19,6 +19,24 @@ async function fetchVerse(id, mount){
   mount.innerHTML=h; mount.dataset.loaded='1'; scrollDown();
 }
 
+// Animated "thinking" indicator: a shimmering label that cycles through phrases
+// while we retrieve + wait for the first token. Returns a stop() to remove it.
+const THINKING_PHRASES = [
+  'Consulting the texts', 'Reflecting on your question',
+  'Finding relevant verses', 'Gathering the teachings',
+];
+function startThinking(bubble){
+  const node = el('thinking',
+    '<span class="thinking-label"></span><span class="dots"><span></span><span></span><span></span></span>');
+  const label = node.querySelector('.thinking-label');
+  let i = 0;
+  const tick = ()=>{ label.textContent = THINKING_PHRASES[i++ % THINKING_PHRASES.length] + '…'; };
+  tick();
+  const timer = setInterval(tick, 2000);
+  bubble.appendChild(node);
+  return ()=>clearInterval(timer);
+}
+
 // Wire tap-on-citation to load the original shloka inline.
 export function initCitations(){
   stream.addEventListener('click', e=>{
@@ -35,12 +53,12 @@ export async function ask(question, book){
   addMsg('user','You').bubble.textContent = question;
 
   const { m: aMsg, bubble } = addMsg('assistant','InnerOracle');
-  const thinking = el('thinking','<span></span><span></span><span></span>');
-  bubble.appendChild(thinking);
+  const stopThinking = startThinking(bubble);
 
   const history = conv.messages.map(m=>({role:m.role, content:m.content}));
 
   let answer='', started=false;
+  try {
   const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({question, history, book: book || null})});
   const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
@@ -52,7 +70,7 @@ export async function ask(question, book){
       const line = p.split('\n').find(l=>l.startsWith('data:')); if(!line) continue;
       const ev = JSON.parse(line.slice(5).trim());
       if(ev.type==='token'){
-        if(!started){ bubble.textContent=''; started=true; }
+        if(!started){ stopThinking(); bubble.textContent=''; started=true; }
         answer+=ev.text; bubble.textContent=answer; scrollDown();
       } else if(ev.type==='verification'){
         const ok = ev.grounded;
@@ -62,6 +80,8 @@ export async function ask(question, book){
       }
     }
   }
+  } finally { stopThinking(); }
+
   if(!started) bubble.textContent='';
   bubble.innerHTML = renderMarkdown(answer);
   scrollDown();
