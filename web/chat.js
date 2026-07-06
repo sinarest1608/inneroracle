@@ -5,15 +5,6 @@ import { stream, el, scrollDown, escapeHtml, addMsg } from './dom.js';
 import { renderMarkdown } from './markdown.js';
 import { activeConv, save, titleFrom } from './store.js';
 import { renderSidebar } from './views.js';
-import { reverify } from './turnstile.js';
-
-// POST /chat; if the human cookie expired (401), re-run Turnstile once and retry.
-async function chatFetch(payload) {
-  const opts = { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) };
-  let res = await fetch('/chat', opts);
-  if (res.status === 401) { await reverify(); res = await fetch('/chat', opts); }
-  return res;
-}
 
 async function fetchVerse(id, mount){
   if (mount.dataset.loaded){ mount.style.display = mount.style.display==='none'?'block':'none'; return; }
@@ -50,8 +41,8 @@ export async function ask(question, book){
   const history = conv.messages.map(m=>({role:m.role, content:m.content}));
 
   let answer='', started=false;
-  const res = await chatFetch({question, history, book: book || null});
-  if (!res.ok || !res.body) { bubble.textContent = 'Verification needed — please refresh and try again.'; return; }
+  const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({question, history, book: book || null})});
   const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
   while(true){
     const {value, done} = await reader.read(); if(done) break;

@@ -27,13 +27,8 @@ class Settings(BaseSettings):
     sqlite_path: str = "data/verses.db"
     bm25_path: str = "data/bm25.json"
 
-    # Cloudflare Turnstile human-check on /chat (empty secret => gate off, dev).
-    turnstile_site_key: str = ""   # public — served to the page
-    turnstile_secret: str = ""     # private — server-side siteverify
-    session_secret: str = ""       # HMAC key for the signed io_human cookie
-    # Mark the human cookie Secure (HTTPS-only). Keep True in prod (behind
-    # Cloudflare HTTPS); set False only for local http testing.
-    cookie_secure: bool = True
+    # Open access — abuse protection is at the Cloudflare edge (Bot Fight Mode +
+    # rate limiting on /chat), not in the app.
 
     @property
     def qdrant_mode(self) -> str:
