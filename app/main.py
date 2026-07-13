@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 from functools import lru_cache
+from typing import Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.config import settings
 from app.models import Verse
@@ -18,7 +20,23 @@ from app.store import VerseStore
 
 # Open access — no app-level auth. Abuse protection for /chat is handled at the
 # Cloudflare edge (Bot Fight Mode + a rate-limiting rule) plus an Anthropic spend cap.
+# Request bounds below cap the worst-case cost of any single request.
 app = FastAPI(title="InnerOracle", version="0.1.0")
+
+# Root handler so app loggers (inneroracle.*, incl. token-usage lines) actually
+# emit under uvicorn, whose default config only wires up its own loggers.
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s"
+)
+
+logger = logging.getLogger("inneroracle")
+
+# Server-side history bounds: rate limiting caps requests/minute but not
+# cost/request — without these one request could carry megabytes of "history"
+# straight into three paid LLM calls. Truncate rather than reject so long
+# legitimate conversations keep working.
+HISTORY_MAX_MESSAGES = 20
+HISTORY_MAX_CHARS = 8000  # > longest real answer (~1400 tokens), so only abuse is cut
 
 
 @lru_cache(maxsize=1)
@@ -43,32 +61,27 @@ def _services():
 
 
 class Message(BaseModel):
-    role: str  # "user" | "assistant"
+    role: Literal["user", "assistant"]
     content: str
 
 
 class ChatRequest(BaseModel):
-    question: str
+    question: str = Field(min_length=1, max_length=2000)
     history: list[Message] = []
-    book: str | None = None  # "bhagavad_gita" | "ashtavakra_gita" | None (both)
-    per_book: int = 3
+    book: Literal["bhagavad_gita", "ashtavakra_gita"] | None = None  # None = both
+    per_book: int = Field(default=3, ge=1, le=10)
 
 
 @app.get("/health")
 def health() -> dict:
-    result: dict = {
-        "status": "ok",
-        "service": "inneroracle",
-        "answer_model": settings.answer_model,
-        "qdrant_mode": settings.qdrant_mode,
-    }
+    """Public liveness check. Deliberately bare — model names, storage mode and
+    exception details stay in the logs, not on an unauthenticated endpoint."""
     try:
         get_qdrant().get_collections()
-        result["qdrant"] = "ok"
-    except Exception as exc:  # noqa: BLE001
-        result["status"] = "degraded"
-        result["qdrant"] = f"error: {exc}"
-    return result
+        return {"status": "ok"}
+    except Exception:  # noqa: BLE001
+        logger.exception("health: qdrant check failed")
+        return {"status": "degraded"}
 
 
 @app.post("/chat")
@@ -76,20 +89,32 @@ async def chat(req: ChatRequest) -> StreamingResponse:
     from app.chat import stream_answer
 
     retrieval, provider, verifier, condenser = _services()
-    history = [m.model_dump() for m in req.history]
+    history = [
+        {"role": m.role, "content": m.content[:HISTORY_MAX_CHARS]}
+        for m in req.history[-HISTORY_MAX_MESSAGES:]
+    ]
 
     async def gen():
-        async for event in stream_answer(
-            req.question,
-            retrieval=retrieval,
-            provider=provider,
-            verifier=verifier,
-            history=history,
-            condenser=condenser,
-            book=req.book,
-            per_book=req.per_book,
-        ):
-            yield f"data: {json.dumps(event)}\n\n"
+        try:
+            async for event in stream_answer(
+                req.question,
+                retrieval=retrieval,
+                provider=provider,
+                verifier=verifier,
+                history=history,
+                condenser=condenser,
+                book=req.book,
+                per_book=req.per_book,
+            ):
+                yield f"data: {json.dumps(event)}\n\n"
+        except Exception:  # noqa: BLE001 — detail goes to logs, not to the client
+            logger.exception("chat: stream failed")
+            err = {
+                "type": "error",
+                "message": "Something went wrong while consulting the texts. "
+                "Please try again.",
+            }
+            yield f"data: {json.dumps(err)}\n\n"
 
     return StreamingResponse(gen(), media_type="text/event-stream")
 

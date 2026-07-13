@@ -11,4 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt -r requirements-embed.txt
 COPY . .
 
 EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# --proxy-headers so logs show the real client IP (cloudflared sets
+# X-Forwarded-For). Trusting * is safe here: the app is bound to 127.0.0.1 on
+# the host and only cloudflared can reach it.
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", \
+     "--proxy-headers", "--forwarded-allow-ips", "*"]

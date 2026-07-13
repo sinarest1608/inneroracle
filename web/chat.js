@@ -53,34 +53,41 @@ export async function ask(question, book){
   // MIN_THINKING ms, so it's always perceptible (never a flash, never a blank gap).
   const MIN_THINKING = 650;
   const t0 = performance.now();
-  let answer='', gotFirst=false, revealed=false;
+  let answer='', gotFirst=false, revealed=false, errMsg=null;
   const reveal = ()=>{ if(!revealed){ revealed=true; bubble.textContent=answer; scrollDown(); } };
   const sleep = (ms)=> new Promise(r=>setTimeout(r, ms));
 
-  const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({question, history, book: book || null})});
-  const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
-  while(true){
-    const {value, done} = await reader.read(); if(done) break;
-    buf += dec.decode(value, {stream:true});
-    const parts = buf.split('\n\n'); buf = parts.pop();
-    for(const p of parts){
-      const line = p.split('\n').find(l=>l.startsWith('data:')); if(!line) continue;
-      const ev = JSON.parse(line.slice(5).trim());
-      if(ev.type==='token'){
-        answer+=ev.text;
-        if(!gotFirst){                          // first token: reveal once MIN has elapsed
-          gotFirst=true;
-          setTimeout(reveal, Math.max(0, MIN_THINKING - (performance.now() - t0)));
+  try {
+    const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({question, history, book: book || null})});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
+    while(true){
+      const {value, done} = await reader.read(); if(done) break;
+      buf += dec.decode(value, {stream:true});
+      const parts = buf.split('\n\n'); buf = parts.pop();
+      for(const p of parts){
+        const line = p.split('\n').find(l=>l.startsWith('data:')); if(!line) continue;
+        let ev; try { ev = JSON.parse(line.slice(5).trim()); } catch { continue; }
+        if(ev.type==='token'){
+          answer+=ev.text;
+          if(!gotFirst){                        // first token: reveal once MIN has elapsed
+            gotFirst=true;
+            setTimeout(reveal, Math.max(0, MIN_THINKING - (performance.now() - t0)));
+          }
+          if(revealed){ bubble.textContent=answer; scrollDown(); }
+        } else if(ev.type==='error'){           // server-side failure, stream ends here
+          errMsg = ev.message || 'Something went wrong. Please try again.';
+        } else if(ev.type==='verification'){
+          const ok = ev.grounded;
+          aMsg.appendChild(el('badge '+(ok?'ok':'warn'),
+            ok ? '✓ grounded in the texts'
+               : '⚠ check sources'+(ev.invalid_citations.length?` (unknown: ${ev.invalid_citations.join(', ')})`:'')));
         }
-        if(revealed){ bubble.textContent=answer; scrollDown(); }
-      } else if(ev.type==='verification'){
-        const ok = ev.grounded;
-        aMsg.appendChild(el('badge '+(ok?'ok':'warn'),
-          ok ? '✓ grounded in the texts'
-             : '⚠ check sources'+(ev.invalid_citations.length?` (unknown: ${ev.invalid_citations.join(', ')})`:'')));
       }
     }
+  } catch {
+    errMsg = 'Could not reach InnerOracle — check your connection and try again.';
   }
 
   // Ensure the minimum has passed (covers very fast/short answers), then render.
@@ -88,8 +95,15 @@ export async function ask(question, book){
   if (gotFirst && remaining > 0) await sleep(remaining);
   reveal();
   bubble.innerHTML = renderMarkdown(answer);
+  if (errMsg){
+    const n = el('error-note'); n.textContent = '⚠ ' + errMsg;
+    bubble.appendChild(n);
+  }
   scrollDown();
 
+  // Persist only real turns — a failed request shouldn't pollute the history
+  // sent with the next question.
+  if (!answer) return;
   conv.messages.push({role:'user', content:question});
   conv.messages.push({role:'assistant', content:answer});
   conv.title = titleFrom(conv.messages);

@@ -7,9 +7,12 @@ hybrid search pulls the right verses. Uses Haiku (`expansion_model`) — cheap +
 
 from __future__ import annotations
 
+import logging
 from typing import Protocol, runtime_checkable
 
 from app.config import settings
+
+log = logging.getLogger("inneroracle.usage")
 
 CONDENSE_SYSTEM = """Given a conversation and the user's latest message, rewrite the \
 latest message as a standalone search query that captures what they're really asking, \
@@ -32,7 +35,9 @@ class HaikuCondenser:
         import anthropic
 
         self.model = model or settings.expansion_model
-        self._client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+        self._client = anthropic.AsyncAnthropic(
+            api_key=settings.anthropic_api_key, timeout=30.0
+        )
 
     async def condense(self, query: str, history: list[dict]) -> str:
         if not history:
@@ -45,4 +50,10 @@ class HaikuCondenser:
             messages=[{"role": "user", "content": payload}],
         )
         text = "".join(b.text for b in resp.content if b.type == "text").strip()
+        u = getattr(resp, "usage", None)
+        if u:
+            log.info(
+                "condense model=%s input=%s output=%s",
+                self.model, u.input_tokens, u.output_tokens,
+            )
         return text or query

@@ -57,3 +57,12 @@ export function deleteConv(id){
   if (state.activeId===id) state.activeId = state.conversations[0]?.id || null;
   save(); refresh();
 }
+
+// Wipe every conversation from localStorage — questions here can be personal,
+// so give shared-device users a one-tap way out.
+export function clearAll(){
+  if (!confirm('Delete all conversations? This cannot be undone.')) return;
+  state.conversations = [];
+  state.activeId = null;
+  save(); refresh(); closeSidebar();
+}

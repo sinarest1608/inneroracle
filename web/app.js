@@ -2,7 +2,7 @@
 
 import { input, form, sendBtn, overlay, addMsg } from './dom.js';
 import { initTheme } from './theme.js';
-import { refresh, newChat, openSidebar, closeSidebar } from './views.js';
+import { refresh, newChat, openSidebar, closeSidebar, clearAll } from './views.js';
 import { ask, initCitations } from './chat.js';
 
 initTheme();
@@ -22,6 +22,7 @@ document.addEventListener('click', e=>{ if(!e.target.closest('.about')) aboutPop
 document.getElementById('hamburger').onclick = openSidebar;
 overlay.onclick = closeSidebar;
 document.getElementById('newChat').onclick = newChat;
+document.getElementById('clearAll').onclick = clearAll;
 
 initCitations();
 

@@ -1,8 +1,16 @@
+# Rotate container logs so they can't fill the 4 GB box's disk.
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   app:
     build: .
     restart: unless-stopped
     env_file: .env
+    logging: *default-logging
     # QDRANT_URL comes from .env:
     #   empty  -> embedded Qdrant using the prebuilt ./data/qdrant_local (default;
     #             no server-side embedding — ship the prebuilt index instead).
@@ -18,8 +26,10 @@ services:
   # `docker compose --profile server-index up -d` and set QDRANT_URL=http://qdrant:6333
   # in .env. Default deployment uses embedded mode and does NOT run this.
   qdrant:
-    image: qdrant/qdrant:latest
+    # Pinned to the same minor as the installed qdrant-client (1.18.x).
+    image: qdrant/qdrant:v1.18.2
     restart: unless-stopped
+    logging: *default-logging
     profiles: ["server-index"]
     expose:
       - "6333"
@@ -30,8 +40,9 @@ services:
   # Cloudflare dashboard (Zero Trust > Networks > Tunnels), set its public
   # hostname to service http://app:8000, and put the token in .env (TUNNEL_TOKEN).
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared:2026.7.1
     restart: unless-stopped
+    logging: *default-logging
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}

@@ -7,6 +7,7 @@ claims are supported by the retrieved verses.
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterable
 from typing import Protocol, runtime_checkable
 
@@ -14,6 +15,8 @@ from pydantic import BaseModel
 
 from app.citations import parse_citations
 from app.config import settings
+
+log = logging.getLogger("inneroracle.usage")
 
 
 class GroundednessResult(BaseModel):
@@ -61,7 +64,9 @@ class HaikuVerifier:
         import anthropic
 
         self.model = model or settings.verifier_model
-        self._client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+        self._client = anthropic.AsyncAnthropic(
+            api_key=settings.anthropic_api_key, timeout=30.0
+        )
 
     async def check(
         self, question: str, answer: str, context: str
@@ -74,6 +79,12 @@ class HaikuVerifier:
             messages=[{"role": "user", "content": payload}],
             output_format=GroundednessResult,
         )
+        u = getattr(resp, "usage", None)
+        if u:
+            log.info(
+                "verify model=%s input=%s output=%s",
+                self.model, u.input_tokens, u.output_tokens,
+            )
         return resp.parsed_output or GroundednessResult(grounded=True)
 
 

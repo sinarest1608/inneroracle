@@ -71,6 +71,12 @@ body { margin:0; height:100vh; height:100dvh; overflow:hidden; color:var(--ink);
 .conv:hover .del { opacity:.7; }
 .conv .del:hover { opacity:1; color:var(--accent); }
 .side-foot { padding:11px 15px; border-top:1px solid var(--brd-soft); color:var(--muted); font-size:11px; }
+.side-foot .clear-all { display:block; width:100%; margin:0 0 9px; padding:7px 10px;
+  border:1px solid var(--brd-soft); border-radius:10px; background:none; color:var(--muted);
+  font-size:12px; cursor:pointer; transition:color .15s ease, border-color .15s ease; }
+.side-foot .clear-all:hover { color:#e08a7a; border-color:rgba(220,110,90,.4); }
+.error-note { margin-top:8px; padding:8px 12px; border-radius:10px; font-size:13px;
+  color:#e08a7a; background:rgba(220,110,90,.12); }
 
 /* ---- main column ---- */
 .main { flex:1; display:flex; flex-direction:column; min-width:0; max-width:100%; }
