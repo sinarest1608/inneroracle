@@ -20,13 +20,30 @@ async function fetchVerse(id, mount){
 }
 
 // "Thinking" indicator shown while we retrieve + wait for the first token:
-// a single calm, breathing label beside the pulsing dots. Returns stop().
+// a calm, breathing label beside the pulsing dots. The label advances through
+// phrases so a long wait (cold start loads the embedding model server-side)
+// still reads as alive, ending on an honest note. Stops itself once the
+// answer replaces the bubble content; also returns stop().
+const THINKING_PHRASES = [
+  'Consulting the texts…',
+  'Unrolling the palm leaves…',
+  'Searching the shlokas…',
+  'Consulting higher powers…',
+  'Building the answer…',
+  'First question takes longest…',
+];
 function startThinking(bubble){
   const node = el('thinking',
-    '<span class="thinking-label">Consulting the texts…</span>'
+    `<span class="thinking-label">${THINKING_PHRASES[0]}</span>`
     + '<span class="dots"><span></span><span></span><span></span></span>');
   bubble.appendChild(node);
-  return ()=>{};
+  const label = node.querySelector('.thinking-label');
+  let i = 0;
+  const timer = setInterval(()=>{
+    if (!node.isConnected || i >= THINKING_PHRASES.length - 1){ clearInterval(timer); return; }
+    label.textContent = THINKING_PHRASES[++i];
+  }, 3500);
+  return ()=>clearInterval(timer);
 }
 
 // Wire tap-on-citation to load the original shloka inline.
