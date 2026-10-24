@@ -7,7 +7,7 @@ import logging
 import os
 from contextlib import asynccontextmanager
 from functools import lru_cache
-from typing import Literal
+from typing import Annotated, Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse, StreamingResponse
@@ -89,11 +89,16 @@ class Message(BaseModel):
     content: str
 
 
+VerseId = Annotated[str, Field(pattern=r"^(BG|AG)-\d{1,2}\.\d{1,3}(-\d{1,3})?$")]
+
+
 class ChatRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
     history: list[Message] = []
     book: Literal["bhagavad_gita", "ashtavakra_gita"] | None = None  # None = both
     per_book: int = Field(default=3, ge=1, le=10)
+    # Verses the user explicitly asked about (from a verse card); always in context.
+    verse_ids: list[VerseId] = Field(default=[], max_length=3)
 
 
 @app.get("/health")
@@ -129,6 +134,7 @@ async def chat(req: ChatRequest) -> StreamingResponse:
                 condenser=condenser,
                 book=req.book,
                 per_book=req.per_book,
+                pinned_ids=req.verse_ids,
             ):
                 yield f"data: {json.dumps(event)}\n\n"
         except Exception:  # noqa: BLE001 — detail goes to logs, not to the client

@@ -5,6 +5,7 @@
 import { stream, input, scrollDown } from './dom.js';
 import { activeConv } from './store.js';
 import { newChat } from './views.js';
+import { pinVerse } from './chat.js';
 
 const VERSE_ID = /^(BG|AG)-\d{1,2}\.\d{1,3}(-\d{1,3})?$/;
 const BOOKS = { BG: ['bhagavad_gita', 'Bhagavad Gita'], AG: ['ashtavakra_gita', 'Ashtavakra Gita'] };
@@ -60,6 +61,7 @@ function card(id, v, today){
     const pill = document.querySelector(`.pill[data-book="${bookKey}"]`);   // fixed key, not server text
     if (pill) pill.click();
     input.value = `What does ${bookName} ${id.slice(3)} teach, and how can I live it today?`;
+    pinVerse(id);   // id passed the verse-id regex in openVerseLink()
     input.focus();
   };
   c.append(ask);
