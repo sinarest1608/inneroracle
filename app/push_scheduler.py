@@ -81,6 +81,13 @@ def backup(db_path: str | None = None) -> Path | None:
     return final
 
 
+def cron(**fields) -> CronTrigger:
+    """Cron in PUSH_TIMEZONE. A CronTrigger instance does NOT inherit the
+    scheduler's timezone — it falls back to the machine's local zone (UTC in the
+    container), which would send "08:30" at 08:30 UTC."""
+    return CronTrigger(timezone=ZoneInfo(settings.push_timezone), **fields)
+
+
 class PushScheduler:
     def __init__(self, store: VerseStore, writer: QuoteWriter | None = None):
         self.store = store
@@ -112,11 +119,11 @@ class PushScheduler:
         h, m = _send_time()
         q_at = datetime(2000, 1, 1, h, m) - timedelta(minutes=10)
         add = self.sched.add_job
-        add(self.quote_job, CronTrigger(hour=q_at.hour, minute=q_at.minute), id="quote")
-        add(self.send_job, CronTrigger(hour=h, minute=m), id="send")
-        add(self.stale_job, CronTrigger(minute="*/15"), id="stale")
-        add(purge, CronTrigger(hour=3, minute=30), id="purge")
-        add(backup, CronTrigger(hour=3, minute=0), id="backup")
+        add(self.quote_job, cron(hour=q_at.hour, minute=q_at.minute), id="quote")
+        add(self.send_job, cron(hour=h, minute=m), id="send")
+        add(self.stale_job, cron(minute="*/15"), id="stale")
+        add(purge, cron(hour=3, minute=30), id="purge")
+        add(backup, cron(hour=3, minute=0), id="backup")
         self.sched.start()
 
         # Catch-up (server was down at send time) and resume (crashed mid-send).

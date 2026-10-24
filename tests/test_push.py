@@ -27,7 +27,7 @@ from app.http_extras import DropPushAccessLogs, PathHeaders
 from app.models import Verse
 from app.push_config import admin_token_ok, validate_push_settings
 from app.push_db import db, migrate
-from app.push_scheduler import backup, purge
+from app.push_scheduler import PushScheduler, backup, purge
 from app.push_validation import (
     InvalidSubscription, canonical_ip, rate_keys, validate_endpoint, validate_keys,
 )
@@ -595,3 +595,36 @@ def test_access_log_filter_drops_push_paths():
                                      ("1.2.3.4", "POST", p), None)
     assert f.filter(mk("/push/subscribe")) is False
     assert f.filter(mk("/chat")) is True
+
+
+# ---- scheduler timezone (regression: jobs ran in the machine's UTC) -------------
+
+def test_scheduled_jobs_use_push_timezone_not_machine_zone(env, monkeypatch):
+    import os
+    import time as _time
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    monkeypatch.setattr(settings, "push_timezone", "America/Los_Angeles")
+    monkeypatch.setattr(settings, "push_daily_time", "08:30")
+    monkeypatch.setenv("TZ", "UTC")  # like the Docker container
+    _time.tzset()
+    try:
+        async def jobs():
+            sched = PushScheduler(env.store, env.writer)
+            await sched.startup()
+            try:
+                return {j.id: j for j in sched.sched.get_jobs()}
+            finally:
+                sched.shutdown()
+
+        js = asyncio.run(jobs())
+        la = ZoneInfo("America/Los_Angeles")
+        for job_id in ("send", "quote", "stale", "purge", "backup"):
+            assert str(js[job_id].trigger.timezone) == "America/Los_Angeles", job_id
+        nxt = js["send"].next_run_time.astimezone(la)
+        assert (nxt.hour, nxt.minute) == (8, 30)
+        q = js["quote"].next_run_time.astimezone(la)
+        assert (q.hour, q.minute) == (8, 20)
+    finally:
+        monkeypatch.delenv("TZ")
+        _time.tzset()
