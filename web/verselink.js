@@ -75,7 +75,10 @@ export async function openVerseLink(){
     getJson('/verse-of-the-day'),
   ]);
   // Only label a real paraphrase as one; the fallback quote is just the translation.
-  const today = votd && votd.verse_id === id && str(votd.quote) && votd.quote_source !== 'fallback' ? votd : null;
+  // Any of today's sends so far (morning, evening) — not just the latest — so a
+  // morning notification opened in the evening still shows its reflection.
+  const sends = votd ? (Array.isArray(votd.slots) && votd.slots.length ? votd.slots : [votd]) : [];
+  const today = sends.find(s => s && s.verse_id === id && str(s.quote) && s.quote_source !== 'fallback') || null;
   if (activeConv().messages.length) newChat();          // start clean so the card is in view
   const e = stream.querySelector('.empty'); if (e) e.remove();
   stream.prepend(card(id, v, today));

@@ -81,13 +81,13 @@ deployed with **Docker** behind a **Cloudflare Tunnel**.
 
 ## Daily verse
 
-Install the site to your phone's Home Screen and you can opt in to one notification a day:
-a short paraphrase of a single verse ("Krishna in the Bhagavad Gita says …") that opens the
-real verse when tapped. A speaker is named only where it has been hand-checked; otherwise the
+Install the site to your phone's Home Screen and you can opt in to two notifications a day,
+morning and evening, each a short paraphrase of a different verse ("Krishna in the Bhagavad
+Gita says …") that opens the real verse when tapped. A speaker is named only where it has been hand-checked; otherwise the
 title simply reads "The Bhagavad Gita says" or "The Ashtavakra Gita says". It's self-hosted
 web push, with no third-party notification service.
 
-**Tapping a notification** opens the verse: today's reflection on top, then the original
+**Tapping a notification** opens the verse: its reflection on top, then the original
 shloka, transliteration and translation, with a button to ask about it. Light and dark themes:
 
 <table>

@@ -6,7 +6,7 @@ secrets, IPs or raw exception messages (a requests ConnectionError message
 contains the endpoint URL) — only the exception type and HTTP status.
 
 Daily sends are exactly-once-or-missed: each device is claimed with a `pending`
-row (unique per run_date + device) before its push, so two workers can never
+row (unique per send-slot key + device; the key lives in the run_date column) before its push, so two workers can never
 both send to it, and a crash leaves `pending` rows that are marked `unknown`
 and not resent — a rare missed verse beats a duplicate.
 """
@@ -25,7 +25,8 @@ from pywebpush import WebPushException, webpush
 
 from app.config import settings
 from app.daily_verse import (
-    local_today, notification_text, stored_quote, verse_for, verse_url,
+    Slot, current_slot, local_today, notification_text, send_times, slot_from_key,
+    stored_quote, verse_for, verse_url,
 )
 from app.models import Verse
 from app.push_db import audit, db, utcnow, write_tx
@@ -52,6 +53,7 @@ class Outcome:
     status: str               # delivered / failed / expired_removed
     http_status: int | None
     error_type: str | None
+    delivery_id: int | None = None  # set for confirmations, to attach the device later
 
 
 @dataclass
@@ -149,8 +151,7 @@ async def send_to_device(row: sqlite3.Row, msg: Message) -> Outcome:
 async def send_confirmation(endpoint: str, p256dh: str, auth: str) -> Outcome:
     """Sign-up check: only a subscription the push service accepts gets stored."""
     msg = Message("confirm", CONFIRM_TITLE,
-                  f"One verse a day around {settings.push_daily_time}. "
-                  "Turn it off anytime from the menu.", "/ui/")
+                  f"{schedule_phrase()}. Turn it off anytime from the menu.", "/ui/")
     # A brand-new subscription can briefly get 404/410 from the push service
     # (seen with FCM right after subscribe), so retry those a couple of times.
     for wait in CONFIRM_RETRY_WAITS:
@@ -158,10 +159,29 @@ async def send_confirmation(endpoint: str, p256dh: str, auth: str) -> Outcome:
         if o.status != "expired_removed" or wait is None:
             break
         await asyncio.sleep(wait)
-    with db() as conn:
-        insert_delivery(conn, msg, None, o.status, o=o)  # device row doesn't exist yet
+    with db() as conn:  # device row doesn't exist yet; attach_confirmation() fills it in
+        o.delivery_id = insert_delivery(conn, msg, None, o.status, o=o)
     _log_line(msg, None, o)
     return o
+
+
+def attach_confirmation(conn: sqlite3.Connection, o: Outcome, device_id: int) -> None:
+    """Once the device is stored, show its number on its confirmation row."""
+    if o.delivery_id is not None:
+        conn.execute("UPDATE push_deliveries SET device_id = ? WHERE id = ? AND device_id IS NULL",
+                     (device_id, o.delivery_id))
+
+
+def _clock(hhmm: str) -> str:
+    h, m = (int(x) for x in hhmm.split(":"))
+    return f"{h % 12 or 12}:{m:02d} {'am' if h < 12 else 'pm'}"
+
+
+def schedule_phrase() -> str:
+    """e.g. "A verse around 8:30 am and 5:30 pm, every day"."""
+    times = [_clock(t) for t in send_times()]
+    joined = times[0] if len(times) == 1 else ", ".join(times[:-1]) + " and " + times[-1]
+    return f"A verse around {joined}, every day"
 
 
 def test_message() -> Message:
@@ -176,20 +196,20 @@ def verse_message(kind: str, verse: Verse, q: dict) -> Message:
                    q["speaker"], q["speaker_source"], q["quote_source"])
 
 
-async def ensure_quote(store: VerseStore, writer: QuoteWriter, day: date,
+async def ensure_quote(store: VerseStore, writer: QuoteWriter, slot: Slot,
                        verse: Verse) -> dict:
-    """Today's quote, generating (once) if missing. Only the scheduler path calls this."""
+    """This send's quote, generating (once) if missing. Only the scheduler path calls this."""
     with db() as conn:
-        q = stored_quote(conn, day)
+        q = stored_quote(conn, slot)
     if q is not None and q["verse_id"] == verse.verse_id:
         return q
     q = await writer.write(verse)
     with db() as conn:
-        return store_quote(conn, day, q)
+        return store_quote(conn, slot, q)
 
 
-async def _send_daily_unclaimed(day: date, msg: Message) -> None:
-    run_date = day.isoformat()
+async def _send_daily_unclaimed(slot: Slot, msg: Message) -> None:
+    run_date = slot.key  # one run, quote and claim set per send slot
     with db() as conn:
         devices = conn.execute(
             "SELECT id, endpoint, p256dh, auth FROM push_subscriptions s WHERE NOT EXISTS ("
@@ -234,72 +254,83 @@ async def _send_daily_unclaimed(day: date, msg: Message) -> None:
                      "delivered = ?, failed = ? WHERE run_date = ?",
                      (utcnow(), counts.get("delivered", 0),
                       sum(v for k, v in counts.items() if k != "delivered"), run_date))
-    log.info("push.run date=%s devices=%d counts=%s", run_date, len(devices), counts)
+    log.info("push.run slot=%s devices=%d counts=%s", run_date, len(devices), counts)
 
 
-async def run_daily(store: VerseStore, writer: QuoteWriter, day: date | None = None) -> str:
-    """Claim today's run (unique run_date: one process wins) and send."""
-    day = day or local_today()
+async def run_daily(store: VerseStore, writer: QuoteWriter, slot: Slot | None = None) -> str:
+    """Claim this send's run (unique run key: one process wins) and send.
+    Defaults to the most recent send time that has come."""
+    slot = slot or current_slot()
     with db() as conn:
-        verse = verse_for(conn, store, day)
+        verse = verse_for(conn, store, slot)
         if verse is None:
-            log.error("push.run date=%s: no verse available (empty rotation?)", day)
+            log.error("push.run slot=%s: no verse available (empty rotation?)", slot.key)
             return "no_verse"
         now = utcnow()
         try:
             conn.execute("INSERT INTO push_daily_runs(run_date, verse_id, status, started_at, "
                          "heartbeat_at) VALUES (?, ?, 'started', ?, ?)",
-                         (day.isoformat(), verse.verse_id, now, now))
+                         (slot.key, verse.verse_id, now, now))
         except sqlite3.IntegrityError:
             return "already_ran"
-    q = await ensure_quote(store, writer, day, verse)
-    await _send_daily_unclaimed(day, verse_message("daily", verse, q))
+    q = await ensure_quote(store, writer, slot, verse)
+    await _send_daily_unclaimed(slot, verse_message("daily", verse, q))
     return "sent"
 
 
-async def resume_stale(store: VerseStore, writer: QuoteWriter, day: date | None = None) -> bool:
-    """Take over today's run if its worker stopped heart-beating (crash/kill)."""
+async def resume_stale(store: VerseStore, writer: QuoteWriter, day: date | None = None) -> int:
+    """Take over any of the day's runs whose worker stopped heart-beating
+    (crash/kill). Returns how many runs were resumed."""
     day = day or local_today()
-    run_date = day.isoformat()
     cutoff = (datetime.now(UTC) - STALE_AFTER).strftime("%Y-%m-%dT%H:%M:%SZ")
     with db() as conn:
-        cur = conn.execute("UPDATE push_daily_runs SET heartbeat_at = ? WHERE run_date = ? "
-                           "AND status = 'started' AND heartbeat_at < ?",
-                           (utcnow(), run_date, cutoff))
-        if cur.rowcount != 1:
-            return False
-        # The push may have gone out just before the crash: don't resend these.
-        conn.execute("UPDATE push_deliveries SET status = 'unknown' WHERE kind = 'daily' "
-                     "AND run_date = ? AND status = 'pending'", (run_date,))
-        verse = verse_for(conn, store, day)
-    log.warning("push.run date=%s: resuming a stale run", run_date)
-    if verse is None:
-        return False
-    q = await ensure_quote(store, writer, day, verse)
-    await _send_daily_unclaimed(day, verse_message("daily", verse, q))
-    return True
+        keys = [r[0] for r in conn.execute(
+            "SELECT run_date FROM push_daily_runs WHERE run_date LIKE ? AND status = 'started' "
+            "AND heartbeat_at < ?", (f"{day.isoformat()}#%", cutoff))]
+    resumed = 0
+    for key in keys:
+        slot = slot_from_key(key)
+        if slot is None:  # send times changed since this run started
+            continue
+        with db() as conn:
+            cur = conn.execute("UPDATE push_daily_runs SET heartbeat_at = ? WHERE run_date = ? "
+                               "AND status = 'started' AND heartbeat_at < ?",
+                               (utcnow(), key, cutoff))
+            if cur.rowcount != 1:
+                continue  # another process took it
+            # The push may have gone out just before the crash: don't resend these.
+            conn.execute("UPDATE push_deliveries SET status = 'unknown' WHERE kind = 'daily' "
+                         "AND run_date = ? AND status = 'pending'", (key,))
+            verse = verse_for(conn, store, slot)
+        log.warning("push.run slot=%s: resuming a stale run", key)
+        if verse is None:
+            continue
+        q = await ensure_quote(store, writer, slot, verse)
+        await _send_daily_unclaimed(slot, verse_message("daily", verse, q))
+        resumed += 1
+    return resumed
 
 
 class ForcedAlreadyToday(Exception):
     pass
 
 
-async def force_send(store: VerseStore, writer: QuoteWriter, day: date | None = None) -> int:
-    """Re-send today's verse to every device as kind='manual', outside the daily
-    run row and claim index. At most once per day; not resumed after a crash."""
-    day = day or local_today()
-    detail = f"date={day.isoformat()}"
+async def force_send(store: VerseStore, writer: QuoteWriter) -> int:
+    """Re-send the latest verse to every device as kind='manual', outside the
+    daily run row and claim index. At most once per day; not resumed after a crash."""
+    slot = current_slot()
+    detail = f"date={local_today().isoformat()}"
     with db() as conn, write_tx(conn):
         if conn.execute("SELECT 1 FROM admin_actions WHERE action = 'force_send' AND detail = ?",
                         (detail,)).fetchone():
             raise ForcedAlreadyToday
         audit(conn, "force_send", detail)
-        verse = verse_for(conn, store, day)
+        verse = verse_for(conn, store, slot)
         devices = conn.execute("SELECT id, endpoint, p256dh, auth FROM push_subscriptions "
                                "ORDER BY id").fetchall()
     if verse is None:
         return 0
-    msg = verse_message("manual", verse, await ensure_quote(store, writer, day, verse))
+    msg = verse_message("manual", verse, await ensure_quote(store, writer, slot, verse))
     sem = asyncio.Semaphore(CONCURRENCY)
 
     async def one(row: sqlite3.Row) -> None:

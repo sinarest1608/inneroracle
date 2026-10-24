@@ -27,7 +27,8 @@ from app.daily_verse import verse_of_the_day
 from app.push_config import admin_token_ok
 from app.push_db import audit, db, utcnow, write_tx
 from app.push_service import (
-    ForcedAlreadyToday, force_send, run_daily, send_confirmation, send_to_device,
+    ForcedAlreadyToday, attach_confirmation, force_send, run_daily, send_confirmation,
+    send_to_device,
     test_message,
 )
 from app.push_validation import (
@@ -195,6 +196,7 @@ async def subscribe(sub: Subscription, request: Request) -> JSONResponse:
             "VALUES (?, ?, ?, ?, ?)", (endpoint, p256dh, auth, _hash_secret(secret), utcnow())
         ).lastrowid
         conn.execute("UPDATE signup_attempts SET result = 'created' WHERE id = ?", (attempt_id,))
+        attach_confirmation(conn, o, device_id)
     return JSONResponse({"device_id": device_id, "device_secret": secret})
 
 
@@ -229,8 +231,11 @@ async def device_update(sub: Subscription, dev: sqlite3.Row = Depends(device)) -
             if conn.execute("SELECT 1 FROM push_subscriptions WHERE endpoint = ?",
                             (endpoint,)).fetchone():
                 raise HTTPException(409, "endpoint belongs to another device")
-        if (await send_confirmation(endpoint, p256dh, auth)).status != "delivered":
+        confirm = await send_confirmation(endpoint, p256dh, auth)
+        if confirm.status != "delivered":
             raise HTTPException(422, "confirmation push failed")
+        with db() as conn:
+            attach_confirmation(conn, confirm, dev["id"])
     with db() as conn:
         try:
             conn.execute("UPDATE push_subscriptions SET endpoint = ?, p256dh = ?, auth = ?, "

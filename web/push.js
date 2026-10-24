@@ -50,7 +50,7 @@ function render(kind, opts = {}){
   } else {   // 'off'
     const row = node('div', 'daily-row');
     const b = node('button', 'daily-btn primary', 'Enable'); b.onclick = enable;
-    row.append(node('span', 'daily-status', 'One verse each morning.'), b);
+    row.append(node('span', 'daily-status', 'A verse each morning and evening.'), b);
     body.append(row);
   }
   if (opts.error) body.append(node('p', 'daily-err', opts.error));
