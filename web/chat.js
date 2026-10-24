@@ -56,8 +56,16 @@ export function initCitations(){
   });
 }
 
+// A verse the next question is explicitly about ("Ask about this verse"). The
+// server always puts it in the answer's context: search works by meaning, so a
+// question naming "BG 2.47" wouldn't otherwise find 2.47 itself.
+let pinnedVerse = null;
+export function pinVerse(id){ pinnedVerse = id; }
+
 export async function ask(question, book){
   const conv = activeConv();
+  const verse_ids = pinnedVerse ? [pinnedVerse] : [];
+  pinnedVerse = null;   // only for this question; later turns keep it via its citations
   const emptyEl = stream.querySelector('.empty'); if(emptyEl) emptyEl.remove();
   addMsg('user','You').bubble.textContent = question;
 
@@ -76,7 +84,7 @@ export async function ask(question, book){
 
   try {
     const res = await fetch('/chat', {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({question, history, book: book || null})});
+      body: JSON.stringify({question, history, book: book || null, verse_ids})});
     if(!res.ok) throw new Error('HTTP '+res.status);
     const reader = res.body.getReader(); const dec = new TextDecoder(); let buf='';
     while(true){

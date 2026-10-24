@@ -259,3 +259,44 @@ def test_stream_answer_flags_fabricated_citation(service):
     verif = next(e for e in events if e["type"] == "verification")
     assert verif["invalid_citations"] == ["BG-99.99"]
     assert verif["grounded"] is False
+
+
+def test_pinned_verse_reaches_context_even_when_search_misses_it(service):
+    """'Ask about this verse': search works by meaning, so the verse being asked
+    about must be pinned into the context (here search is limited to the other
+    book, so it can't find BG-2.47 on its own)."""
+    from app.chat import stream_answer
+
+    provider = FakeProvider("Act, without clinging to results [BG 2.47].")
+    events = _collect(stream_answer(
+        "what does this verse teach?", retrieval=service, provider=provider,
+        verifier=FakeVerifier(grounded=True), book="ashtavakra_gita", per_book=1,
+        pinned_ids=["BG-2.47", "BG-99.1"],  # unknown ids are ignored
+    ))
+    ctx = provider.seen_messages[-1]["content"]
+    assert "right to action alone" in ctx
+    verif = next(e for e in events if e["type"] == "verification")
+    assert verif["invalid_citations"] == []  # the pinned verse counts as a valid citation
+
+
+def test_pinned_verse_not_duplicated(service):
+    from app.chat import stream_answer
+
+    provider = FakeProvider("[BG 2.47]")
+    _collect(stream_answer(
+        "how do I act?", retrieval=service, provider=provider,
+        verifier=FakeVerifier(grounded=True), book="bhagavad_gita", per_book=1,
+        pinned_ids=["BG-2.47"],
+    ))
+    assert provider.seen_messages[-1]["content"].count("right to action alone") == 1
+
+
+def test_chat_request_validates_verse_ids():
+    from pydantic import ValidationError
+
+    from app.main import ChatRequest
+
+    assert ChatRequest(question="q", verse_ids=["BG-2.47", "BG-1.37-38"]).verse_ids
+    for bad in (["BG_2_47"], ["x" * 30], ["BG-2.47"] * 4, ["'; DROP"]):
+        with pytest.raises(ValidationError):
+            ChatRequest(question="q", verse_ids=bad)

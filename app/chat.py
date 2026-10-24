@@ -62,6 +62,7 @@ async def stream_answer(
     condenser: Condenser | None = None,
     book: str | None = None,
     per_book: int = 3,
+    pinned_ids: Sequence[str] = (),
 ) -> AsyncIterator[dict]:
     history = list(history)
     # Follow-ups ("tell me more") retrieve poorly alone — rewrite to a standalone
@@ -80,6 +81,14 @@ async def stream_answer(
     # has the text to work from and prior citations stay valid — but respect the
     # book filter so a single-book turn doesn't drag the other book back in.
     verses = fresh + _carry_forward(retrieval, history, fresh_ids, book)
+    # Verses the user explicitly asked about ("Ask about this verse" on a verse
+    # card). Search works by meaning, so "What does BG 2.47 teach?" would not
+    # find 2.47 itself; pin them into the context instead.
+    if pinned_ids:
+        have = {rv.verse.verse_id for rv in verses}
+        by_id = retrieval.store.get_many([i for i in pinned_ids if i not in have])
+        verses = [RetrievedVerse(verse=by_id[i], score=0.0)
+                  for i in pinned_ids if i in by_id] + verses
 
     system = [
         {"type": "text", "text": ANSWER_SYSTEM, "cache_control": {"type": "ephemeral"}}
