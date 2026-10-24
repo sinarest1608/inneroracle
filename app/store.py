@@ -35,13 +35,20 @@ _COLS = (
 
 
 class VerseStore:
-    def __init__(self, path: str):
+    def __init__(self, path: str, readonly: bool = False):
         self.path = path
-        Path(path).parent.mkdir(parents=True, exist_ok=True)
         # check_same_thread=False so the app can read it from request threads.
-        self._conn = sqlite3.connect(path, check_same_thread=False)
+        if readonly:
+            # Serving never writes verses; read-only makes that a guarantee.
+            self._conn = sqlite3.connect(
+                f"file:{path}?mode=ro", uri=True, check_same_thread=False
+            )
+        else:
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
+            self._conn = sqlite3.connect(path, check_same_thread=False)
         self._conn.row_factory = sqlite3.Row
-        self._conn.executescript(_SCHEMA)
+        if not readonly:
+            self._conn.executescript(_SCHEMA)
 
     def upsert(self, verses: Iterable[Verse]) -> int:
         rows = [tuple(getattr(v, c) for c in _COLS) for v in verses]

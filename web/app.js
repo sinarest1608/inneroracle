@@ -4,6 +4,8 @@ import { input, form, sendBtn, overlay, addMsg } from './dom.js';
 import { initTheme } from './theme.js';
 import { refresh, newChat, openSidebar, closeSidebar, clearAll } from './views.js';
 import { ask, initCitations } from './chat.js';
+import { initPush } from './push.js';
+import { openVerseLink } from './verselink.js';
 
 initTheme();
 
@@ -39,3 +41,5 @@ form.addEventListener('submit', async e=>{
 // ---- boot ----
 refresh();
 input.focus();
+openVerseLink();
+initPush();

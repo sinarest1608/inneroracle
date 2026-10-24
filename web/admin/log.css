@@ -1,0 +1,38 @@
+/* Admin log viewer: reuses the site tokens from /ui/styles.css; flat, no blur. */
+html, body { height:auto; overflow:auto; }
+.adm [hidden] { display:none !important; }
+body { min-height:100vh; background:var(--ground); }
+.adm { max-width:1100px; margin:0 auto; padding:22px 16px 40px; font-size:14px; }
+.adm-head { display:flex; align-items:center; gap:12px; padding:0 0 12px; margin-bottom:16px;
+            border-bottom:1px solid var(--line); background:none; }
+.adm-head h1 { flex:1; margin:0; font-size:20px; font-weight:600; color:var(--ink-strong); }
+.adm-head .danda { color:var(--accent); font-weight:400; }
+.adm-btn { padding:7px 13px; border:1px solid var(--line); border-radius:3px; background:none;
+  color:var(--ink); font-family:var(--serif); font-size:13px; cursor:pointer; }
+.adm-btn:hover { border-color:var(--accent); color:var(--accent); }
+.adm-btn.primary { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:600; }
+.adm-btn:disabled { opacity:.5; cursor:default; }
+.adm input, .adm select { padding:6px 8px; border:1px solid var(--line); border-radius:3px;
+  background:var(--tint); color:var(--ink); font-family:var(--serif); font-size:13px; }
+.adm input:focus, .adm select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--ring); }
+.adm-unlock { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+.adm-unlock input { flex:1; min-width:200px; font-family:var(--mono); }
+.adm-tabs { display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:14px; overflow-x:auto; }
+.adm-tabs button { padding:8px 14px; border:none; border-bottom:2px solid transparent; background:none;
+  color:var(--muted); font-family:var(--serif); font-size:14px; cursor:pointer; white-space:nowrap; }
+.adm-tabs button:hover { color:var(--ink); }
+.adm-tabs button.active { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+.adm-filters { display:flex; flex-wrap:wrap; align-items:flex-end; gap:10px; margin-bottom:14px; }
+.adm-filters label { display:flex; flex-direction:column; gap:3px; font-size:11px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted); }
+.adm-filters input[type=number] { width:96px; }
+.adm-msg { padding:8px 12px; border-radius:3px; background:var(--warn-bg); color:var(--warn); }
+.adm-msg.err { background:var(--err-bg); color:var(--err); }
+.adm h2 { margin:18px 0 6px; font-size:13px; text-transform:uppercase; letter-spacing:.16em; color:var(--accent); font-weight:400; }
+.adm-meta { color:var(--muted); font-style:italic; margin:4px 0; }
+.adm-scroll { overflow-x:auto; border-top:1px solid var(--rubric); border-bottom:1px solid var(--rubric); }
+.adm table { border-collapse:collapse; width:100%; font-size:13px; }
+.adm th, .adm td { padding:6px 9px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line-soft); }
+.adm th { color:var(--muted); font-weight:600; white-space:nowrap; background:var(--tint); }
+.adm td.msgcell { min-width:260px; }
+.adm td.dim { color:var(--muted); font-style:italic; }

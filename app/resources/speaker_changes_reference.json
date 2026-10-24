@@ -1,0 +1,373 @@
+{
+ "_about": "Speaker-change points (each speaker holds until the next entry in the same book). DRAFTED FROM MEMORY by Claude Code, not copied from an edition. Every entry stays \"verified\": false until checked against a printed edition; set \"verified\": true per entry once checked. Unverified entries can only send a verse to review, never confirm it.",
+ "editions": {
+  "bhagavad_gita": "Bhagavad-gita As It Is (Bhaktivedanta) numbering, matching verses.db",
+  "ashtavakra_gita": "Chapter-level speakers as in common translations (e.g. John Richards)"
+ },
+ "entries": [
+  {
+   "verse_id": "BG-1.1",
+   "speaker": "Dhritarashtra",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-1.2",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-1.21",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-1.24",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-1.28",
+   "speaker": "Arjuna",
+   "verified": false,
+   "note": "Marker falls mid-verse (1.28b) in some editions."
+  },
+  {
+   "verse_id": "BG-1.46",
+   "speaker": "Sanjaya",
+   "verified": false,
+   "note": "1.47 in editions with 47 verses in ch. 1."
+  },
+  {
+   "verse_id": "BG-2.1",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-2.2",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-2.4",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-2.9",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-2.11",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-2.54",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-2.55",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-3.1",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-3.3",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-3.36",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-3.37",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-4.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-4.4",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-4.5",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-5.1",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-5.2",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-6.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-6.33",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-6.35",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-6.37",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-6.40",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-7.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-8.1",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-8.3",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-9.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-10.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-10.12-13",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-10.19",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.1",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.5",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.9",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.15",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.32",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.35",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.36",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.47",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.50",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.51",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-11.52",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-12.1",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-12.2",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-13.1",
+   "speaker": "Arjuna",
+   "verified": false,
+   "note": "Bhaktivedanta numbering: Arjuna's question is 13.1 (absent or unnumbered in many editions, which number ch. 13 from 1 with Krishna)."
+  },
+  {
+   "verse_id": "BG-13.2",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-14.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-14.21",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-14.22",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-15.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-16.1",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-17.1",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-17.2",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-18.1",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-18.2",
+   "speaker": "Krishna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-18.73",
+   "speaker": "Arjuna",
+   "verified": false
+  },
+  {
+   "verse_id": "BG-18.74",
+   "speaker": "Sanjaya",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-1.1",
+   "speaker": "Janaka",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-1.2",
+   "speaker": "Ashtavakra",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-2.1",
+   "speaker": "Janaka",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-3.1",
+   "speaker": "Ashtavakra",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-4.1",
+   "speaker": "Janaka",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-5.1",
+   "speaker": "Ashtavakra",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-6.1",
+   "speaker": "Ashtavakra",
+   "verified": false,
+   "note": "Uncertain: most editions give ch. 6 to Ashtavakra, some to Janaka."
+  },
+  {
+   "verse_id": "AG-7.1",
+   "speaker": "Janaka",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-8.1",
+   "speaker": "Ashtavakra",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-12.1",
+   "speaker": "Janaka",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-15.1",
+   "speaker": "Ashtavakra",
+   "verified": false
+  },
+  {
+   "verse_id": "AG-19.1",
+   "speaker": "Janaka",
+   "verified": false
+  }
+ ]
+}

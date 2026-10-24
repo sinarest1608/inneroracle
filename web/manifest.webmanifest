@@ -1,0 +1,16 @@
+{
+  "name": "InnerOracle",
+  "short_name": "InnerOracle",
+  "description": "Life questions, answered from the Bhagavad Gita & Ashtavakra Gita.",
+  "start_url": "/ui/",
+  "scope": "/ui/",
+  "display": "standalone",
+  "background_color": "#e9d7a2",
+  "theme_color": "#f5eed9",
+  "icons": [
+    { "src": "/ui/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/ui/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/ui/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/ui/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

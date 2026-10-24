@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+from contextlib import asynccontextmanager
 from functools import lru_cache
 from typing import Literal
 
@@ -14,14 +15,37 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from app.config import settings
+from app.http_extras import PathHeaders, install_access_log_filter
 from app.models import Verse
 from app.qdrant import get_qdrant
 from app.store import VerseStore
 
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Daily-verse push: refuse to start on weak/missing secrets (fail closed),
+    then run the scheduler. Nothing push-related runs when PUSH_ENABLED is off."""
+    sched = None
+    if settings.push_enabled:
+        from app.push_config import validate_push_settings
+        from app.push_scheduler import PushScheduler
+
+        problems = validate_push_settings(settings)
+        if problems:
+            raise RuntimeError("push config invalid: " + "; ".join(problems))
+        install_access_log_filter()
+        sched = PushScheduler(_store())
+        await sched.startup()
+    yield
+    if sched is not None:
+        sched.shutdown()
+
+
 # Open access — no app-level auth. Abuse protection for /chat is handled at the
 # Cloudflare edge (Bot Fight Mode + a rate-limiting rule) plus an Anthropic spend cap.
 # Request bounds below cap the worst-case cost of any single request.
-app = FastAPI(title="InnerOracle", version="0.1.0")
+app = FastAPI(title="InnerOracle", version="0.1.0", lifespan=lifespan)
+app.add_middleware(PathHeaders)  # raw ASGI: never buffers the /chat stream
 
 # Root handler so app loggers (inneroracle.*, incl. token-usage lines) actually
 # emit under uvicorn, whose default config only wires up its own loggers.
@@ -41,7 +65,7 @@ HISTORY_MAX_CHARS = 8000  # > longest real answer (~1400 tokens), so only abuse 
 
 @lru_cache(maxsize=1)
 def _store() -> VerseStore:
-    return VerseStore(settings.sqlite_path)
+    return VerseStore(settings.sqlite_path, readonly=True)
 
 
 @lru_cache(maxsize=1)
@@ -131,6 +155,13 @@ def verse(verse_id: str) -> Verse:
 @app.get("/")
 def root() -> RedirectResponse:
     return RedirectResponse(url="/ui/")
+
+
+if settings.push_enabled:
+    from app.push import router as push_router
+
+    app.include_router(push_router)
+    install_access_log_filter()
 
 
 # Serve the chat web UI (mounted last so it doesn't shadow the API routes).

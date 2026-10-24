@@ -1,0 +1,32 @@
+<!doctype html>
+<!-- Regression test for safeUrl() in web/sw.js (the 21 hostile inputs from the
+     security review). Run headless:
+       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+         --allow-file-access-from-files --dump-dom tests/js/safeurl_test.html
+     and look for RESULT: PASS in the output. -->
+<html><head><meta charset="utf-8"><title>safeUrl test</title></head>
+<body><pre id="out"></pre>
+<script src="../../web/sw.js"></script>
+<script>
+  const O = 'https://inneroracle.cc', HOME = O + '/ui/';
+  const under = v => typeof v === 'string' && v.startsWith(HOME);
+  const cases = [
+    ['/ui/?verse=BG-2.47', v => v === O + '/ui/?verse=BG-2.47'],
+    ...['https://evil.com/ui/', '//evil.com/ui/', '\\\\evil.com/ui/', '/\\evil.com/ui/',
+        'javascript:alert(1)', 'JaVaScRiPt:alert(1)', 'data:text/html,x', '/ui/../push/test',
+        '/ui/%2e%2e/push/test', 'https://inneroracle.cc.evil.com/ui/', 'https://inneroracle.cc@evil.com/ui/',
+        'http://inneroracle.cc/ui/', 'https://inneroracle.cc:8443/ui/', '/UI/', null, 42, {}]
+      .map(x => [x, v => v === HOME]),
+    ['/ui/..%2fpush/test', under],
+    ['/ui/admin/log.html', v => v === O + '/ui/admin/log.html'],
+    [' /ui/\n/../x', v => v === O + '/ui/x'],
+  ];
+  const lines = []; let fails = 0;
+  for (const [input, ok] of cases) {
+    let got; try { got = safeUrl(input, O); } catch (e) { got = 'THREW ' + e; }
+    const pass = ok(got); if (!pass) fails++;
+    lines.push((pass ? 'PASS ' : 'FAIL ') + JSON.stringify(input) + ' -> ' + got);
+  }
+  lines.push('', cases.length + ' cases, ' + fails + ' failed', 'RESULT: ' + (fails || cases.length !== 21 ? 'FAIL' : 'PASS'));
+  document.getElementById('out').textContent = lines.join('\n');
+</script></body></html>

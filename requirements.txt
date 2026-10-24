@@ -8,5 +8,9 @@ pydantic-settings>=2.4
 python-dotenv>=1.0
 httpx>=0.27               # Turnstile siteverify (also an anthropic dep)
 
+# --- Daily verse push (pinned: behaviour verified in the security reviews) ---
+pywebpush==2.5.0
+apscheduler==3.11.3
+
 # --- ML / ingestion deps (added in later milestones; kept out of the
 #     first build so it stays fast). See requirements-ml.txt. ---
