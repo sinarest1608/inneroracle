@@ -103,7 +103,7 @@
   }
 
   const TITLES = { rows:'', entries:'', items:'', deliveries:'', attempts:'Sign-up attempts', signups:'Sign-up attempts',
-    rejections:'Hourly rejections (counts)', actions:'', admin_actions:'' };
+    rejections:'Hourly rejections (counts)', actions:'', admin_actions:'', devices:'' };
 
   function render(data){
     out.replaceChildren();

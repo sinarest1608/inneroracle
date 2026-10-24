@@ -53,6 +53,7 @@ class Outcome:
     status: str               # delivered / failed / expired_removed
     http_status: int | None
     error_type: str | None
+    delivery_id: int | None = None  # set for confirmations, to attach the device later
 
 
 @dataclass
@@ -158,10 +159,17 @@ async def send_confirmation(endpoint: str, p256dh: str, auth: str) -> Outcome:
         if o.status != "expired_removed" or wait is None:
             break
         await asyncio.sleep(wait)
-    with db() as conn:
-        insert_delivery(conn, msg, None, o.status, o=o)  # device row doesn't exist yet
+    with db() as conn:  # device row doesn't exist yet; attach_confirmation() fills it in
+        o.delivery_id = insert_delivery(conn, msg, None, o.status, o=o)
     _log_line(msg, None, o)
     return o
+
+
+def attach_confirmation(conn: sqlite3.Connection, o: Outcome, device_id: int) -> None:
+    """Once the device is stored, show its number on its confirmation row."""
+    if o.delivery_id is not None:
+        conn.execute("UPDATE push_deliveries SET device_id = ? WHERE id = ? AND device_id IS NULL",
+                     (device_id, o.delivery_id))
 
 
 def _clock(hhmm: str) -> str:

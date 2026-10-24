@@ -683,3 +683,11 @@ def test_catchup_counts_legacy_date_only_run_as_morning(env):
 
 def test_confirmation_mentions_both_times(env):
     assert svc.schedule_phrase() == "A verse around 8:30 am and 5:30 pm, every day"
+
+
+def test_confirmation_row_shows_device_number(env):
+    d = signup(env.client, 1).json()
+    assert count("SELECT device_id FROM push_deliveries WHERE kind='confirm'") == d["device_id"]
+    env.push.by_endpoint[FCM + "device9"] = 404
+    signup(env.client, 9)  # failed confirmation: no device, row stays without a number
+    assert count("SELECT COUNT(*) FROM push_deliveries WHERE kind='confirm' AND device_id IS NULL") == 1
