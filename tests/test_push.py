@@ -691,3 +691,11 @@ def test_confirmation_row_shows_device_number(env):
     env.push.by_endpoint[FCM + "device9"] = 404
     signup(env.client, 9)  # failed confirmation: no device, row stays without a number
     assert count("SELECT COUNT(*) FROM push_deliveries WHERE kind='confirm' AND device_id IS NULL") == 1
+
+
+def test_app_code_revalidates_but_images_stay_cacheable():
+    mw = PathHeaders(_streaming_app)
+    for path in ("/ui/", "/ui/index.html", "/ui/app.js", "/ui/styles.css", "/ui/manifest.webmanifest"):
+        assert dict(_asgi_capture(mw, path)[0]["headers"])[b"cache-control"] == b"no-cache", path
+    assert b"cache-control" not in dict(_asgi_capture(mw, "/ui/icons/icon-192.png")[0]["headers"])
+    assert b"cache-control" not in dict(_asgi_capture(mw, "/chat")[0]["headers"])

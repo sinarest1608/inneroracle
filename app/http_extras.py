@@ -20,6 +20,11 @@ SW_HEADERS = [
     (b"content-type", b"application/javascript"),
     (b"cache-control", b"no-cache"),
 ]
+# App code: browsers must revalidate on every load (a cheap 304 when unchanged),
+# so a deploy reaches everyone without anyone force-refreshing. Without a
+# Cache-Control header, browsers may reuse an old copy for hours or days.
+REVALIDATE = [(b"cache-control", b"no-cache")]
+_APP_CODE = (".html", ".js", ".css", ".webmanifest")
 
 
 def _headers_for(path: str) -> list[tuple[bytes, bytes]] | None:
@@ -27,6 +32,8 @@ def _headers_for(path: str) -> list[tuple[bytes, bytes]] | None:
         return SW_HEADERS
     if path.startswith("/ui/admin/"):
         return ADMIN_HEADERS
+    if path.startswith("/ui/") and (path.endswith("/") or path.endswith(_APP_CODE)):
+        return REVALIDATE
     return None
 
 
