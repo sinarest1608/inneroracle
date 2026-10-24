@@ -18,7 +18,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from app.config import settings
-from app.daily_verse import local_today, sync_rotation, verse_for
+from app.daily_verse import (
+    Slot, current_slot, local_today, send_times, slots_for, sync_rotation, verse_for,
+)
 from app.push_db import db, migrate
 from app.push_service import ensure_quote, resume_stale, run_daily
 from app.quote import QuoteWriter
@@ -34,9 +36,14 @@ def _ts(delta: timedelta) -> str:
     return (datetime.now(UTC) - delta).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def _send_time() -> tuple[int, int]:
-    h, m = settings.push_daily_time.split(":")
-    return int(h), int(m)
+def _ran(slot: Slot) -> bool:
+    """Has this send already run? A date-only run_date is the pre-two-a-day
+    format (one send a day, in the morning): treat it as the day's first send."""
+    with db() as conn:
+        keys = [slot.key] + ([slot.day.isoformat()] if slot.index == 0 else [])
+        return conn.execute(
+            f"SELECT 1 FROM push_daily_runs WHERE run_date IN ({','.join('?' * len(keys))})",
+            keys).fetchone() is not None
 
 
 def purge() -> None:
@@ -97,15 +104,19 @@ class PushScheduler:
             job_defaults={"misfire_grace_time": 3600, "coalesce": True, "max_instances": 1},
         )
 
-    async def quote_job(self) -> None:
-        day = local_today()
-        with db() as conn:
-            verse = verse_for(conn, self.store, day)
-        if verse is not None:
-            await ensure_quote(self.store, self.writer, day, verse)
+    def _slot(self, index: int) -> Slot:
+        return slots_for(local_today())[index]
 
-    async def send_job(self) -> None:
-        log.info("push.run result=%s", await run_daily(self.store, self.writer))
+    async def quote_job(self, index: int) -> None:
+        slot = self._slot(index)
+        with db() as conn:
+            verse = verse_for(conn, self.store, slot)
+        if verse is not None:
+            await ensure_quote(self.store, self.writer, slot, verse)
+
+    async def send_job(self, index: int | None = None) -> None:
+        slot = self._slot(index) if index is not None else None
+        log.info("push.run result=%s", await run_daily(self.store, self.writer, slot))
 
     async def stale_job(self) -> None:
         await resume_stale(self.store, self.writer)
@@ -116,24 +127,22 @@ class PushScheduler:
             added = sync_rotation(conn, self.store, settings.push_rotation_seed)
         if added:
             log.info("push.rotation appended %d verses", added)
-        h, m = _send_time()
-        q_at = datetime(2000, 1, 1, h, m) - timedelta(minutes=10)
         add = self.sched.add_job
-        add(self.quote_job, cron(hour=q_at.hour, minute=q_at.minute), id="quote")
-        add(self.send_job, cron(hour=h, minute=m), id="send")
+        for i, t in enumerate(send_times()):  # one quote + one send job per daily send
+            h, m = (int(x) for x in t.split(":"))
+            q_at = datetime(2000, 1, 1, h, m) - timedelta(minutes=10)
+            add(self.quote_job, cron(hour=q_at.hour, minute=q_at.minute), args=[i], id=f"quote-{t}")
+            add(self.send_job, cron(hour=h, minute=m), args=[i], id=f"send-{t}")
         add(self.stale_job, cron(minute="*/15"), id="stale")
         add(purge, cron(hour=3, minute=30), id="purge")
         add(backup, cron(hour=3, minute=0), id="backup")
         self.sched.start()
 
-        # Catch-up (server was down at send time) and resume (crashed mid-send).
-        now = datetime.now(ZoneInfo(settings.push_timezone))
-        if (now.hour, now.minute) >= (h, m):
-            with db() as conn:
-                ran = conn.execute("SELECT 1 FROM push_daily_runs WHERE run_date = ?",
-                                   (now.date().isoformat(),)).fetchone()
-            if ran is None:
-                self.sched.add_job(self.send_job, id="catchup")
+        # Catch-up (server was down at a send time): only the most recent missed
+        # send of today, so nobody gets two at once. Resume covers crashed runs.
+        slot = current_slot()
+        if slot.day == local_today() and not _ran(slot):
+            self.sched.add_job(self.send_job, args=[slot.index], id="catchup")
         self.sched.add_job(self.stale_job, id="resume-at-start")
 
     def shutdown(self) -> None:

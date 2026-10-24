@@ -22,7 +22,10 @@ from fastapi.testclient import TestClient
 import app.push as push_api
 import app.push_service as svc
 from app.config import Settings, settings
-from app.daily_verse import fallback_quote, speaker_map, sync_rotation, verse_for, verse_of_the_day
+from app.daily_verse import (
+    Slot, current_slot, fallback_quote, slots_for, speaker_map, sync_rotation, verse_for,
+    verse_of_the_day,
+)
 from app.http_extras import DropPushAccessLogs, PathHeaders
 from app.models import Verse
 from app.push_config import admin_token_ok, validate_push_settings
@@ -340,7 +343,7 @@ def test_bad_devices_dont_stop_the_loop_and_410_deletes(env):
     add_devices(5)
     env.push.by_endpoint.update({FCM + "device0": IndexError(), FCM + "device1": ValueError(),
                                  FCM + "device2": 410})
-    assert asyncio.run(svc.run_daily(env.store, env.writer, date(2026, 3, 1))) == "sent"
+    assert asyncio.run(svc.run_daily(env.store, env.writer, slots_for(date(2026, 3, 1))[0])) == "sent"
     assert len(env.push.calls) == 5
     assert count("SELECT COUNT(*) FROM push_subscriptions") == 4
     assert count("SELECT COUNT(*) FROM push_deliveries WHERE status='delivered'") == 2
@@ -348,12 +351,12 @@ def test_bad_devices_dont_stop_the_loop_and_410_deletes(env):
     with db() as conn:
         errs = {r[0] for r in conn.execute("SELECT error_type FROM push_deliveries")}
     assert errs <= {None, "IndexError", "ValueError", "WebPushException"}
-    assert asyncio.run(svc.run_daily(env.store, env.writer, date(2026, 3, 1))) == "already_ran"
+    assert asyncio.run(svc.run_daily(env.store, env.writer, slots_for(date(2026, 3, 1))[0])) == "already_ran"
 
 
 def test_concurrent_workers_send_once_per_device(env):
     add_devices(8)
-    day = date(2026, 3, 2)
+    day = slots_for(date(2026, 3, 2))[1]
 
     async def both():
         return await asyncio.gather(svc.run_daily(env.store, env.writer, day),
@@ -366,16 +369,18 @@ def test_concurrent_workers_send_once_per_device(env):
 
 def test_crash_resume_marks_pending_unknown_and_sends_rest(env):
     add_devices(4)
-    day = date.today()
+    from app.daily_verse import local_today
+    day = local_today()
+    key = slots_for(day)[0].key
     with db() as conn:
         conn.execute("INSERT INTO push_daily_runs(run_date, verse_id, status, started_at, "
                      "heartbeat_at) VALUES (?, 'BG-2.1', 'started', '2000-01-01T00:00:00Z', "
-                     "'2000-01-01T00:00:00Z')", (day.isoformat(),))
+                     "'2000-01-01T00:00:00Z')", (key,))
         msg = svc.Message("daily", "t", "b", "/ui/")
-        svc.insert_delivery(conn, msg, 1, "pending", day.isoformat())
-        svc.insert_delivery(conn, msg, 2, "delivered", day.isoformat())
-    assert asyncio.run(svc.resume_stale(env.store, env.writer, day)) is True
-    assert asyncio.run(svc.resume_stale(env.store, env.writer, day)) is False  # already taken
+        svc.insert_delivery(conn, msg, 1, "pending", key)
+        svc.insert_delivery(conn, msg, 2, "delivered", key)
+    assert asyncio.run(svc.resume_stale(env.store, env.writer, day)) == 1
+    assert asyncio.run(svc.resume_stale(env.store, env.writer, day)) == 0  # already taken
     assert sorted(env.push.calls) == [FCM + "device2", FCM + "device3"]
     assert count("SELECT status FROM push_deliveries WHERE device_id=1") == "unknown"
     assert count("SELECT status FROM push_daily_runs") == "completed"
@@ -397,7 +402,7 @@ def test_logs_never_contain_endpoints_or_raw_errors(env, caplog):
     add_devices(2)
     env.push.by_endpoint[FCM + "device0"] = ConnectionError(f"failed url: {FCM}device0")
     with caplog.at_level(logging.INFO):
-        asyncio.run(svc.run_daily(env.store, env.writer, date(2026, 3, 3)))
+        asyncio.run(svc.run_daily(env.store, env.writer, slots_for(date(2026, 3, 3))[0]))
     assert "fcm.googleapis.com" not in caplog.text and "failed url" not in caplog.text
     with db() as conn:
         dump = "\n".join(conn.iterdump())
@@ -407,9 +412,9 @@ def test_logs_never_contain_endpoints_or_raw_errors(env, caplog):
 # ---- rotation + verse of the day [G2][R3] ---------------------------------------------
 
 def test_rotation_every_verse_once_and_append_keeps_positions(env):
-    with db() as conn:
-        seen = [verse_for(conn, env.store, date(2026, 1, 1) + timedelta(days=i)).verse_id
-                for i in range(10)]
+    with db() as conn:  # 2 sends a day: 10 verses take 5 days, each shown once
+        seen = [verse_for(conn, env.store, s).verse_id
+                for i in range(5) for s in slots_for(date(2026, 1, 1) + timedelta(days=i))]
         before = [r[0] for r in conn.execute("SELECT verse_id FROM verse_rotation ORDER BY position")]
     assert sorted(seen) == sorted(v.verse_id for v in VERSES if v.translation)
     VerseStore(settings.sqlite_path).upsert([Verse(verse_id="BG-3.1", book="bhagavad_gita",
@@ -424,7 +429,8 @@ def test_missing_verse_skipped(env):
     with db() as conn:
         conn.execute("INSERT INTO verse_rotation(position, verse_id, added_at) VALUES (100, 'GONE', 'x')")
         for i in range(20):
-            assert verse_for(conn, env.store, date(2026, 1, 1) + timedelta(days=i)) is not None
+            for slot in slots_for(date(2026, 1, 1) + timedelta(days=i)):
+                assert verse_for(conn, env.store, slot) is not None
 
 
 def test_verse_of_the_day_never_calls_model(env):
@@ -605,7 +611,7 @@ def test_scheduled_jobs_use_push_timezone_not_machine_zone(env, monkeypatch):
     from datetime import datetime
     from zoneinfo import ZoneInfo
     monkeypatch.setattr(settings, "push_timezone", "America/Los_Angeles")
-    monkeypatch.setattr(settings, "push_daily_time", "08:30")
+    monkeypatch.setattr(settings, "push_daily_times", "08:30,17:30")
     monkeypatch.setenv("TZ", "UTC")  # like the Docker container
     _time.tzset()
     try:
@@ -619,12 +625,61 @@ def test_scheduled_jobs_use_push_timezone_not_machine_zone(env, monkeypatch):
 
         js = asyncio.run(jobs())
         la = ZoneInfo("America/Los_Angeles")
-        for job_id in ("send", "quote", "stale", "purge", "backup"):
+        for job_id in ("send-08:30", "send-17:30", "quote-08:30", "quote-17:30",
+                       "stale", "purge", "backup"):
             assert str(js[job_id].trigger.timezone) == "America/Los_Angeles", job_id
-        nxt = js["send"].next_run_time.astimezone(la)
-        assert (nxt.hour, nxt.minute) == (8, 30)
-        q = js["quote"].next_run_time.astimezone(la)
-        assert (q.hour, q.minute) == (8, 20)
+        for job_id, hm in (("send-08:30", (8, 30)), ("send-17:30", (17, 30)),
+                           ("quote-08:30", (8, 20)), ("quote-17:30", (17, 20))):
+            nxt = js[job_id].next_run_time.astimezone(la)
+            assert (nxt.hour, nxt.minute) == hm, job_id
     finally:
         monkeypatch.delenv("TZ")
         _time.tzset()
+
+
+# ---- two sends a day --------------------------------------------------------------
+
+def test_morning_and_evening_are_separate_runs_with_different_verses(env):
+    add_devices(2)
+    morning, evening = slots_for(date(2026, 3, 4))
+    assert asyncio.run(svc.run_daily(env.store, env.writer, morning)) == "sent"
+    assert asyncio.run(svc.run_daily(env.store, env.writer, evening)) == "sent"
+    assert asyncio.run(svc.run_daily(env.store, env.writer, evening)) == "already_ran"
+    assert count("SELECT COUNT(*) FROM push_deliveries WHERE kind='daily'") == 4
+    with db() as conn:
+        verses = [r[0] for r in conn.execute("SELECT verse_id FROM push_daily_runs ORDER BY id")]
+        quotes = [r[0] for r in conn.execute("SELECT quote_date FROM daily_quotes ORDER BY id")]
+    assert len(set(verses)) == 2
+    assert quotes == ["2026-03-04#08:30", "2026-03-04#17:30"]
+
+
+def test_current_slot_before_first_send_is_yesterdays_evening():
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    la = ZoneInfo(settings.push_timezone)
+    assert current_slot(datetime(2026, 3, 5, 7, 0, tzinfo=la)).key == "2026-03-04#17:30"
+    assert current_slot(datetime(2026, 3, 5, 9, 0, tzinfo=la)).key == "2026-03-05#08:30"
+    assert current_slot(datetime(2026, 3, 5, 18, 0, tzinfo=la)).key == "2026-03-05#17:30"
+
+
+def test_verse_of_the_day_lists_todays_sends_so_far(env):
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    evening = datetime(2026, 3, 6, 18, 0, tzinfo=ZoneInfo(settings.push_timezone))
+    with db() as conn:
+        v = verse_of_the_day(conn, env.store, evening)
+    assert v["time"] == "17:30" and [s["time"] for s in v["slots"]] == ["08:30", "17:30"]
+    assert v["slots"][0]["verse_id"] != v["slots"][1]["verse_id"]
+
+
+def test_catchup_counts_legacy_date_only_run_as_morning(env):
+    from app.push_scheduler import _ran
+    morning, evening = slots_for(date(2026, 3, 7))
+    with db() as conn:
+        conn.execute("INSERT INTO push_daily_runs(run_date, verse_id, status, started_at, "
+                     "heartbeat_at) VALUES ('2026-03-07', 'BG-2.1', 'completed', 'x', 'x')")
+    assert _ran(morning) is True and _ran(evening) is False
+
+
+def test_confirmation_mentions_both_times(env):
+    assert svc.schedule_phrase() == "A verse around 8:30 am and 5:30 pm, every day"

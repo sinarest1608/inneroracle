@@ -9,8 +9,11 @@ from __future__ import annotations
 
 import base64
 import os
+import re
 import secrets
+from datetime import date
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from cryptography.hazmat.primitives import serialization
 from py_vapid import Vapid
@@ -36,6 +39,20 @@ def validate_push_settings(s: Settings) -> list[str]:
         problems.append("VAPID_SUBJECT must be a mailto: or https:// URL")
     if not s.push_rotation_seed:
         problems.append("PUSH_ROTATION_SEED must be set")
+    try:
+        ZoneInfo(s.push_timezone)
+    except Exception:  # noqa: BLE001 — ZoneInfoNotFoundError, ValueError, …
+        problems.append(f"PUSH_TIMEZONE isn't a valid time zone name: {s.push_timezone!r} "
+                        "(e.g. America/Los_Angeles — underscores, no spaces)")
+    times = [t.strip() for t in s.push_daily_times.split(",") if t.strip()]
+    if not times or len(times) > 4 or len(set(times)) != len(times) or not all(
+            re.fullmatch(r"([01]\d|2[0-3]):[0-5]\d", t) for t in times):
+        problems.append(f"PUSH_DAILY_TIMES must be 1-4 distinct HH:MM times, comma-separated "
+                        f"(got {s.push_daily_times!r})")
+    try:
+        date.fromisoformat(s.push_rotation_start)
+    except ValueError:
+        problems.append("PUSH_ROTATION_START must be a YYYY-MM-DD date")
 
     priv = pub = None
     try:

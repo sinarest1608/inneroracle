@@ -12,12 +12,11 @@ import json
 import logging
 import re
 import sqlite3
-from datetime import date
 
 import anthropic
 
 from app.config import settings
-from app.daily_verse import fallback_quote, speaker_map
+from app.daily_verse import Slot, fallback_quote, speaker_map
 from app.models import Verse
 from app.prompts import BOOK_NAME
 from app.push_db import utcnow
@@ -100,16 +99,16 @@ class QuoteWriter:
         return fallback_quote(verse)
 
 
-def store_quote(conn: sqlite3.Connection, day: date, q: dict) -> dict:
-    """Insert today's quote once; if another process won, return theirs."""
+def store_quote(conn: sqlite3.Connection, slot: Slot, q: dict) -> dict:
+    """Insert this send's quote once; if another process won, return theirs."""
     conn.execute(
         "INSERT OR IGNORE INTO daily_quotes(quote_date, verse_id, speaker, speaker_source, "
         "quote, quote_source, model, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        (day.isoformat(), q["verse_id"], q["speaker"], q["speaker_source"], q["quote"],
+        (slot.key, q["verse_id"], q["speaker"], q["speaker_source"], q["quote"],
          q["quote_source"], q["model"], utcnow()),
     )
     row = conn.execute(
         "SELECT verse_id, speaker, speaker_source, quote, quote_source, model "
-        "FROM daily_quotes WHERE quote_date = ?", (day.isoformat(),)
+        "FROM daily_quotes WHERE quote_date = ?", (slot.key,)
     ).fetchone()
     return dict(row)

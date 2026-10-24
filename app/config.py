@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     push_admin_token: str = ""
     push_hmac_key: str = ""
     push_db_path: str = "state/push.db"
-    push_daily_time: str = "08:30"
+    push_daily_times: str = "08:30,17:30"  # local send times, comma-separated
     push_timezone: str = "America/Los_Angeles"
     push_rotation_start: str = "2026-11-01"
     push_rotation_seed: str = ""
