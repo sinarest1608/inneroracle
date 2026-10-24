@@ -45,7 +45,7 @@ class RetrievalService:
         from app.store import VerseStore
 
         return cls(
-            store=VerseStore(settings.sqlite_path),
+            store=VerseStore(settings.sqlite_path, readonly=True),
             embedder=get_embedder(),
             qdrant=get_qdrant(),
             bm25=BM25Encoder.load(settings.bm25_path),

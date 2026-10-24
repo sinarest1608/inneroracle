@@ -13,3 +13,4 @@ tasks/
 .env
 *.md
 PLAN.md
+state/

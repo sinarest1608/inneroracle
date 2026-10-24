@@ -21,6 +21,17 @@ services:
       - "127.0.0.1:8000:8000"
     volumes:
       - ./data:/app/data
+      # Server-only push state (push.db + backups). Never copy it from the Mac,
+      # never delete it; it is git- and docker-ignored.
+      - ./state:/app/state
+    # Informational only: plain Docker never restarts a container for being
+    # unhealthy (restart: unless-stopped covers exits). The slim image has no curl.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
   # Optional remote Qdrant — only for re-indexing on the server. Start with
   # `docker compose --profile server-index up -d` and set QDRANT_URL=http://qdrant:6333

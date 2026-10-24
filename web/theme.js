@@ -5,6 +5,8 @@ const THEME_KEY = 'inneroracle.theme';
 function applyTheme(t){
   document.documentElement.dataset.theme = t;
   document.getElementById('theme').textContent = t === 'dark' ? '☀️' : '🌙';
+  const tc = document.querySelector('meta[name="theme-color"]');
+  if (tc) tc.content = t === 'dark' ? '#232c34' : '#f5eed9';   // matches header --ground-hi
 }
 
 export function initTheme(){

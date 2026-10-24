@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<title>InnerOracle · Push log</title>
+<link rel="icon" href="/ui/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/ui/styles.css" />
+<link rel="stylesheet" href="/ui/admin/log.css" />
+</head>
+<body>
+  <main class="adm">
+    <header class="adm-head">
+      <h1><span class="danda">॥</span> Push log <span class="danda">॥</span></h1>
+      <button class="adm-btn" id="forget" type="button" hidden>Forget token</button>
+    </header>
+
+    <form id="unlock" class="adm-unlock" autocomplete="off">
+      <label for="token">Admin token</label>
+      <input id="token" type="password" autocomplete="off" spellcheck="false" />
+      <button class="adm-btn primary" type="submit">Unlock</button>
+    </form>
+
+    <p class="adm-msg" id="msg" hidden></p>
+
+    <section id="panel" hidden>
+      <nav class="adm-tabs" id="tabs">
+        <button type="button" data-tab="log" class="active">Deliveries</button>
+        <button type="button" data-tab="signups">Sign-ups</button>
+        <button type="button" data-tab="admin-actions">Admin actions</button>
+      </nav>
+
+      <form id="filters" class="adm-filters" autocomplete="off">
+        <label data-for="log signups">From <input name="from" type="date" /></label>
+        <label data-for="log signups">To <input name="to" type="date" /></label>
+        <label data-for="log">Device # <input name="device_id" type="number" min="1" step="1" /></label>
+        <label data-for="log">Kind
+          <select name="kind">
+            <option value="">any</option><option>daily</option><option>confirm</option>
+            <option>test</option><option>manual</option>
+          </select>
+        </label>
+        <label data-for="signups">IP <input name="ip" type="text" spellcheck="false" /></label>
+        <label data-for="log signups admin-actions">Limit <input name="limit" type="number" min="1" max="1000" value="100" /></label>
+        <button class="adm-btn primary" type="submit">Load</button>
+        <button class="adm-btn" type="button" id="csv" data-for="log signups">Download CSV</button>
+      </form>
+
+      <div id="out"></div>
+    </section>
+  </main>
+  <script src="/ui/admin/log.js"></script>
+</body>
+</html>

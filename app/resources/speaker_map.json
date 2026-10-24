@@ -1,0 +1,7711 @@
+{
+ "BG-1.1": {
+  "speaker": "Dhritarashtra",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-1.2": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-1.3": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.4": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.5": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.6": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.7": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.8": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.9": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.10": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.11": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.12": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.13": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.14": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.15": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.16": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.17": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.18": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-1.19": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.20": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-1.21": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-1.22": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.23": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.24": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-1.25": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.26": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.27": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-1.28": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.29": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.30": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.31": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.32": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.33": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.34": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.35": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-1.36": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-1.37": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-1.37-38": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.39": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.40": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-1.41": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.42": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.43": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-1.44": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.45": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-1.46": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-2.1": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-2.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-2.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.4": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-2.5": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-2.6": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-2.7": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-2.8": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-2.9": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-2.10": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-2.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-2.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-2.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.33": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.34": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-2.35": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.36": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.37": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.38": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.39": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.40": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.41": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.42": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.43": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.44": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.45": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.46": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.47": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.48": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.49": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.50": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.51": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.52": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.53": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.54": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-2.55": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.56": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.57": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.58": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.59": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.60": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-2.61": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.62": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.63": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.64": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.65": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.66": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.67": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.68": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.69": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.70": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.71": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-2.72": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-3.2": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-3.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-3.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-3.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-3.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address",
+   "commentary"
+  ]
+ },
+ "BG-3.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.33": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.34": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.35": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.36": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-3.37": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-3.38": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.39": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.40": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.41": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-3.42": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-3.43": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-4.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.4": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.5": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-4.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-4.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-4.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-4.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.33": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-4.34": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.35": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.36": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.37": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-4.38": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.39": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.40": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.41": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-4.42": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-5.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-5.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-5.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-5.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-6.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.11-12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-6.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-6.33": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-6.34": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-6.35": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-6.36": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-6.37": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-6.38": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-6.39": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-6.40": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-6.41": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.42": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.43": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.44": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.45": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.46": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-6.47": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-6.": {
+  "speaker": null,
+  "status": "unknown",
+  "sources": [
+   "malformed_verse_no"
+  ]
+ },
+ "BG-7.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-7.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-7.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-7.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-7.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-7.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-7.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-7.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-7.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-7.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-7.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-8.2": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address",
+   "commentary"
+  ]
+ },
+ "BG-8.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-8.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-8.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address",
+   "commentary"
+  ]
+ },
+ "BG-8.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-8.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-8.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-8.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-8.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-9.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-9.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-9.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-9.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-9.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-9.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-9.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-9.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address",
+   "commentary"
+  ]
+ },
+ "BG-9.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-9.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address",
+   "commentary"
+  ]
+ },
+ "BG-9.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-9.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-9.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address",
+   "commentary"
+  ]
+ },
+ "BG-9.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-9.33": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-9.34": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-10.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.4-5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.12-13": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "commentary"
+  ]
+ },
+ "BG-10.14": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-10.15": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-10.16": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-10.17": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-10.18": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-10.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-10.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-10.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-10.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-10.33": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.34": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.35": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.36": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.37": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.38": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.39": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-10.40": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.41": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-10.42": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-11.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.2": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.3": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.4": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-11.6": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.7": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.8": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.9": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-11.10-11": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.12": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.13": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.14": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.15": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.16": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.17": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.18": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.19": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.20": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.21": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.22": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.23": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.24": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.25": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.26": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.27": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.28": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.29": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.30": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.31": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "translation",
+   "commentary"
+  ]
+ },
+ "BG-11.33": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.34": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.35": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-11.36": {
+  "speaker": "Arjuna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-11.37": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.38": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.39": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.40": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.41": {
+  "speaker": "Arjuna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-11.42": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.43": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.44": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.45": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.46": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.47": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-11.48": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.49": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.50": {
+  "speaker": "Sanjaya",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-11.51": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.52": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-11.53": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.54": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-11.55": {
+  "speaker": "Krishna",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-12.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-12.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-12.3-4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-12.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-12.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-12.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-13.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-13.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.8-12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-13.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-13.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-13.33": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.34": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-13.35": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-14.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-14.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-14.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.21": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-14.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-14.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-14.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-14.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-15.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.3-4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-15.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.1": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-16.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-16.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-16.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.11-12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-16.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-16.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-17.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-17.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-17.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-17.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-17.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.1": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-18.2": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "translation"
+  ]
+ },
+ "BG-18.3": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.4": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-18.5": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-18.6": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.7": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.8": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.9": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.10": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.11": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.12": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.13": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.14": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.15": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.16": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.17": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.18": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.19": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.20": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.21": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.22": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.23": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.24": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.25": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.26": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.27": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.28": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.29": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.30": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.31": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.32": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.33": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.34": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.35": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.36": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.37": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.38": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.39": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.40": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.41": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.42": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.43": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.44": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.45": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.46": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-18.47": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.48": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.49": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.50": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.51": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.52": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.53": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.54": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.55": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.56": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.57": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.58": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.59": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.60": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.61": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.62": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.63": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.64": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-18.65": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.66": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "commentary"
+  ]
+ },
+ "BG-18.67": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.68": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.69": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.70": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.71": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure"
+  ]
+ },
+ "BG-18.72": {
+  "speaker": "Krishna",
+  "status": "confirmed",
+  "sources": [
+   "marker",
+   "structure",
+   "address"
+  ]
+ },
+ "BG-18.73": {
+  "speaker": "Arjuna",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation",
+   "address"
+  ]
+ },
+ "BG-18.74": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker",
+   "translation"
+  ]
+ },
+ "BG-18.75": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "BG-18.76": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-18.77": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker",
+   "address"
+  ]
+ },
+ "BG-18.78": {
+  "speaker": "Sanjaya",
+  "status": "review",
+  "sources": [
+   "marker"
+  ]
+ },
+ "AG-1.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure",
+   "address"
+  ]
+ },
+ "AG-1.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.9": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.10": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.11": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.12": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.13": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.14": {
+  "speaker": "Ashtavakra",
+  "status": "confirmed",
+  "sources": [
+   "structure",
+   "address"
+  ]
+ },
+ "AG-1.15": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.16": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.17": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.18": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.19": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-1.20": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.5": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.6": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.7": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.8": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.9": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.10": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.11": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.12": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.13": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.14": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.15": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.16": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.17": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.18": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.19": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.20": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.21": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.22": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.23": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.24": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-2.25": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.9": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.10": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.11": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.12": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.13": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-3.14": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-4.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-4.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-4.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-4.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-4.5": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-4.6": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-5.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-5.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-5.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-5.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-6.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": []
+ },
+ "AG-6.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": []
+ },
+ "AG-6.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": []
+ },
+ "AG-6.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": []
+ },
+ "AG-7.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-7.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-7.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-7.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-7.5": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-8.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-8.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-8.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-8.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-9.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-9.2": {
+  "speaker": "Ashtavakra",
+  "status": "confirmed",
+  "sources": [
+   "structure",
+   "address"
+  ]
+ },
+ "AG-9.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-9.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-9.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-9.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-9.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-9.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-10.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-11.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.5": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.6": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.7": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-12.8": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-13.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-13.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-13.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-13.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-13.5": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-13.6": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-13.7": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-14.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-14.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-14.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-14.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.8": {
+  "speaker": "Ashtavakra",
+  "status": "confirmed",
+  "sources": [
+   "structure",
+   "address"
+  ]
+ },
+ "AG-15.9": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.10": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.11": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.12": {
+  "speaker": "Ashtavakra",
+  "status": "confirmed",
+  "sources": [
+   "structure",
+   "address"
+  ]
+ },
+ "AG-15.13": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.14": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.15": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.16": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.17": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.18": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.19": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-15.20": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure",
+   "address"
+  ]
+ },
+ "AG-16.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.9": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.10": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-16.11": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.9": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.10": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.11": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.12": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.13": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.14": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.15": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.16": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.17": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.18": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.19": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-17.20": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.1": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.2": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.3": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.4": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.5": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.6": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.7": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.8": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.9": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.10": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.11": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.12": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.13": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.14": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.15": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.16": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.17": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.18": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.19": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.20": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.21": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.22": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.23": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.24": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.25": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.26": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.27": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.28": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.29": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.30": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.31": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.32": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.33": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.34": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.35": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.36": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.37": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.38": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.39": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.40": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.41": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.42": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.43": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.44": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.45": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.46": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.47": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.48": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.49": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.50": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.51": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.52": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.53": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.54": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.55": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.56": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.57": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.58": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.59": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.60": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.61": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.62": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.63": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.64": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.65": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.66": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.67": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.68": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.69": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.70": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.71": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.72": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.73": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.74": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.75": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.76": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.77": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.78": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.79": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.80": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.81": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.82": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.83": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.84": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.85": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.86": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.87": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.88": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.89": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.90": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.91": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.92": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.93": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.94": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.95": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.96": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.97": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.98": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.99": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-18.100": {
+  "speaker": "Ashtavakra",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.5": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.6": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.7": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-19.8": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.1": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.2": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.3": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.4": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.5": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.6": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.7": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.8": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.9": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.10": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.11": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.12": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.13": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ },
+ "AG-20.14": {
+  "speaker": "Janaka",
+  "status": "review",
+  "sources": [
+   "structure"
+  ]
+ }
+}

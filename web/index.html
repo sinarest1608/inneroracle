@@ -6,6 +6,12 @@
 <title>InnerOracle</title>
 <link rel="icon" href="/ui/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/ui/styles.css" />
+<link rel="manifest" href="/ui/manifest.webmanifest" />
+<link rel="apple-touch-icon" href="/ui/icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="InnerOracle" />
+<meta name="theme-color" content="#f5eed9" />
 </head>
 <body>
   <div class="backdrop"></div><div class="glow"></div>
@@ -14,6 +20,11 @@
     <aside id="sidebar">
       <button class="new" id="newChat">＋ New chat</button>
       <div id="convs"></div>
+      <section class="daily" id="daily" aria-label="Daily verse">
+        <div class="daily-head">🔔 Daily verse</div>
+        <div id="dailyBody"></div>
+        <p class="daily-note" id="dailyNote" hidden>To prevent abuse, we keep the IP address used to sign up.</p>
+      </section>
       <div class="side-foot">
         <button class="clear-all" id="clearAll">Clear all chats</button>
         <div>Grounded only in the two texts.</div>
@@ -67,6 +78,7 @@
 
   <script src="/ui/marked.min.js"></script>
   <script src="/ui/dompurify.min.js"></script>
+  <script src="/ui/pushstore.js"></script>
   <script type="module" src="/ui/app.js"></script>
 </body>
 </html>
