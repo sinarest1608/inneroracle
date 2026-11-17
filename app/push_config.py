@@ -54,6 +54,14 @@ def validate_push_settings(s: Settings) -> list[str]:
     except ValueError:
         problems.append("PUSH_ROTATION_START must be a YYYY-MM-DD date")
 
+    if s.local_dev:
+        # Local test helpers must never run against production state.
+        if Path(s.push_db_path).name == "push.db":
+            problems.append("LOCAL_DEV needs its own PUSH_DB_PATH (e.g. state/push.local.db), "
+                            "not the production push.db")
+        if os.environ.get("TUNNEL_TOKEN"):
+            problems.append("LOCAL_DEV must not be set where TUNNEL_TOKEN is (that is production)")
+
     priv = pub = None
     try:
         priv = Vapid.from_string(s.vapid_private_key)

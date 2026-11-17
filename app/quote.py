@@ -16,7 +16,7 @@ import sqlite3
 import anthropic
 
 from app.config import settings
-from app.daily_verse import Slot, fallback_quote, speaker_map
+from app.daily_verse import Slot, fallback_quote, speaker_map, trim_translation
 from app.models import Verse
 from app.prompts import BOOK_NAME
 from app.push_db import utcnow
@@ -85,6 +85,9 @@ class QuoteWriter:
 
     async def write(self, verse: Verse) -> dict:
         known = speaker_map().get(verse.verse_id)
+        if settings.mock_model:  # local testing: a canned "paraphrase", no API call
+            return {**fallback_quote(verse), "quote_source": "ai", "model": "mock",
+                    "quote": trim_translation(verse.translation, 100)}
         if not settings.quote_ai_enabled:
             return fallback_quote(verse)
         for attempt in (1, 2):  # one retry, then fall back

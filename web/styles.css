@@ -127,6 +127,92 @@ body { margin:0; height:100vh; height:100dvh; overflow:hidden; color:var(--ink);
 .daily-err { margin:8px 0 0; padding:6px 9px; border-radius:3px; color:var(--err); background:var(--err-bg); }
 .daily-note { margin:8px 0 0; color:var(--muted); font-size:11px; font-style:italic; line-height:1.4; }
 
+/* ---- unread / history / favourites ---- */
+.inbox-nav { display:flex; flex-direction:column; margin:9px -6px 0; }
+.inbox-nav[hidden] { display:none; }
+.inbox-nav button { padding:7px 6px; border:none; border-radius:3px; background:none; color:var(--ink);
+  font-family:var(--serif); font-size:13.5px; text-align:left; cursor:pointer;
+  transition:background .15s ease, color .15s ease; }
+.inbox-nav button:hover { background:var(--tint); color:var(--accent); }
+.inbox-nav .n { color:var(--accent); font-weight:600; }
+
+.star { flex:none; width:36px; height:36px; padding:0; border:none; border-radius:3px; background:none;
+  color:var(--accent); font-size:19px; line-height:1; cursor:pointer; transition:background .15s ease; }
+.star:hover:not(:disabled) { background:var(--tint); }
+.star:disabled { opacity:.5; cursor:default; }
+
+.inbox { margin:4px 0 26px; animation:rise .3s cubic-bezier(.2,.7,.2,1); }
+.inbox-head { display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding-bottom:10px; border-bottom:1px solid var(--rubric); }
+.inbox-title { margin:0; font-size:17px; font-weight:600; letter-spacing:.02em; color:var(--ink-strong); }
+.inbox-title .danda { color:var(--accent); font-weight:400; }
+.inbox-all { flex:none; padding:6px 12px; border:1px solid var(--line); border-radius:3px; background:none;
+  color:var(--ink); font-family:var(--serif); font-size:12.5px; cursor:pointer;
+  transition:color .15s ease, border-color .15s ease; }
+.inbox-all:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+.inbox-all:disabled { opacity:.55; cursor:default; }
+.inbox-empty { margin:18px 0 0; color:var(--muted); font-style:italic; }
+.inbox-list { list-style:none; margin:0; padding:0; }
+.inbox-item { display:flex; align-items:center; gap:4px; border-bottom:1px solid var(--line-soft); }
+.inbox-item.unread { box-shadow:inset 3px 0 0 var(--accent); }
+.inbox-open { flex:1; min-width:0; display:block; padding:12px 6px 12px 14px; border:none; background:none;
+  color:var(--ink); font-family:var(--serif); text-align:left; cursor:pointer;
+  transition:background .15s ease; }
+.inbox-open:hover { background:var(--tint); }
+.inbox-meta { display:block; font-size:12px; color:var(--muted); margin-bottom:3px; }
+.inbox-ref { color:var(--ink-strong); font-weight:600; letter-spacing:.02em; }
+.inbox-new { color:var(--accent); }
+.inbox-quote { display:block; font-size:15.5px; line-height:1.5; color:var(--ink);
+  overflow-wrap:break-word; }
+.inbox-item.unread .inbox-quote { color:var(--ink-strong); }
+
+.inbox-fest { color:var(--accent); letter-spacing:.04em; }
+
+/* ---- what's new: a folio laid over the page, and hint slips ---- */
+.side-foot .whats-new { display:block; margin:0 0 9px; padding:0; border:none; background:none;
+  color:var(--accent); font-family:var(--serif); font-style:normal; font-size:12.5px; cursor:pointer;
+  text-decoration:underline; text-underline-offset:3px; }
+.side-foot .whats-new[hidden] { display:none; }
+.wn-veil { position:fixed; inset:0; z-index:40; display:flex; align-items:center; justify-content:center;
+  padding:20px; background:var(--overlay); }
+.wn { width:min(440px,100%); max-height:calc(100dvh - 40px); overflow-y:auto; padding:22px 24px 20px;
+  background:var(--panel); color:var(--ink); border:1px solid var(--line);
+  border-top:3px solid var(--accent); border-radius:3px; box-shadow:0 14px 40px var(--shadow);
+  animation:rise .25s cubic-bezier(.2,.7,.2,1); }
+.wn-mark { font-size:10.5px; text-transform:uppercase; letter-spacing:.2em; color:var(--accent); margin-bottom:8px; }
+.wn-title { margin:0 0 12px; font-size:21px; font-weight:600; line-height:1.3; color:var(--ink-strong); }
+.wn-list { margin:0 0 18px; padding-left:20px; line-height:1.6; font-size:15px; }
+.wn-list li { margin:6px 0; }
+.wn-list li::marker { color:var(--accent); }
+.wn-actions { display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
+.wn-btn, .hint-next { padding:8px 16px; border:1px solid var(--line); border-radius:3px; background:none;
+  color:var(--ink); font-family:var(--serif); font-size:14px; cursor:pointer;
+  transition:color .15s ease, border-color .15s ease, background .15s ease; }
+.wn-btn:hover { border-color:var(--accent); color:var(--accent); }
+.wn-btn.primary, .hint-next { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:600; }
+.wn-btn.primary:hover, .hint-next:hover { background:var(--accent-fill); color:var(--accent-ink); }
+
+.hint { position:fixed; z-index:45; width:min(260px, calc(100vw - 16px)); padding:12px 14px 11px;
+  background:var(--leaf-hi); color:var(--ink); border:1px solid var(--accent); border-radius:3px;
+  box-shadow:0 8px 24px var(--shadow); cursor:pointer; }
+.hint::before { content:""; position:absolute; left:var(--tip-x, 50%); top:-6px; width:10px; height:10px;
+  margin-left:-5px; background:var(--leaf-hi); border-left:1px solid var(--accent);
+  border-top:1px solid var(--accent); transform:rotate(45deg); }
+.hint.above::before { top:auto; bottom:-6px; transform:rotate(225deg); }
+.hint-text { margin:0 0 10px; font-size:14.5px; line-height:1.5; }
+.hint-actions { display:flex; align-items:center; gap:12px; }
+.hint-next { padding:5px 13px; font-size:13px; }
+.hint-skip { border:none; background:none; padding:4px 2px; color:var(--muted); font-family:var(--serif);
+  font-size:13px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+.hint-target { outline:2px solid var(--accent); outline-offset:2px; border-radius:3px; }
+.dev-tools { display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
+.dev-tools .daily-status { overflow-wrap:anywhere; font-size:11px; }
+
+/* ---- plain notice page (festival "wrong date" link) ---- */
+.notice { max-width:520px; margin:14vh auto 0; padding:0 20px; }
+.notice h1 { margin:0 0 10px; font-size:22px; font-weight:600; color:var(--ink-strong); }
+.notice p { margin:0 0 6px; line-height:1.6; }
+
 /* ---- deep-linked verse card: a rubricated folio, flat ---- */
 .verse-card { margin:4px 0 26px; animation:rise .3s cubic-bezier(.2,.7,.2,1); }
 .vc-today { margin-bottom:16px; padding:4px 0 4px 16px; border-left:3px solid var(--accent); }
@@ -135,6 +221,7 @@ body { margin:0; height:100vh; height:100dvh; overflow:hidden; color:var(--ink);
 .vc-quote { margin:0; font-size:clamp(18px,2.6vw,22px); line-height:1.45; color:var(--ink-strong); }
 .vc-ref { font-size:15px; font-weight:600; letter-spacing:.02em; color:var(--ink-strong); margin-bottom:8px; }
 .vc-ref .danda { color:var(--accent); font-weight:400; }
+.vc-ref .star { margin-left:6px; vertical-align:middle; }
 .verse-card .shloka .dev { white-space:pre-line; }
 .vc-missing { color:var(--muted); font-style:italic; }
 .vc-comm { margin-top:10px; font-size:14px; line-height:1.65; }
@@ -318,7 +405,7 @@ button:focus-visible, .pill:focus-visible, input.q:focus-visible, .icon-btn:focu
   .about-pop { width:min(330px,82vw); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .msg, .empty, .shloka, .about-pop, .verse-card { animation:none; }
+  .msg, .empty, .shloka, .about-pop, .verse-card, .inbox, .wn { animation:none; }
   .thinking .thinking-label { animation:none; opacity:.7; }
 }
 ::-webkit-scrollbar { width:9px; } ::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }

@@ -1,14 +1,15 @@
-// Deep link /ui/?verse=<id> (the notification tap target): show that verse as
-// a card above the chat, with today's reflection when it is today's verse, and
-// an "Ask about this verse" button. All server text goes in via textContent.
+// Deep link /ui/?verse=<id>[&entry=<inbox id>] (the notification tap target):
+// show that verse as a card above the chat, with today's reflection when it is
+// today's verse, and an "Ask about this verse" button. If the verse is in this
+// device's inbox, opening the card marks it read and the card carries its star.
+// All server text goes in via textContent.
 
 import { stream, input, scrollDown } from './dom.js';
 import { activeConv } from './store.js';
 import { newChat } from './views.js';
 import { pinVerse } from './chat.js';
-
-const VERSE_ID = /^(BG|AG)-\d{1,2}\.\d{1,3}(-\d{1,3})?$/;
-const BOOKS = { BG: ['bhagavad_gita', 'Bhagavad Gita'], AG: ['ashtavakra_gita', 'Ashtavakra Gita'] };
+import { VERSE_ID, BOOKS } from './verseref.js';
+import { loadInbox, findEntry, markOpened, starButton } from './inbox.js';
 
 function node(tag, cls, text){
   const n = document.createElement(tag);
@@ -22,7 +23,7 @@ async function getJson(url){
   try { const r = await fetch(url); return r.ok ? await r.json() : null; } catch { return null; }
 }
 
-function card(id, v, today){
+function card(id, v, today, entry){
   const [bookKey, bookName] = BOOKS[id.slice(0, 2)];
   const c = node('article', 'verse-card');
 
@@ -36,6 +37,7 @@ function card(id, v, today){
 
   const ref = node('div', 'vc-ref');
   ref.append(node('span', 'danda', '॥'), document.createTextNode(` ${bookName} ${id.slice(3)} `), node('span', 'danda', '॥'));
+  if (entry) ref.append(starButton(entry));
   c.append(ref);
 
   if (!v){
@@ -68,21 +70,31 @@ function card(id, v, today){
   return c;
 }
 
-export async function openVerseLink(){
-  let id;
-  try { id = new URLSearchParams(location.search).get('verse'); } catch { return; }
+export function openVerseLink(){
+  let q;
+  try { q = new URLSearchParams(location.search); } catch { return; }
+  const entry = Number(q.get('entry'));
+  return showVerse(q.get('verse'), Number.isInteger(entry) && entry > 0 ? entry : null);
+}
+
+// Also the tap target of the Unread / History / Favourites rows (inbox.js).
+export async function showVerse(id, entryId){
   if (!id || !VERSE_ID.test(id)) return;
   const [v, votd] = await Promise.all([
     getJson('/verse/' + encodeURIComponent(id)),
     getJson('/verse-of-the-day'),
+    loadInbox(),
   ]);
+  const entry = findEntry(entryId, id);
   // Only label a real paraphrase as one; the fallback quote is just the translation.
   // Any of today's sends so far (morning, evening) — not just the latest — so a
   // morning notification opened in the evening still shows its reflection.
   const sends = votd ? (Array.isArray(votd.slots) && votd.slots.length ? votd.slots : [votd]) : [];
   const today = sends.find(s => s && s.verse_id === id && str(s.quote) && s.quote_source !== 'fallback') || null;
   if (activeConv().messages.length) newChat();          // start clean so the card is in view
-  const e = stream.querySelector('.empty'); if (e) e.remove();
-  stream.prepend(card(id, v, today));
+  stream.querySelectorAll('.empty, .verse-card, .inbox').forEach(n => n.remove());
+  stream.prepend(card(id, v, today, entry));
   scrollDown();
+  markOpened(entry);
+  document.dispatchEvent(new Event('inneroracle:view'));
 }

@@ -1,0 +1,15 @@
+# Local testing with Docker instead of scripts/run_local.sh (same separation
+# from production; see docs/local-testing.md):
+#
+#   scripts/run_local.sh            # once, to create .env.local, then Ctrl-C
+#   docker compose -f docker-compose.yml -f docker-compose.local.yml up --build app
+#
+# Only the app starts: no cloudflared, no qdrant. .env.local replaces .env
+# entirely, so no production secret or tunnel token reaches the container.
+services:
+  app:
+    restart: "no"
+    env_file: !override
+      - .env.local
+    ports: !override
+      - "127.0.0.1:8000:8000"

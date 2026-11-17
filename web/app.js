@@ -5,7 +5,10 @@ import { initTheme } from './theme.js';
 import { refresh, newChat, openSidebar, closeSidebar, clearAll } from './views.js';
 import { ask, initCitations } from './chat.js';
 import { initPush } from './push.js';
-import { openVerseLink } from './verselink.js';
+import { openVerseLink, showVerse } from './verselink.js';
+import { initInbox } from './inbox.js';
+import { initUpdateCheck, serverVersion } from './update.js';
+import { initWhatsNew, whatsNewOpen } from './whatsnew.js';
 
 initTheme();
 
@@ -41,5 +44,10 @@ form.addEventListener('submit', async e=>{
 // ---- boot ----
 refresh();
 input.focus();
+initInbox({ openVerse: showVerse });
 openVerseLink();
 initPush();
+// Reload onto a new deploy only when nothing would be lost by it.
+initUpdateCheck(()=> !!input.value.trim() || sendBtn.disabled || whatsNewOpen());
+initWhatsNew();
+serverVersion().then(v => { if (v && v.local_dev) import('./devtools.js').then(m => m.initDevTools()); });

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<title>InnerOracle · Announce update</title>
+<link rel="icon" href="/ui/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/ui/styles.css" />
+<link rel="stylesheet" href="/ui/admin/log.css" />
+</head>
+<body>
+  <main class="adm">
+    <header class="adm-head">
+      <h1><span class="danda">॥</span> Announce update <span class="danda">॥</span></h1>
+      <a class="adm-btn" href="/ui/admin/log.html">Push log</a>
+      <a class="adm-btn" href="/ui/admin/stats.html">Verse stats</a>
+      <button class="adm-btn" id="forget" type="button" hidden>Forget token</button>
+    </header>
+
+    <form id="unlock" class="adm-unlock" autocomplete="off">
+      <label for="token">Admin token</label>
+      <input id="token" type="password" autocomplete="off" spellcheck="false" />
+      <button class="adm-btn primary" type="submit">Unlock</button>
+    </form>
+
+    <p class="adm-msg" id="msg" hidden></p>
+
+    <section id="panel" hidden>
+      <p class="adm-meta">Deploying never announces anything. A release stays hidden from every device until it is sent from here.</p>
+
+      <h2>Release about to go out</h2>
+      <div id="release"></div>
+
+      <h2>Tester devices</h2>
+      <p class="adm-meta">The device numbers shown in the sidebar of your own devices ("On · Device #N"), separated by commas.</p>
+      <form id="testersForm" class="adm-row" autocomplete="off">
+        <input id="testers" type="text" inputmode="numeric" placeholder="1, 3" spellcheck="false" />
+        <button class="adm-btn" type="submit">Save</button>
+        <span id="testersNow"></span>
+      </form>
+
+      <h2>Send</h2>
+      <form id="sendForm" autocomplete="off">
+        <div class="adm-row">
+          <label><input type="radio" name="audience" value="testers" checked /> Testers only</label>
+          <label><input type="radio" name="audience" value="all" /> All devices</label>
+        </div>
+        <div class="adm-row">
+          <button class="adm-btn primary" id="send" type="submit">Announce update</button>
+        </div>
+      </form>
+    </section>
+  </main>
+  <script src="/ui/admin/announce.js"></script>
+</body>
+</html>
