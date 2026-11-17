@@ -157,10 +157,12 @@ async def send_to_device(row: sqlite3.Row, msg: Message,
                          slot_key: str | None = None) -> Outcome:
     """Unclaimed send (test/manual): push, then log the row and update the device.
     With a slot key, the verse also goes in the device's inbox."""
-    extra = None
+    extra, first = None, False
     if slot_key is not None:
         try:
             with db() as conn, write_tx(conn):
+                first = conn.execute("SELECT 1 FROM device_inbox WHERE device_id = ? AND slot_key = ?",
+                                     (row["id"], slot_key)).fetchone() is None
                 extra = inbox_entry(conn, row["id"], slot_key, msg)
         except sqlite3.IntegrityError:
             pass  # device deleted since it was listed; the push below will just fail
@@ -168,6 +170,10 @@ async def send_to_device(row: sqlite3.Row, msg: Message,
     with db() as conn, write_tx(conn):
         insert_delivery(conn, msg, row["id"], o.status, o=o)
         apply_outcome(conn, row["id"], o)
+        if extra is not None and first and o.status == "delivered":
+            # This send put the verse in the inbox, so it counts in the verse's
+            # totals; a re-send of a verse the device already has does not.
+            verse_stats.bump(conn, slot_key, msg.verse_id, "sent", 1, msg.festival)
     _log_line(msg, row["id"], o)
     return o
 

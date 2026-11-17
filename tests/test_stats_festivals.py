@@ -354,6 +354,22 @@ def test_wrong_date_link_expires_after_the_festival_day(fest):
         assert cancel(conn, token, FEST_DAY)[0] == "cancelled"
 
 
+def test_wrong_date_link_is_dead_once_the_festival_verse_has_been_sent(fest):
+    a = free_verses(fest)[0]
+    run_prepare(fest, FakePicker([[a]], approve=[a]))
+    url = "/push/festival/cancel/" + fest.mail[0][1].rsplit("/", 1)[1].strip()
+    device_headers(fest.client)
+    send(fest, FEST_DAY, 0)
+    slot = slots_for(FEST_DAY)[0]
+
+    assert fest.client.get(url).status_code == 410        # no button to press
+    with db() as conn:
+        assert cancel(conn, url.rsplit("/", 1)[1], FEST_DAY)[0] == "expired"
+        assert verse_for(conn, fest.store, slot).verse_id == a    # still what people received
+    assert pick_row()["status"] == "picked"
+    assert dates("Diwali")[2026] == ("2026-08-01", 0)     # the date isn't marked suspect
+
+
 def test_cancel_drops_a_quote_already_written_for_the_festival_verse(fest):
     a = free_verses(fest)[0]
     run_prepare(fest, FakePicker([[a]], approve=[a]))
@@ -457,7 +473,7 @@ def notes(env, monkeypatch):
 
 
 def seen_by(env, headers=None):
-    r = env.client.get("/releases/latest", headers=headers or {}).json()["release"]
+    r = env.client.get("/push/releases/latest", headers=headers or {}).json()["release"]
     return r and r["version"]
 
 
@@ -588,9 +604,45 @@ def test_dev_helpers_send_real_looking_pushes_with_a_mocked_model(env, monkeypat
     assert newest["festival"] == "Diwali" and newest["verse_id"] == f["verse_id"]
     assert client.post("/dev/festival-today?name=Nope").status_code == 404
 
-    assert env.client.get("/releases/latest").json()["release"] is None
+    assert env.client.get("/push/releases/latest").json()["release"] is None
     assert client.post("/dev/release-all").json()["stage"] == "all"       # no push, just visible
-    assert env.client.get("/releases/latest").json()["release"]["version"] == version_mod.app_version()
+    assert env.client.get("/push/releases/latest").json()["release"]["version"] == version_mod.app_version()
+
+
+def test_dev_helpers_refuse_other_websites():
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    import app.local_dev as dev
+
+    app = FastAPI()
+    app.include_router(dev.router)
+    client = TestClient(app)        # no scheduler: a call that gets through answers 503
+    for headers in ({"Sec-Fetch-Site": "cross-site"}, {"Sec-Fetch-Site": "same-site"},
+                    {"Origin": "https://evil.example"}):
+        assert client.post("/dev/test-push", headers=headers).status_code == 403
+    for headers in ({}, {"Sec-Fetch-Site": "same-origin", "Origin": "http://testserver"}):
+        assert client.post("/dev/test-push", headers=headers).status_code == 503
+
+
+def test_malformed_device_ids_are_refused_not_crashed_on(env):
+    for bad in ("9" * 30, "1.0", "-1", " 1"):
+        h = {"X-Device-Id": bad, "X-Device-Secret": "x"}
+        assert env.client.get("/push/inbox", headers=h).status_code == 401
+        assert env.client.get("/push/releases/latest", headers=h).json() == {"release": None}
+
+
+def test_forced_send_counts_as_sent_only_where_it_is_the_first_send(env, monkeypatch):
+    monkeypatch.setattr("app.verse_stats.local_today", lambda: DAY)
+    device_headers(env.client)
+    force = lambda: env.client.post("/push/send-daily?force=true", headers=ADM)  # noqa: E731
+    assert force().status_code == 200
+    (row,) = stats(env)
+    assert row["sent"] == 1
+    with db() as conn:                       # a later forced re-send of the same slot
+        conn.execute("DELETE FROM admin_actions")
+    force()
+    assert stats(env)[0]["sent"] == 1
 
 
 def test_dev_helpers_are_not_mounted_without_local_dev():

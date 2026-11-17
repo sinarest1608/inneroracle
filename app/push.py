@@ -214,16 +214,26 @@ async def subscribe(sub: Subscription, request: Request) -> JSONResponse:
 
 # ---- device-scoped -------------------------------------------------------------
 
+_DEVICE_ID = re.compile(r"[0-9]{1,15}")  # ASCII digits, well inside SQLite's integer range
+
+
+def _device_creds(device_id: str | None, secret: str | None) -> int | None:
+    """The numeric device id when both headers are well-formed, else None."""
+    if not device_id or not secret or len(secret) > 200 or not _DEVICE_ID.fullmatch(device_id):
+        return None
+    return int(device_id)
+
+
 def device(
     x_device_id: str | None = Header(default=None),
     x_device_secret: str | None = Header(default=None),
 ) -> sqlite3.Row:
-    if not x_device_id or not x_device_secret or not x_device_id.isdigit() \
-            or len(x_device_secret) > 200:
+    device_id = _device_creds(x_device_id, x_device_secret)
+    if device_id is None:
         raise HTTPException(401, "device credentials required")
     with db() as conn:
         row = conn.execute("SELECT * FROM push_subscriptions WHERE id = ?",
-                           (int(x_device_id),)).fetchone()
+                           (device_id,)).fetchone()
     if row is None:
         raise HTTPException(404, "unknown device")
     if not secrets.compare_digest(row["secret_hash"], _hash_secret(x_device_secret)):
@@ -549,7 +559,7 @@ async def push_announce(body: Announce) -> JSONResponse:
     return JSONResponse(result, headers={"Cache-Control": "no-store"})
 
 
-@router.get("/releases/latest")
+@router.get("/push/releases/latest")
 def releases_latest(
     x_device_id: str | None = Header(default=None),
     x_device_secret: str | None = Header(default=None),
@@ -557,14 +567,14 @@ def releases_latest(
     """The newest release this caller may see: one announced to everyone, or, for
     a tester device, one sent to testers. Bad or missing device headers just mean
     "not a tester"."""
-    device_id = None
-    if x_device_id and x_device_secret and x_device_id.isdigit() and len(x_device_secret) <= 200:
-        with db() as conn:
-            row = conn.execute("SELECT secret_hash FROM push_subscriptions WHERE id = ?",
-                               (int(x_device_id),)).fetchone()
-        if row and secrets.compare_digest(row["secret_hash"], _hash_secret(x_device_secret)):
-            device_id = int(x_device_id)
+    device_id = _device_creds(x_device_id, x_device_secret)
     with db() as conn:
+        if device_id is not None:
+            row = conn.execute("SELECT secret_hash FROM push_subscriptions WHERE id = ?",
+                               (device_id,)).fetchone()
+            if not row or not secrets.compare_digest(row["secret_hash"],
+                                                     _hash_secret(x_device_secret)):
+                device_id = None
         return JSONResponse({"release": releases.visible_release(conn, device_id)},
                             headers={"Cache-Control": "no-store"})
 
@@ -600,7 +610,9 @@ def _dead_link() -> HTMLResponse:
 
 
 def _expired_link() -> HTMLResponse:
-    return _festival_page("This link has expired", "The festival day has passed.", status=410)
+    return _festival_page("This link has expired",
+                          "The festival verse has already been sent, or the day has passed.",
+                          status=410)
 
 
 @router.get("/push/festival/cancel/{token}")
@@ -608,9 +620,11 @@ def festival_cancel_page(token: str = _TOKEN) -> HTMLResponse:
     with db() as conn:
         row = conn.execute("SELECT festival, day FROM festival_picks WHERE cancel_hash = ? "
                            "AND status = 'picked'", (festival_pick.hash_token(token),)).fetchone()
+        gone = row is not None and (date.fromisoformat(row["day"]) < local_today()
+                                    or festival_pick.sent(conn, date.fromisoformat(row["day"])))
     if row is None:
         return _dead_link()
-    if date.fromisoformat(row["day"]) < local_today():
+    if gone:
         return _expired_link()
     return _festival_page(
         f"{row['festival']} on {row['day']}",

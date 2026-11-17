@@ -1,6 +1,6 @@
 // "What's new": a themed pop-up shown once per device per release, and one-time
 // hints that point at the new parts of the app. Which release this device may
-// see is the server's call (GET /releases/latest: nothing until the owner has
+// see is the server's call (GET /push/releases/latest: nothing until the owner has
 // announced it to this device), so a deploy by itself shows nothing. What has
 // been seen is kept on the device, in localStorage.
 
@@ -42,7 +42,7 @@ async function fetchRelease(){
   let headers = {};
   try { const saved = ps && await ps.get(); if (saved) headers = ps.deviceHeaders(saved); } catch {}
   try {
-    const r = await fetch('/releases/latest', { headers, cache:'no-store' });
+    const r = await fetch('/push/releases/latest', { headers, cache:'no-store' });
     if (!r.ok) return null;
     const rel = (await r.json()).release;
     if (!rel || typeof rel.version !== 'string' || typeof rel.title !== 'string') return null;

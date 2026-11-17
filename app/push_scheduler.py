@@ -186,6 +186,10 @@ class PushScheduler:
             # also retries a failed pick every day until the festival morning.
             add(self.festival_sync_job, cron(day=1, hour=2, minute=0), id="festival-sync")
             add(self.festival_pick_job, cron(hour=4, minute=15), id="festival-pick")
+            if not alerts.configured():
+                log.warning("festival verses are on but owner email is not (ALERT_SMTP_USER / "
+                            "ALERT_SMTP_PASSWORD): picks and failures only reach this log, and "
+                            "no \"wrong date\" link is sent")
         self.sched.start()
         if settings.festival_verses_enabled:
             with db() as conn:

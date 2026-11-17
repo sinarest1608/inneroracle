@@ -14,7 +14,7 @@ import random
 import sqlite3
 from datetime import datetime
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 
 from app import festivals
 from app.daily_verse import (
@@ -25,7 +25,19 @@ from app.push_db import db, utcnow
 from app.push_service import CONCURRENCY, Message, send_to_device, verse_message
 from app.version import latest_release
 
-router = APIRouter(prefix="/dev")
+
+
+def same_origin(request: Request) -> None:
+    """Refuse calls made by another website open in the same browser (these
+    helpers have no login). The app's own page and curl are let through."""
+    site = request.headers.get("sec-fetch-site")
+    origin = request.headers.get("origin")
+    if (site and site not in ("same-origin", "none")) or \
+            (origin and origin.partition("://")[2] != request.headers.get("host")):
+        raise HTTPException(403, "local test helpers are same-origin only")
+
+
+router = APIRouter(prefix="/dev", dependencies=[Depends(same_origin)])
 
 
 def _sched(request: Request):

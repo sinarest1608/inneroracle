@@ -102,7 +102,11 @@ shloka, transliteration and translation, with a button to ask about it. Light an
 <img src="assets/push-sidebar-mobile.png" alt="Daily verse opt-in in the mobile menu" width="320" />
 
 **Privacy:** to prevent abuse, the IP address used to sign up is kept for 7 days, then only
-in hashed form for 90 days. You can turn notifications off anytime from the menu.
+in hashed form for 90 days. To show Unread, History and Favourites, the server keeps the
+verses sent to each subscribed device and when each was opened or starred; unstarred entries
+are deleted after 90 days, and everything for a device is deleted when it turns notifications
+off. Verse statistics are totals only, never per device. You can turn notifications off
+anytime from the menu.
 
 ---
 

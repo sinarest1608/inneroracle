@@ -87,7 +87,7 @@ def _festival_block(f: Festival) -> str:
 class FestivalPicker:
     def __init__(self, client: anthropic.AsyncAnthropic | None = None):
         self._client = client or anthropic.AsyncAnthropic(
-            api_key=settings.anthropic_api_key, timeout=20.0, max_retries=0
+            api_key=settings.anthropic_api_key, timeout=90.0, max_retries=1
         )
 
     async def _ask(self, system: list[dict] | str, user: str) -> str:
@@ -223,7 +223,7 @@ def success_email(f: Festival, day: date, token: str | None) -> tuple[str, str]:
     base = _base_url()
     if token and base:
         body += ["", "Wrong date? Open this link to cancel it, and that day will use the "
-                     "normal verse instead (works once, until the end of the festival day):",
+                     "normal verse instead (works once, until that morning's verse is sent):",
                  f"{base}/push/festival/cancel/{token}"]
     return subject, "\n".join(body)
 
@@ -255,9 +255,17 @@ async def prepare(picker: FestivalPicker, store: VerseStore, today: date | None 
     return len(todo)
 
 
+def sent(conn: sqlite3.Connection, day: date) -> bool:
+    """Has that day's morning send (the festival one) already started? After
+    that the pick must stay as it is: it is what people received."""
+    return conn.execute("SELECT 1 FROM push_daily_runs WHERE run_date = ?",
+                        (slots_for(day)[0].key,)).fetchone() is not None
+
+
 def cancel(conn: sqlite3.Connection, token: str, today: date | None = None) -> tuple[str, sqlite3.Row | None]:
     """Use a "wrong date" link. Returns (result, pick row): result is
-    'cancelled', 'expired' or 'invalid'. Cancelling also marks that year's date
+    'cancelled', 'expired' (the day has passed or its verse has already been
+    sent) or 'invalid'. Cancelling also marks that year's date
     as suspect and drops a quote already written for the festival verse."""
     today = today or local_today()
     with write_tx(conn):
@@ -266,15 +274,14 @@ def cancel(conn: sqlite3.Connection, token: str, today: date | None = None) -> t
         if row is None:
             return "invalid", None
         day = date.fromisoformat(row["day"])
-        if today > day:
+        if today > day or sent(conn, day):
             return "expired", row
         conn.execute("UPDATE festival_picks SET status = 'cancelled', cancel_hash = NULL "
                      "WHERE id = ?", (row["id"],))
         conn.execute("UPDATE festival_dates SET suspect = 1 WHERE festival = ? AND year = ?",
                      (row["festival"], day.year))
-        key = slots_for(day)[0].key
-        if conn.execute("SELECT 1 FROM push_daily_runs WHERE run_date = ?", (key,)).fetchone() is None:
-            conn.execute("DELETE FROM daily_quotes WHERE quote_date = ?", (key,))
+        # Not sent yet (checked above), so a quote written for the festival verse goes too.
+        conn.execute("DELETE FROM daily_quotes WHERE quote_date = ?", (slots_for(day)[0].key,))
         conn.execute("INSERT INTO admin_actions(at, action, detail) VALUES (?, 'festival_cancel', ?)",
                      (utcnow(), f"festival={row['festival']} day={row['day']}"))
         return "cancelled", row
