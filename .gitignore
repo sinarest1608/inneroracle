@@ -23,6 +23,7 @@ epubs/
 
 # Local-only planning doc (kept on disk, not tracked)
 PLAN.md
+plans/
 
 # OS
 .DS_Store
@@ -30,12 +31,11 @@ PLAN.md
 # tasks
 tasks/
 tasks/todo.md
+tasks
 
 # claude 
 .claude
 claude/
-/tasks
-
 
 # Server-only push state (push.db + backups) — never commit
 state/
@@ -45,3 +45,4 @@ scripts/out/
 
 # Local notes on .env fields (not published)
 ENV_FIELDS.md
+tasks/todo.md
