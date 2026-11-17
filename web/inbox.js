@@ -144,6 +144,7 @@ function panel(view){
     open.type = 'button';
     const meta = node('span', 'inbox-meta');
     meta.append(node('span', 'inbox-ref', refText(e.verse_id)), document.createTextNode(' · ' + when(e)));
+    if (typeof e.festival === 'string' && e.festival) meta.append(node('span', 'inbox-fest', ' · ' + e.festival));
     if (!e.opened && view !== 'unread') meta.append(node('span', 'inbox-new', ' · unread'));
     open.append(meta, node('span', 'inbox-quote', typeof e.quote === 'string' ? e.quote : ''));
     open.onclick = ()=> openVerse(e.verse_id, e.id);

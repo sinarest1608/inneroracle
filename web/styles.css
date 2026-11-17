@@ -166,6 +166,13 @@ body { margin:0; height:100vh; height:100dvh; overflow:hidden; color:var(--ink);
   overflow-wrap:break-word; }
 .inbox-item.unread .inbox-quote { color:var(--ink-strong); }
 
+.inbox-fest { color:var(--accent); letter-spacing:.04em; }
+
+/* ---- plain notice page (festival "wrong date" link) ---- */
+.notice { max-width:520px; margin:14vh auto 0; padding:0 20px; }
+.notice h1 { margin:0 0 10px; font-size:22px; font-weight:600; color:var(--ink-strong); }
+.notice p { margin:0 0 6px; line-height:1.6; }
+
 /* ---- deep-linked verse card: a rubricated folio, flat ---- */
 .verse-card { margin:4px 0 26px; animation:rise .3s cubic-bezier(.2,.7,.2,1); }
 .vc-today { margin-bottom:16px; padding:4px 0 4px 16px; border-left:3px solid var(--accent); }

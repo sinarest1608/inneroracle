@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Makar Sankranti",
+    "aliases": ["Makara Sankranti", "Makar Sankranti / Pongal"],
+    "theme": "The sun turns north and the days begin to lengthen: a turning from darkness toward light, and gratitude for the harvest that sustains life."
+  },
+  {
+    "name": "Maha Shivaratri",
+    "aliases": ["Mahashivratri", "Maha Shivaratri/Shivaratri", "Shivaratri"],
+    "theme": "The great night of Shiva: staying awake in stillness, turning inward, and overcoming ignorance through meditation and self-discipline."
+  },
+  {
+    "name": "Holi",
+    "aliases": [],
+    "theme": "The victory of devotion and good over evil, the arrival of spring, and the dropping of old grievances so that everyone meets as equals."
+  },
+  {
+    "name": "Ram Navami",
+    "aliases": ["Rama Navami"],
+    "theme": "The birth of Rama, the model of dharma: doing one's duty with integrity, truthfulness and steadiness whatever it costs."
+  },
+  {
+    "name": "Raksha Bandhan",
+    "aliases": ["Rakshabandhan", "Raksha Bandhan (Rakhi)"],
+    "theme": "The bond of protection and care between people: selfless love, loyalty, and looking after one another's welfare."
+  },
+  {
+    "name": "Janmashtami",
+    "aliases": ["Krishna Janmashtami", "Sri Krishna Janmashtami"],
+    "theme": "The birth of Krishna: the divine appearing in the world to protect the good and restore dharma, met with joyful devotion."
+  },
+  {
+    "name": "Ganesh Chaturthi",
+    "aliases": ["Ganesh Chaturthi/Vinayaka Chaturthi", "Vinayaka Chaturthi", "Vinayaka Chathurthi"],
+    "theme": "Honouring Ganesha, remover of obstacles and patron of wisdom: beginning new undertakings with a clear mind and humility."
+  },
+  {
+    "name": "Navratri",
+    "aliases": ["First Day of Sharad Navratri", "Sharad Navratri"],
+    "theme": "Nine nights honouring the divine feminine as strength: inner discipline and the gradual victory of clarity over the mind's restlessness and inertia."
+  },
+  {
+    "name": "Dussehra",
+    "aliases": ["Dussehra (Maha Navami)", "Vijaya Dashami", "Dussehra/Vijaya Dashami"],
+    "theme": "The victory of good over evil and of righteousness over arrogance: the courage to act rightly and conquer the enemy within."
+  },
+  {
+    "name": "Diwali",
+    "aliases": ["Diwali/Deepavali", "Deepavali"],
+    "theme": "The victory of light over darkness and of knowledge over ignorance: lighting the lamp of wisdom within."
+  }
+]

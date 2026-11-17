@@ -9,22 +9,23 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import html
 import io
 import re
 import secrets
 import sqlite3
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from functools import lru_cache
 from typing import Literal
 from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Path, Query, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from app import inbox
+from app import festival_pick, inbox, verse_stats
 from app.config import settings
-from app.daily_verse import verse_of_the_day
+from app.daily_verse import local_today, verse_of_the_day
 from app.push_config import admin_token_ok
 from app.push_db import audit, db, utcnow, write_tx
 from app.push_service import (
@@ -490,6 +491,75 @@ def push_admin_actions(limit: int = Query(default=100, ge=1, le=1000)) -> dict:
             "SELECT id, at, action, detail FROM admin_actions ORDER BY id DESC LIMIT ?",
             (limit,))]
     return {"actions": rows}
+
+
+@router.get("/push/stats", dependencies=[Depends(admin)])
+def push_stats(days: int = Query(default=90, ge=1, le=3650)) -> JSONResponse:
+    """Totals per daily verse, newest first. Aggregate only: there is no
+    per-device view of this, by design."""
+    with db() as conn:
+        return JSONResponse({"stats": verse_stats.rows(conn, days)},
+                            headers={"Cache-Control": "no-store"})
+
+
+# ---- festival "wrong date" link (from the owner's email; no login) ------------------
+# GET only shows a button, so a mail scanner that pre-opens links can't cancel
+# anything; the POST does it, once. Neither page ever shows the verse.
+
+_TOKEN = Path(pattern=r"^[A-Za-z0-9_-]{20,100}$")
+_PAGE_HEADERS = {"Cache-Control": "no-store", "Referrer-Policy": "no-referrer",
+                 "X-Robots-Tag": "noindex",
+                 "Content-Security-Policy": "default-src 'none'; style-src 'self'; "
+                                            "form-action 'self'; frame-ancestors 'none'"}
+
+
+def _festival_page(heading: str, text: str, button: str | None = None,
+                   status: int = 200) -> HTMLResponse:
+    form = (f'<form method="post"><button class="vc-ask" type="submit">{html.escape(button)}'
+            "</button></form>") if button else ""
+    return HTMLResponse(
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        '<meta name="robots" content="noindex"><title>InnerOracle</title>'
+        '<link rel="stylesheet" href="/ui/styles.css"></head>'
+        '<body><div class="backdrop"></div><main class="notice">'
+        f"<h1>{html.escape(heading)}</h1><p>{html.escape(text)}</p>{form}</main></body></html>",
+        status_code=status, headers=_PAGE_HEADERS)
+
+
+def _dead_link() -> HTMLResponse:
+    return _festival_page("This link is no longer valid",
+                          "It has already been used, or it was never issued.", status=404)
+
+
+def _expired_link() -> HTMLResponse:
+    return _festival_page("This link has expired", "The festival day has passed.", status=410)
+
+
+@router.get("/push/festival/cancel/{token}")
+def festival_cancel_page(token: str = _TOKEN) -> HTMLResponse:
+    with db() as conn:
+        row = conn.execute("SELECT festival, day FROM festival_picks WHERE cancel_hash = ? "
+                           "AND status = 'picked'", (festival_pick.hash_token(token),)).fetchone()
+    if row is None:
+        return _dead_link()
+    if date.fromisoformat(row["day"]) < local_today():
+        return _expired_link()
+    return _festival_page(
+        f"{row['festival']} on {row['day']}",
+        "Is this date wrong? Cancelling means that day sends the normal verse instead. "
+        "This can't be undone.", button="Cancel the festival verse")
+
+
+@router.post("/push/festival/cancel/{token}")
+def festival_cancel(token: str = _TOKEN) -> HTMLResponse:
+    with db() as conn:
+        result, _ = festival_pick.cancel(conn, token)
+    if result == "invalid":
+        return _dead_link()
+    if result == "expired":
+        return _expired_link()
+    return _festival_page("Cancelled", "That day will use the normal verse.")
 
 
 # ---- public read-only ----------------------------------------------------------

@@ -97,7 +97,32 @@ def sync_rotation(conn: sqlite3.Connection, store: VerseStore, seed: str) -> int
     return len(new)
 
 
+def festival_pick(conn: sqlite3.Connection, store: VerseStore,
+                  slot: Slot) -> tuple[str, Verse] | None:
+    """(festival name, verse) when this is the morning send of a festival day
+    with a verse locked in for it (app/festival_pick.py)."""
+    if slot.index != 0:
+        return None
+    row = conn.execute("SELECT festival, verse_id FROM festival_picks WHERE day = ? "
+                       "AND status = 'picked'", (slot.day.isoformat(),)).fetchone()
+    if row is None:
+        return None
+    v = store.get(row["verse_id"])
+    return (row["festival"], v) if v is not None and v.translation.strip() else None
+
+
+def festival_for(conn: sqlite3.Connection, store: VerseStore, slot: Slot) -> str | None:
+    pick = festival_pick(conn, store, slot)
+    return pick[0] if pick else None
+
+
 def verse_for(conn: sqlite3.Connection, store: VerseStore, slot: Slot) -> Verse | None:
+    """This send's verse: the festival pick if there is one, else the rotation's."""
+    pick = festival_pick(conn, store, slot)
+    return pick[1] if pick else rotation_verse(conn, store, slot)
+
+
+def rotation_verse(conn: sqlite3.Connection, store: VerseStore, slot: Slot) -> Verse | None:
     """rotation[((day − start) × sends_per_day + index) mod N], stepping forward
     past verses that no longer exist or lack a translation."""
     ids = [r[0] for r in conn.execute("SELECT verse_id FROM verse_rotation ORDER BY position")]
@@ -139,12 +164,15 @@ def trim_translation(text: str, limit: int = FALLBACK_MAX) -> str:
     return cut + "…"
 
 
-def notification_text(verse: Verse, quote: dict) -> tuple[str, str]:
-    """(title, body) for a stored/fallback quote dict."""
+def notification_text(verse: Verse, quote: dict, festival: str | None = None) -> tuple[str, str]:
+    """(title, body) for a stored/fallback quote dict. On a festival day the
+    title is the greeting; the body is the usual quote."""
     book = BOOK_NAME[verse.book]
     if quote["quote_source"] == "fallback":
-        return f"{book} {verse.chapter}.{verse.verse_no}", quote["quote"]
-    title = (f"{quote['speaker']} in the {book} says" if quote.get("speaker")
+        return (f"Happy {festival}" if festival
+                else f"{book} {verse.chapter}.{verse.verse_no}"), quote["quote"]
+    title = (f"Happy {festival}" if festival
+             else f"{quote['speaker']} in the {book} says" if quote.get("speaker")
              else f"The {book} says")
     return title, f"{quote['quote']} Tap for the exact verse."
 
@@ -181,7 +209,8 @@ def _slot_payload(conn: sqlite3.Connection, store: VerseStore, slot: Slot) -> di
     q = stored_quote(conn, slot)
     if q is None or q["verse_id"] != verse.verse_id:
         q = fallback_quote(verse)
-    title, _ = notification_text(verse, q)
+    festival = festival_for(conn, store, slot)
+    title, _ = notification_text(verse, q, festival)
     return {
         "verse_id": verse.verse_id, "book": verse.book, "chapter": verse.chapter,
         "verse_no": verse.verse_no, "speaker": q["speaker"],
@@ -189,6 +218,7 @@ def _slot_payload(conn: sqlite3.Connection, store: VerseStore, slot: Slot) -> di
         "sanskrit": verse.sanskrit, "quote": q["quote"],
         "quote_source": q["quote_source"], "title": title,
         "url": verse_url(verse.verse_id), "date": slot.day.isoformat(), "time": slot.time,
+        "festival": festival,
     }
 
 

@@ -113,7 +113,8 @@ def env(tmp_path, monkeypatch):
                      vapid_subject="mailto:t@example.com", push_rotation_seed="seed",
                      push_rotation_start="2026-01-01", push_subscribe_rate=5,
                      push_subscribe_rate_wide=30, push_signup_budget_per_hour=100,
-                     push_max_devices=5000).items():
+                     push_max_devices=5000, festival_verses_enabled=False,
+                     alert_smtp_user="", alert_smtp_password="", public_base_url="").items():
         monkeypatch.setattr(settings, k, v)
     VerseStore(settings.sqlite_path).upsert(VERSES)
     store = VerseStore(settings.sqlite_path, readonly=True)
@@ -828,5 +829,5 @@ def test_purge_drops_old_unstarred_entries_keeps_starred(env):
 def test_inbox_table_has_no_endpoint_or_ip_columns(env):
     with db() as conn:
         cols = {r[1] for r in conn.execute("PRAGMA table_info(device_inbox)")}
-    assert cols == {"id", "device_id", "slot_key", "verse_id", "title", "quote", "sent_at",
-                    "opened_at", "starred_at"}
+    assert cols == {"id", "device_id", "slot_key", "verse_id", "title", "quote", "festival",
+                    "sent_at", "opened_at", "starred_at"}

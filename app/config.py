@@ -52,6 +52,25 @@ class Settings(BaseSettings):
     quote_ai_enabled: bool = True
     quote_model: str = "claude-haiku-5-5"
 
+    # Festival verses: on a festival day the morning send is a verse chosen for
+    # the festival (app/festival_pick.py) instead of the rotation's.
+    festival_verses_enabled: bool = True
+    festival_model: str = "claude-haiku-5-5"
+    festival_feed_url: str = (
+        "https://calendar.google.com/calendar/ical/"
+        "en.indian%23holiday%40group.v.calendar.google.com/public/basic.ics"
+    )
+    # Where the "wrong date" link in the festival email points. Empty = use
+    # VAPID_SUBJECT when that is an https:// URL.
+    public_base_url: str = ""
+
+    # Optional owner emails (app/alerts.py). Off unless user + password are set.
+    alert_smtp_host: str = "smtp.gmail.com"
+    alert_smtp_port: int = 587
+    alert_smtp_user: str = ""
+    alert_smtp_password: str = ""
+    alert_email_to: str = ""  # empty = send to ALERT_SMTP_USER
+
     @property
     def qdrant_mode(self) -> str:
         return "remote" if self.qdrant_url else "embedded"

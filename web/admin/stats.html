@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<title>InnerOracle · Verse stats</title>
+<link rel="icon" href="/ui/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/ui/styles.css" />
+<link rel="stylesheet" href="/ui/admin/log.css" />
+</head>
+<body>
+  <main class="adm">
+    <header class="adm-head">
+      <h1><span class="danda">॥</span> Verse stats <span class="danda">॥</span></h1>
+      <a class="adm-btn" href="/ui/admin/log.html">Push log</a>
+      <button class="adm-btn" id="forget" type="button" hidden>Forget token</button>
+    </header>
+
+    <form id="unlock" class="adm-unlock" autocomplete="off">
+      <label for="token">Admin token</label>
+      <input id="token" type="password" autocomplete="off" spellcheck="false" />
+      <button class="adm-btn primary" type="submit">Unlock</button>
+    </form>
+
+    <p class="adm-msg" id="msg" hidden></p>
+
+    <section id="panel" hidden>
+      <form id="filters" class="adm-filters" autocomplete="off">
+        <label>Days <input name="days" type="number" min="1" max="3650" value="90" /></label>
+        <button class="adm-btn primary" type="submit">Load</button>
+      </form>
+      <p class="adm-meta">Totals per verse only. Nothing here is recorded per device.</p>
+      <div id="out"></div>
+    </section>
+  </main>
+  <script src="/ui/admin/stats.js"></script>
+</body>
+</html>

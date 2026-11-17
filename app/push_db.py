@@ -84,12 +84,47 @@ CREATE TABLE IF NOT EXISTS device_inbox (
     verse_id   TEXT NOT NULL,
     title      TEXT NOT NULL,
     quote      TEXT NOT NULL,
+    festival   TEXT,
     sent_at    TEXT NOT NULL,
     opened_at  TEXT,
     starred_at TEXT,
     UNIQUE (device_id, slot_key)
 );
 CREATE INDEX IF NOT EXISTS idx_inbox_sent ON device_inbox(sent_at);
+
+-- Totals only. No device id, IP, user agent or timestamp may ever be added here.
+CREATE TABLE IF NOT EXISTS verse_stats (
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    slot_key TEXT NOT NULL UNIQUE,
+    verse_id TEXT NOT NULL,
+    festival TEXT,
+    sent     INTEGER NOT NULL DEFAULT 0,
+    opened   INTEGER NOT NULL DEFAULT 0,
+    starred  INTEGER NOT NULL DEFAULT 0
+);
+
+-- One row per festival and calendar year, from the public holiday feed.
+-- day is NULL when the feed had no usable date; suspect rows are never used.
+CREATE TABLE IF NOT EXISTS festival_dates (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    festival   TEXT NOT NULL,
+    year       INTEGER NOT NULL,
+    day        TEXT,
+    suspect    INTEGER NOT NULL DEFAULT 0,
+    fetched_at TEXT NOT NULL,
+    UNIQUE (festival, year)
+);
+
+-- The verse locked in for a festival day (status: picked / fallback / cancelled).
+CREATE TABLE IF NOT EXISTS festival_picks (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    festival    TEXT NOT NULL,
+    day         TEXT NOT NULL UNIQUE,
+    verse_id    TEXT,
+    status      TEXT NOT NULL,
+    cancel_hash TEXT,
+    created_at  TEXT NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS verse_rotation (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,

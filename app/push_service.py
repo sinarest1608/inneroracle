@@ -23,10 +23,10 @@ from zoneinfo import ZoneInfo
 
 from pywebpush import WebPushException, webpush
 
-from app import inbox
+from app import inbox, verse_stats
 from app.config import settings
 from app.daily_verse import (
-    Slot, current_slot, local_today, notification_text, send_times, slot_from_key,
+    Slot, current_slot, festival_for, local_today, notification_text, send_times, slot_from_key,
     stored_quote, verse_for, verse_url,
 )
 from app.models import Verse
@@ -68,6 +68,7 @@ class Message:
     speaker_source: str | None = None
     quote_source: str | None = None
     quote: str | None = None  # the bare quote, for the device's inbox entry
+    festival: str | None = None
 
     def payload(self, extra: dict | None = None) -> str:
         return json.dumps({"title": self.title, "body": self.body,
@@ -106,7 +107,8 @@ def inbox_entry(conn: sqlite3.Connection, device_id: int, slot_key: str,
     (`inbox_id`, `unread`). Non-verse messages have no entry."""
     if msg.verse_id is None:
         return None
-    return inbox.add(conn, device_id, slot_key, msg.verse_id, msg.title, msg.quote or msg.body)
+    return inbox.add(conn, device_id, slot_key, msg.verse_id, msg.title, msg.quote or msg.body,
+                     msg.festival)
 
 
 # ---- logging + device bookkeeping ---------------------------------------------
@@ -211,10 +213,10 @@ def test_message() -> Message:
 
 # ---- the daily verse -----------------------------------------------------------
 
-def verse_message(kind: str, verse: Verse, q: dict) -> Message:
-    title, body = notification_text(verse, q)
+def verse_message(kind: str, verse: Verse, q: dict, festival: str | None = None) -> Message:
+    title, body = notification_text(verse, q, festival)
     return Message(kind, title, body, verse_url(verse.verse_id), verse.verse_id,
-                   q["speaker"], q["speaker_source"], q["quote_source"], q["quote"])
+                   q["speaker"], q["speaker_source"], q["quote_source"], q["quote"], festival)
 
 
 async def ensure_quote(store: VerseStore, writer: QuoteWriter, slot: Slot,
@@ -255,6 +257,9 @@ async def _send_daily_unclaimed(slot: Slot, msg: Message) -> None:
                              "error_type = ?, sent_at = ? WHERE id = ?",
                              (o.status, o.http_status, o.error_type, utcnow(), delivery_id))
                 apply_outcome(conn, row["id"], o)
+                if o.status == "delivered" and msg.verse_id is not None:
+                    # Anonymous total; same transaction as the delivery it counts.
+                    verse_stats.bump(conn, run_date, msg.verse_id, "sent", 1, msg.festival)
             _log_line(msg, row["id"], o)
 
     async def heartbeat() -> None:
@@ -297,8 +302,9 @@ async def run_daily(store: VerseStore, writer: QuoteWriter, slot: Slot | None = 
                          (slot.key, verse.verse_id, now, now))
         except sqlite3.IntegrityError:
             return "already_ran"
+        festival = festival_for(conn, store, slot)
     q = await ensure_quote(store, writer, slot, verse)
-    await _send_daily_unclaimed(slot, verse_message("daily", verse, q))
+    await _send_daily_unclaimed(slot, verse_message("daily", verse, q, festival))
     return "sent"
 
 
@@ -326,11 +332,12 @@ async def resume_stale(store: VerseStore, writer: QuoteWriter, day: date | None 
             conn.execute("UPDATE push_deliveries SET status = 'unknown' WHERE kind = 'daily' "
                          "AND run_date = ? AND status = 'pending'", (key,))
             verse = verse_for(conn, store, slot)
+            festival = festival_for(conn, store, slot)
         log.warning("push.run slot=%s: resuming a stale run", key)
         if verse is None:
             continue
         q = await ensure_quote(store, writer, slot, verse)
-        await _send_daily_unclaimed(slot, verse_message("daily", verse, q))
+        await _send_daily_unclaimed(slot, verse_message("daily", verse, q, festival))
         resumed += 1
     return resumed
 
@@ -350,11 +357,12 @@ async def force_send(store: VerseStore, writer: QuoteWriter) -> int:
             raise ForcedAlreadyToday
         audit(conn, "force_send", detail)
         verse = verse_for(conn, store, slot)
+        festival = festival_for(conn, store, slot)
         devices = conn.execute("SELECT id, endpoint, p256dh, auth FROM push_subscriptions "
                                "ORDER BY id").fetchall()
     if verse is None:
         return 0
-    msg = verse_message("manual", verse, await ensure_quote(store, writer, slot, verse))
+    msg = verse_message("manual", verse, await ensure_quote(store, writer, slot, verse), festival)
     sem = asyncio.Semaphore(CONCURRENCY)
 
     async def one(row: sqlite3.Row) -> None:
