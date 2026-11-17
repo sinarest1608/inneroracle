@@ -1,89 +1,150 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>InnerOracle</title>
-<link rel="icon" href="/ui/favicon.svg" type="image/svg+xml" />
-<link rel="stylesheet" href="/ui/styles.css" />
-<link rel="manifest" href="/ui/manifest.webmanifest" />
-<link rel="apple-touch-icon" href="/ui/icons/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="InnerOracle" />
-<meta name="theme-color" content="#f5eed9" />
-</head>
-<body>
-  <div class="backdrop"></div><div class="glow"></div>
-  <div id="overlay"></div>
-  <div class="app">
-    <aside id="sidebar">
-      <button class="new" id="newChat">＋ New chat</button>
-      <div id="convs"></div>
-      <section class="daily" id="daily" aria-label="Daily verse">
-        <div class="daily-head">🔔 Daily verse</div>
-        <div id="dailyBody"></div>
-        <nav class="inbox-nav" id="inboxNav" aria-label="Verses sent to this device" hidden>
-          <button type="button" data-view="unread">Unread<span class="n" id="unreadCount"></span></button>
-          <button type="button" data-view="all">History</button>
-          <button type="button" data-view="starred">Favourites</button>
-        </nav>
-        <p class="daily-note" id="dailyNote" hidden>To prevent abuse, we keep the IP address used to sign up.</p>
-      </section>
-      <div class="side-foot">
-        <button class="clear-all" id="clearAll">Clear all chats</button>
-        <div>Grounded only in the two texts.</div>
-      </div>
-    </aside>
-
-    <div class="main">
-      <header>
-        <button class="icon-btn" id="hamburger" title="Conversations">☰</button>
-        <div class="title">
-          <h1><span class="danda">॥</span> InnerOracle <span class="danda">॥</span></h1>
-          <p>Life questions, answered from the Bhagavad Gita &amp; Ashtavakra Gita.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>InnerOracle</title>
+    <link rel="icon" href="/ui/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/ui/styles.css" />
+    <link rel="manifest" href="/ui/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/ui/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="InnerOracle" />
+    <meta name="theme-color" content="#f5eed9" />
+  </head>
+  <body>
+    <div class="backdrop"></div>
+    <div class="glow"></div>
+    <div id="overlay"></div>
+    <div class="app">
+      <aside id="sidebar">
+        <button class="new" id="newChat">＋ New chat</button>
+        <div id="convs"></div>
+        <section
+          class="daily"
+          id="daily"
+          aria-label="Daily verse"
+          data-hint="daily-verse"
+        >
+          <div class="daily-head">🔔 Daily verse</div>
+          <div id="dailyBody"></div>
+          <nav
+            class="inbox-nav"
+            id="inboxNav"
+            aria-label="Verses sent to this device"
+            hidden
+          >
+            <button type="button" data-view="unread" data-hint="sidebar-unread">
+              Unread<span class="n" id="unreadCount"></span>
+            </button>
+            <button type="button" data-view="all" data-hint="sidebar-history">
+              History
+            </button>
+            <button
+              type="button"
+              data-view="starred"
+              data-hint="sidebar-favourites"
+            >
+              Favourites
+            </button>
+          </nav>
+          <p class="daily-note" id="dailyNote" hidden>
+            To prevent abuse, we keep the IP address used to sign up.
+          </p>
+        </section>
+        <div class="side-foot">
+          <button class="clear-all" id="clearAll">Clear all chats</button>
+          <button class="whats-new" id="whatsNew" type="button" hidden>
+            What’s new
+          </button>
+          <div>
+            Grounded only in the two texts.<span id="appVersion"></span>
+          </div>
         </div>
-        <button class="icon-btn" id="theme" title="Toggle dark mode">🌙</button>
-      </header>
+      </aside>
 
-      <div id="chat"><div class="wrap" id="stream"></div></div>
+      <div class="main">
+        <header>
+          <button class="icon-btn" id="hamburger" title="Conversations">
+            ☰
+          </button>
+          <div class="title">
+            <h1>
+              <span class="danda">॥</span> InnerOracle
+              <span class="danda">॥</span>
+            </h1>
+            <p>
+              Life questions, answered from the Bhagavad Gita &amp; Ashtavakra
+              Gita.
+            </p>
+          </div>
+          <button class="icon-btn" id="theme" title="Toggle dark mode">
+            🌙
+          </button>
+        </header>
 
-      <div class="composer">
-        <div class="composer-inner">
-          <div class="controls">
-            <div class="pills" id="pills">
-              <button class="pill active" data-book="">Both</button>
-              <button class="pill" data-book="bhagavad_gita">Bhagavad Gita</button>
-              <button class="pill" data-book="ashtavakra_gita">Ashtavakra Gita</button>
-            </div>
-            <div class="about">
-              <button class="about-btn" id="aboutBtn" title="About the texts">i</button>
-              <div class="about-pop" id="aboutPop" hidden>
-                <h4>Bhagavad Gita</h4>
-                <p class="blurb">A 700-verse dialogue between prince Arjuna and Krishna on the
-                  battlefield of Kurukshetra (part of the epic Mahabharata). Its heart is
-                  selfless action — doing your duty without clinging to the results.</p>
-                <h4>Ashtavakra Gita</h4>
-                <p class="blurb">A short, piercing dialogue between the sage Ashtavakra and
-                  King Janaka on non-dual awareness (Advaita). Its message is radical and direct:
-                  you are already free — pure awareness, never bound.</p>
-                <p class="note">Both are classical Sanskrit wisdom texts from the Indian
-                  contemplative tradition. Pick one to focus the answer, or “Both” to compare.</p>
+        <div id="chat"><div class="wrap" id="stream"></div></div>
+
+        <div class="composer">
+          <div class="composer-inner">
+            <div class="controls">
+              <div class="pills" id="pills">
+                <button class="pill active" data-book="">Both</button>
+                <button class="pill" data-book="bhagavad_gita">
+                  Bhagavad Gita
+                </button>
+                <button class="pill" data-book="ashtavakra_gita">
+                  Ashtavakra Gita
+                </button>
+              </div>
+              <div class="about">
+                <button class="about-btn" id="aboutBtn" title="About the texts">
+                  i
+                </button>
+                <div class="about-pop" id="aboutPop" hidden>
+                  <h4>Bhagavad Gita</h4>
+                  <p class="blurb">
+                    A 700-verse dialogue between prince Arjuna and Krishna on
+                    the battlefield of Kurukshetra (part of the epic
+                    Mahabharata). Its heart is selfless action — doing your duty
+                    without clinging to the results.
+                  </p>
+                  <h4>Ashtavakra Gita</h4>
+                  <p class="blurb">
+                    A short, piercing dialogue between the sage Ashtavakra and
+                    King Janaka on non-dual awareness (Advaita). Its message is
+                    radical and direct: you are already free — pure awareness,
+                    never bound.
+                  </p>
+                  <p class="note">
+                    Both are classical Sanskrit wisdom texts from the Indian
+                    contemplative tradition. Pick one to focus the answer, or
+                    “Both” to compare.
+                  </p>
+                </div>
               </div>
             </div>
+            <form id="form">
+              <input
+                class="q"
+                id="q"
+                placeholder="What's on your mind?"
+                autocomplete="off"
+              />
+              <button class="send" id="send" type="submit">Ask</button>
+            </form>
           </div>
-          <form id="form">
-            <input class="q" id="q" placeholder="What's on your mind?" autocomplete="off" />
-            <button class="send" id="send" type="submit">Ask</button>
-          </form>
         </div>
       </div>
     </div>
-  </div>
 
-  <script src="/ui/marked.min.js"></script>
-  <script src="/ui/dompurify.min.js"></script>
-  <script src="/ui/pushstore.js"></script>
-  <script type="module" src="/ui/app.js"></script>
-</body>
+    <script src="/ui/marked.min.js"></script>
+    <script src="/ui/dompurify.min.js"></script>
+    <script src="/ui/pushstore.js"></script>
+    <script type="module" src="/ui/app.js"></script>
+  </body>
 </html>

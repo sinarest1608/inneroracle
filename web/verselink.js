@@ -96,4 +96,5 @@ export async function showVerse(id, entryId){
   stream.prepend(card(id, v, today, entry));
   scrollDown();
   markOpened(entry);
+  document.dispatchEvent(new Event('inneroracle:view'));
 }

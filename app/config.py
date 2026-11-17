@@ -71,6 +71,12 @@ class Settings(BaseSettings):
     alert_smtp_password: str = ""
     alert_email_to: str = ""  # empty = send to ALERT_SMTP_USER
 
+    # Local testing on the owner's Mac (scripts/run_local.sh). LOCAL_DEV mounts
+    # the /dev test helpers and is refused next to production settings;
+    # MOCK_MODEL returns canned quotes and festival picks, so testing costs nothing.
+    local_dev: bool = False
+    mock_model: bool = False
+
     @property
     def qdrant_mode(self) -> str:
         return "remote" if self.qdrant_url else "embedded"

@@ -69,10 +69,11 @@ class Message:
     quote_source: str | None = None
     quote: str | None = None  # the bare quote, for the device's inbox entry
     festival: str | None = None
+    tag: str = "daily-verse"  # same tag = replaces the earlier notification
 
     def payload(self, extra: dict | None = None) -> str:
         return json.dumps({"title": self.title, "body": self.body,
-                           "url": self.url, "tag": "daily-verse", **(extra or {})})
+                           "url": self.url, "tag": self.tag, **(extra or {})})
 
 
 # ---- one push ----------------------------------------------------------------

@@ -126,6 +126,20 @@ CREATE TABLE IF NOT EXISTS festival_picks (
     created_at  TEXT NOT NULL
 );
 
+-- Devices the owner marked as their own, for trying a release before everyone gets it.
+CREATE TABLE IF NOT EXISTS tester_devices (
+    device_id INTEGER PRIMARY KEY REFERENCES push_subscriptions(id) ON DELETE CASCADE
+);
+
+-- How far each release has been announced (no row = draft; then testers; then all).
+CREATE TABLE IF NOT EXISTS release_stages (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    version         TEXT NOT NULL UNIQUE,
+    stage           TEXT NOT NULL,
+    testers_sent_at TEXT,
+    all_sent_at     TEXT
+);
+
 CREATE TABLE IF NOT EXISTS verse_rotation (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
     position INTEGER NOT NULL UNIQUE,

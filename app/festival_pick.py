@@ -104,6 +104,9 @@ class FestivalPicker:
         nowhere and never reach the reviewer."""
         # The catalogue is identical on the retry, so it is cached; what varies
         # (festival, exclusions) comes after it.
+        if settings.mock_model:  # local testing: the first usable verses, no API call
+            ids = re.findall(r"^([A-Z]{2}-[\d.-]+): ", catalogue, re.M)
+            return [i for i in ids if i not in exclude][:SHORTLIST_SIZE]
         system = [{"type": "text", "text": SHORTLIST_SYSTEM},
                   {"type": "text", "text": "Catalogue:\n" + catalogue,
                    "cache_control": {"type": "ephemeral"}}]
@@ -116,6 +119,8 @@ class FestivalPicker:
         return [i for i in dict.fromkeys(ids) if isinstance(i, str)][:SHORTLIST_SIZE]
 
     async def review(self, f: Festival, verses: list[Verse]) -> str | None:
+        if settings.mock_model:
+            return verses[0].verse_id if verses else None
         lines = [_festival_block(f), "", "Candidates:"]
         for v in verses:
             lines.append(f"\n[{v.verse_id}] {_ref(v)}\nTranslation: {v.translation.strip()}")

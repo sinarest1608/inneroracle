@@ -11,6 +11,7 @@ epubs/
 tasks/
 .vscode/
 .env
+.env.local
 *.md
 PLAN.md
 state/

@@ -32,6 +32,8 @@ def _headers_for(path: str) -> list[tuple[bytes, bytes]] | None:
         return SW_HEADERS
     if path.startswith("/ui/admin/"):
         return ADMIN_HEADERS
+    if path.startswith("/ui/v/"):
+        return None  # versioned assets set their own long-lived caching
     if path.startswith("/ui/") and (path.endswith("/") or path.endswith(_APP_CODE)):
         return REVALIDATE
     return None

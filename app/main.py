@@ -10,7 +10,7 @@ from functools import lru_cache
 from typing import Annotated, Literal
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import RedirectResponse, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -19,6 +19,7 @@ from app.http_extras import PathHeaders, install_access_log_filter
 from app.models import Verse
 from app.qdrant import get_qdrant
 from app.store import VerseStore
+from app.version import app_version, asset_path, build_id, render_index
 
 
 @asynccontextmanager
@@ -36,6 +37,7 @@ async def lifespan(_app: FastAPI):
         install_access_log_filter()
         sched = PushScheduler(_store())
         await sched.startup()
+        _app.state.push_scheduler = sched
     yield
     if sched is not None:
         sched.shutdown()
@@ -163,11 +165,49 @@ def root() -> RedirectResponse:
     return RedirectResponse(url="/ui/")
 
 
+@app.get("/version")
+def version() -> JSONResponse:
+    """What is deployed. An open app compares `build` with its own when it comes
+    back to the foreground and reloads if they differ."""
+    body = {"build": build_id(), "version": app_version()}
+    if settings.local_dev:
+        body["local_dev"] = True
+    return JSONResponse(body, headers={"Cache-Control": "no-store"})
+
+
+@app.get("/ui/")
+@app.get("/ui/index.html")
+def index() -> HTMLResponse:
+    """The app page, pointing at this build's scripts and styles (never cached:
+    PathHeaders adds no-cache)."""
+    page = render_index()
+    if page is None:
+        raise HTTPException(status_code=404)
+    return HTMLResponse(page)
+
+
+@app.get("/ui/v/{build}/{name}")
+def versioned_asset(build: str, name: str) -> FileResponse:
+    """A script or stylesheet under a per-build URL. The current build's URLs
+    never change content, so they are cached for good; an old build's URL (a
+    page loaded before a deploy) gets the current file, uncached."""
+    path = asset_path(name)
+    if path is None:
+        raise HTTPException(status_code=404)
+    fresh = build == build_id() and not settings.local_dev
+    return FileResponse(path, headers={
+        "Cache-Control": "public, max-age=31536000, immutable" if fresh else "no-cache"})
+
+
 if settings.push_enabled:
     from app.push import router as push_router
 
     app.include_router(push_router)
     install_access_log_filter()
+    if settings.local_dev:
+        from app.local_dev import router as local_dev_router
+
+        app.include_router(local_dev_router)
 
 
 # Serve the chat web UI (mounted last so it doesn't shadow the API routes).

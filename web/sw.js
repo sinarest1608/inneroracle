@@ -15,6 +15,11 @@ function safeUrl(raw, origin = self.location.origin) {
   return new URL('/ui/', origin).href;
 }
 
+// A new worker takes over at once, so a deploy never waits for every tab and
+// home-screen window to close first.
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+
 self.addEventListener('push', e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch (_) {}
@@ -25,7 +30,9 @@ self.addEventListener('push', e => {
       body: text(d.body) || 'A verse is waiting for you.',
       icon: '/ui/icons/icon-192.png',
       badge: '/ui/icons/badge-96.png',   // monochrome: Android status bar
-      tag: 'daily-verse',
+      // Same tag replaces the earlier notification; an update announcement has
+      // its own, so it never pushes an unread verse out of the tray.
+      tag: d.tag === 'update' ? 'update' : 'daily-verse',
       data: { url: safeUrl(d.url), entry }
     }),
     setBadge(d.unread)   // sign-up and test pushes carry no count: badge untouched

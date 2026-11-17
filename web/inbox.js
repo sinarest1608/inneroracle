@@ -87,6 +87,7 @@ export function markOpened(entry){
 export function starButton(entry, onChange){
   const b = node('button', 'star');
   b.type = 'button';
+  b.dataset.hint = 'favourites-star';
   const paint = ()=>{
     b.textContent = entry.starred ? '★' : '☆';
     b.setAttribute('aria-pressed', String(!!entry.starred));
@@ -109,7 +110,8 @@ export function starButton(entry, onChange){
 // ---- the lists (rendered at the top of the main column, like the verse card) ----
 
 function when(e){
-  const d = new Date(`${e.date}T${/^\d\d:\d\d$/.test(e.time) ? e.time : '12:00'}`);
+  const t = String(e.time || '').slice(0, 5);
+  const d = new Date(`${e.date}T${/^\d\d:\d\d$/.test(t) ? t : '12:00'}`);
   if (isNaN(d)) return e.date;
   const day = d.toLocaleDateString(undefined, { weekday:'short', day:'numeric', month:'short' });
   const h = d.getHours();
@@ -168,6 +170,7 @@ async function showList(view){
   stream.querySelectorAll('.empty, .verse-card, .inbox').forEach(n => n.remove());
   stream.prepend(panel(view));
   chat.scrollTop = 0;
+  document.dispatchEvent(new Event('inneroracle:view'));   // lets a waiting hint find its target
 }
 
 // Called by push.js whenever the daily-verse state settles: the lists only

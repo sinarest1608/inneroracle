@@ -23,7 +23,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Path, Query, Requ
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from app import festival_pick, inbox, verse_stats
+from app import festival_pick, inbox, releases, verse_stats
 from app.config import settings
 from app.daily_verse import local_today, verse_of_the_day
 from app.push_config import admin_token_ok
@@ -73,6 +73,16 @@ class SubKeys(BaseModel):
 class Subscription(BaseModel):
     endpoint: str = Field(max_length=2048)
     keys: SubKeys
+
+
+class Testers(BaseModel):
+    device_ids: list[int] = Field(max_length=50)
+
+
+class Announce(BaseModel):
+    version: str = Field(min_length=1, max_length=40)
+    audience: Literal["testers", "all"]
+    repeat: bool = False  # confirm re-sending to testers
 
 
 class BulkDelete(BaseModel):
@@ -422,7 +432,7 @@ def push_log(
     frm: str | None = Query(default=None, alias="from"),
     to: str | None = None,
     device_id: int | None = None,
-    kind: Literal["daily", "confirm", "test", "manual"] | None = None,
+    kind: Literal["daily", "confirm", "test", "manual", "announce"] | None = None,
     limit: int = Query(default=100, ge=1, le=1000),
     format: Literal["json", "csv"] = "json",
 ) -> Response:
@@ -499,6 +509,63 @@ def push_stats(days: int = Query(default=90, ge=1, le=3650)) -> JSONResponse:
     per-device view of this, by design."""
     with db() as conn:
         return JSONResponse({"stats": verse_stats.rows(conn, days)},
+                            headers={"Cache-Control": "no-store"})
+
+
+# ---- releases: tester devices, announce, and what a device may see -------------------
+
+def _release_state(conn: sqlite3.Connection) -> dict:
+    latest = releases.latest_release()
+    return {"release": {**latest, **releases.stage(conn, latest["version"])} if latest else None,
+            "testers": releases.testers(conn),
+            "next_all_allowed_at": releases.next_all_allowed_at(conn)}
+
+
+@router.get("/push/release", dependencies=[Depends(admin)])
+def push_release() -> JSONResponse:
+    """The latest release's notes and how far it has been announced. Lists only
+    the tester numbers the owner typed in, never the other devices."""
+    with db() as conn:
+        return JSONResponse(_release_state(conn), headers={"Cache-Control": "no-store"})
+
+
+@router.put("/push/testers", dependencies=[Depends(admin)])
+def push_set_testers(body: Testers) -> JSONResponse:
+    with db() as conn:
+        try:
+            releases.set_testers(conn, body.device_ids)
+        except releases.Refused as e:
+            raise HTTPException(e.status, e.message) from None
+        return JSONResponse(_release_state(conn), headers={"Cache-Control": "no-store"})
+
+
+@router.post("/push/announce", dependencies=[Depends(admin)])
+async def push_announce(body: Announce) -> JSONResponse:
+    try:
+        result = await releases.announce(body.version, body.audience, body.repeat)
+    except releases.Refused as e:
+        return JSONResponse({"detail": e.message, "needs_confirm": e.needs_confirm},
+                            status_code=e.status)
+    return JSONResponse(result, headers={"Cache-Control": "no-store"})
+
+
+@router.get("/releases/latest")
+def releases_latest(
+    x_device_id: str | None = Header(default=None),
+    x_device_secret: str | None = Header(default=None),
+) -> JSONResponse:
+    """The newest release this caller may see: one announced to everyone, or, for
+    a tester device, one sent to testers. Bad or missing device headers just mean
+    "not a tester"."""
+    device_id = None
+    if x_device_id and x_device_secret and x_device_id.isdigit() and len(x_device_secret) <= 200:
+        with db() as conn:
+            row = conn.execute("SELECT secret_hash FROM push_subscriptions WHERE id = ?",
+                               (int(x_device_id),)).fetchone()
+        if row and secrets.compare_digest(row["secret_hash"], _hash_secret(x_device_secret)):
+            device_id = int(x_device_id)
+    with db() as conn:
+        return JSONResponse({"release": releases.visible_release(conn, device_id)},
                             headers={"Cache-Control": "no-store"})
 
 

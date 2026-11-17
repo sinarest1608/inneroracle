@@ -379,3 +379,269 @@ def test_email_is_off_unless_configured_and_never_raises(env, monkeypatch):
 
     monkeypatch.setattr(alerts.smtplib, "SMTP", boom)
     assert alerts.send("subject", "body") is False
+
+
+# ---- auto-updates: build id, versioned assets, /version ----------------------------
+
+def main_client(monkeypatch, tmp_path):
+    """The real app's static routes, against a throwaway web/ directory."""
+    import app.main as main
+    import app.version as ver
+    web = tmp_path / "web"
+    web.mkdir()
+    (web / "index.html").write_text(
+        '<html><head><link rel="stylesheet" href="/ui/styles.css" />'
+        '<link rel="manifest" href="/ui/manifest.webmanifest" /></head>'
+        '<body><script src="/ui/pushstore.js"></script>'
+        '<script type="module" src="/ui/app.js"></script></body></html>')
+    (web / "app.js").write_text("import './dom.js';")
+    (web / "styles.css").write_text("body{}")
+    (web / "secret.txt").write_text("no")
+    monkeypatch.setattr(ver, "WEB_DIR", web)
+    ver._cached_build.cache_clear()
+    from fastapi.testclient import TestClient
+    return TestClient(main.app), ver, web
+
+
+def test_index_points_at_versioned_assets_and_version_endpoint(monkeypatch, tmp_path):
+    client, ver, web = main_client(monkeypatch, tmp_path)
+    build = ver.build_id()
+    page = client.get("/ui/")
+    assert page.headers["cache-control"] == "no-cache"            # the HTML is never cached
+    assert f'href="/ui/v/{build}/styles.css"' in page.text
+    assert f'src="/ui/v/{build}/app.js"' in page.text and f'src="/ui/v/{build}/pushstore.js"' in page.text
+    assert 'href="/ui/manifest.webmanifest"' in page.text          # name and icons stay put
+    assert f'<meta name="app-build" content="{build}"' in page.text
+    v = client.get("/version")
+    assert v.json() == {"build": build, "version": ver.app_version()}
+    assert v.headers["cache-control"] == "no-store" and ver.app_version()
+
+    js = client.get(f"/ui/v/{build}/app.js")
+    assert js.status_code == 200 and "immutable" in js.headers["cache-control"]
+    old = client.get("/ui/v/000000000000/app.js")                   # a page from before the deploy
+    assert old.status_code == 200 and old.headers["cache-control"] == "no-cache"
+    for bad in ("secret.txt", "..%2Fapp%2Fconfig.py", "index.html", ".hidden.js", "nope.js"):
+        assert client.get(f"/ui/v/{build}/{bad}").status_code == 404
+
+    (web / "app.js").write_text("import './dom.js'; // changed")   # a deploy changes the build
+    ver._cached_build.cache_clear()
+    assert ver.build_id() != build
+    ver._cached_build.cache_clear()
+
+
+def test_service_worker_takes_over_at_once_and_is_never_cached():
+    from pathlib import Path
+    from app.http_extras import SW_HEADERS, _headers_for
+    sw = Path("web/sw.js").read_text()
+    assert "self.skipWaiting()" in sw and "clients.claim()" in sw
+    assert "addEventListener('fetch'" not in sw                     # still no fetch handler / cache
+    assert _headers_for("/ui/sw.js") == SW_HEADERS
+    assert _headers_for("/ui/v/abc/app.js") is None
+
+
+# ---- what's new: testers, stages, announce -------------------------------------------
+
+import app.releases as rel  # noqa: E402
+import app.version as version_mod  # noqa: E402
+
+NOTES = ({"version": "2", "date": "", "title": "Second", "items": ["b"], "hints": []},
+         {"version": "1", "date": "", "title": "First", "items": ["a"], "hints": []})
+
+
+@pytest.fixture
+def notes(env, monkeypatch):
+    monkeypatch.setattr(version_mod, "releases", lambda: NOTES)
+    monkeypatch.setattr(rel, "releases", lambda: NOTES)
+    monkeypatch.setattr(rel, "latest_release", lambda: rel.releases()[0])
+    return env
+
+
+def seen_by(env, headers=None):
+    r = env.client.get("/releases/latest", headers=headers or {}).json()["release"]
+    return r and r["version"]
+
+
+def announce(env, audience, version="2", **extra):
+    return env.client.post("/push/announce", headers=ADM,
+                           json={"version": version, "audience": audience, **extra})
+
+
+def test_deploy_announces_nothing_then_testers_then_all(notes):
+    me, friend = device_headers(notes.client, 1), device_headers(notes.client, 2)
+    notes.push.calls.clear()
+    assert seen_by(notes) is None and seen_by(notes, me) is None      # deployed, not announced
+
+    r = notes.client.put("/push/testers", headers=ADM, json={"device_ids": [1]})
+    assert r.json()["testers"] == [1] and r.json()["release"]["stage"] == "draft"
+    assert announce(notes, "testers").json()["devices"] == 1
+    assert notes.push.calls == [FCM + "device1"]                       # only my phone
+    p = notes.push.payloads[FCM + "device1"]
+    assert p["body"] == "New update: open InnerOracle to see what's new." and p["url"] == "/ui/"
+    assert p["tag"] == "update" and "inbox_id" not in p
+    assert seen_by(notes, me) == "2" and seen_by(notes, friend) is None and seen_by(notes) is None
+
+    notes.push.calls.clear()
+    assert announce(notes, "all").json()["stage"] == "all"
+    assert sorted(notes.push.calls) == [FCM + "device1", FCM + "device2"]
+    assert seen_by(notes, friend) == "2" and seen_by(notes) == "2"
+    # an announcement is not a verse: no inbox entry, no stats
+    assert count("SELECT COUNT(*) FROM device_inbox") == 0
+    assert count("SELECT COUNT(*) FROM verse_stats") == 0
+    assert count("SELECT COUNT(*) FROM admin_actions WHERE action = 'announce'") == 2
+    assert count("SELECT COUNT(*) FROM push_deliveries WHERE kind = 'announce'") == 3
+
+
+def test_announce_protections(notes, monkeypatch):
+    device_headers(notes.client, 1)
+    assert announce(notes, "testers").status_code == 422                # no testers set
+    assert announce(notes, "all", version="1").status_code == 409       # not the latest release
+    assert announce(notes, "all", version="9").status_code == 409
+    assert notes.client.post("/push/announce", json={"version": "2", "audience": "all"}).status_code == 403
+
+    notes.client.put("/push/testers", headers=ADM, json={"device_ids": [1]})
+    assert announce(notes, "testers").status_code == 200
+    again = announce(notes, "testers")
+    assert again.status_code == 409 and again.json()["needs_confirm"] is True
+    assert announce(notes, "testers", repeat=True).status_code == 200   # re-testing, confirmed
+
+    assert announce(notes, "all").status_code == 200
+    assert announce(notes, "all").status_code == 409                    # once per release
+    assert announce(notes, "testers", repeat=True).json()["stage"] == "all"   # never moves back
+
+    newer = ({"version": "3", "date": "", "title": "Third", "items": [], "hints": []}, *NOTES)
+    monkeypatch.setattr(rel, "releases", lambda: newer)
+    assert announce(notes, "all", version="3").status_code == 429       # within 24 hours
+    with db() as conn:
+        conn.execute("UPDATE release_stages SET all_sent_at = '2020-01-01T00:00:00Z'")
+    assert announce(notes, "all", version="3").status_code == 200
+
+
+def test_tester_numbers_must_be_real_devices_and_die_with_the_device(notes):
+    h = device_headers(notes.client, 1)
+    bad = notes.client.put("/push/testers", headers=ADM, json={"device_ids": [1, 7]})
+    assert bad.status_code == 422 and "#7" in bad.json()["detail"]
+    assert notes.client.get("/push/release", headers=ADM).json()["testers"] == []
+    notes.client.put("/push/testers", headers=ADM, json={"device_ids": [1]})
+    assert notes.client.put("/push/testers", json={"device_ids": [1]}).status_code == 403
+    notes.client.post("/push/unsubscribe", headers=h)
+    assert notes.client.get("/push/release", headers=ADM).json()["testers"] == []
+
+
+def test_releases_latest_ignores_bad_device_headers(notes):
+    h = device_headers(notes.client, 1)
+    notes.client.put("/push/testers", headers=ADM, json={"device_ids": [1]})
+    announce(notes, "testers")
+    assert seen_by(notes, h) == "2"
+    assert seen_by(notes, {**h, "X-Device-Secret": "wrong"}) is None    # no error, just not a tester
+    assert seen_by(notes, {"X-Device-Id": "abc", "X-Device-Secret": "x"}) is None
+
+
+def test_release_notes_file_is_well_formed():
+    version_mod._cached_releases.cache_clear()
+    notes_ = version_mod.releases()
+    assert notes_ and all(r["version"] and r["title"] and r["items"] for r in notes_)
+    html = open("web/index.html").read()
+    for h in notes_[0]["hints"]:   # every hint has somewhere to point (the star is added by inbox.js)
+        assert f'data-hint="{h["target"]}"' in html or h["target"] == "favourites-star"
+
+
+# ---- local testing ---------------------------------------------------------------
+
+def test_local_dev_refused_next_to_production_state(env, monkeypatch, tmp_path):
+    from app.push_config import validate_push_settings
+    monkeypatch.delenv("TUNNEL_TOKEN", raising=False)
+    assert validate_push_settings(settings) == []
+    monkeypatch.setattr(settings, "local_dev", True)          # env's database is named push.db
+    assert any("LOCAL_DEV needs its own PUSH_DB_PATH" in p for p in validate_push_settings(settings))
+    monkeypatch.setattr(settings, "push_db_path", str(tmp_path / "state" / "push.local.db"))
+    assert validate_push_settings(settings) == []
+    monkeypatch.setenv("TUNNEL_TOKEN", "x")
+    assert any("TUNNEL_TOKEN" in p for p in validate_push_settings(settings))
+
+
+def test_dev_helpers_send_real_looking_pushes_with_a_mocked_model(env, monkeypatch):
+    from types import SimpleNamespace
+
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    import app.local_dev as dev
+    from app.quote import QuoteWriter
+
+    monkeypatch.setattr(settings, "mock_model", True)
+    h = device_headers(env.client)
+    app = FastAPI()
+    app.include_router(dev.router)
+    app.state.push_scheduler = SimpleNamespace(
+        store=env.store, writer=QuoteWriter(client=object()), picker=FestivalPicker(client=object()))
+    client = TestClient(app)
+
+    r = client.post("/dev/test-push").json()
+    assert r["devices"] == 1 and r["delivered"] == 1
+    assert client.post("/dev/test-push").json()["delivered"] == 1
+    assert env.client.get("/push/inbox", headers=h).json()["unread"] == 2     # a new entry each time
+
+    f = client.post("/dev/festival-today").json()
+    assert f["festival"] == "Diwali" and f["picked"] is True
+    assert env.push.payloads[FCM + "device1"]["title"] == "Happy Diwali"
+    newest = env.client.get("/push/inbox", headers=h).json()["entries"][0]
+    assert newest["festival"] == "Diwali" and newest["verse_id"] == f["verse_id"]
+    assert client.post("/dev/festival-today?name=Nope").status_code == 404
+
+    assert env.client.get("/releases/latest").json()["release"] is None
+    assert client.post("/dev/release-all").json()["stage"] == "all"       # no push, just visible
+    assert env.client.get("/releases/latest").json()["release"]["version"] == version_mod.app_version()
+
+
+def test_dev_helpers_are_not_mounted_without_local_dev():
+    import app.main as main
+    assert not settings.local_dev
+    assert not any(getattr(r, "path", "").startswith("/dev") for r in main.app.routes)
+
+
+# ---- deploying onto the production database ------------------------------------------
+
+def test_upgrade_keeps_every_existing_device(env, tmp_path, monkeypatch):
+    """A database created by the previously deployed code, with subscribers in
+    it, comes through the new migration and a first send with every device,
+    its number, keys and secret intact."""
+    import sqlite3
+    from pathlib import Path
+
+    from app.push_db import migrate
+
+    path = tmp_path / "prod" / "push.db"
+    path.parent.mkdir()
+    old = sqlite3.connect(path)
+    old.executescript(Path("tests/fixtures/push_schema_b333567.sql").read_text())
+    for i in (1, 2, 3):
+        old.execute("INSERT INTO push_subscriptions(endpoint, p256dh, auth, secret_hash, created_at) "
+                    "VALUES (?, ?, ?, ?, '2026-10-24T09:13:00Z')",
+                    (f"{FCM}old{i}", f"p{i}", f"a{i}", f"hash{i}"))
+    old.execute("DELETE FROM push_subscriptions WHERE id = 2")      # a gap: numbers are never reused
+    old.execute("INSERT INTO push_deliveries(sent_at, kind, device_id, status) "
+                "VALUES ('2026-11-16T16:30:00Z', 'daily', 1, 'delivered')")
+    old.commit()
+    before = old.execute("SELECT * FROM push_subscriptions ORDER BY id").fetchall()
+    old.close()
+
+    monkeypatch.setattr(settings, "push_db_path", str(path))
+    migrate()
+    migrate()                                                       # every restart runs it again
+    with db() as conn:
+        from app.daily_verse import sync_rotation
+        sync_rotation(conn, env.store, "seed")
+        after = [tuple(r) for r in conn.execute("SELECT * FROM push_subscriptions ORDER BY id")]
+        assert after == before and [r[0] for r in after] == [1, 3]
+        assert count("SELECT COUNT(*) FROM push_deliveries") == 1
+
+    send(env, DAY)                                                  # the first send after the deploy
+    with db() as conn:
+        rows = conn.execute("SELECT id, endpoint, p256dh, auth, secret_hash, created_at "
+                            "FROM push_subscriptions ORDER BY id").fetchall()
+        assert [tuple(r) for r in rows] == [b[:6] for b in before]
+        assert sorted(env.push.calls) == [FCM + "old1", FCM + "old3"]
+        assert [r[0] for r in conn.execute("SELECT device_id FROM device_inbox ORDER BY 1")] == [1, 3]
+        new = conn.execute("INSERT INTO push_subscriptions(endpoint, p256dh, auth, secret_hash, "
+                           "created_at) VALUES ('e', 'p', 'a', 'h', 'x')").lastrowid
+        assert new == 4                                             # new sign-ups continue the numbering

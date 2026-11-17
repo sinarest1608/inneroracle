@@ -1,0 +1,19 @@
+[
+  {
+    "version": "2026.11.1",
+    "date": "2026-11-16",
+    "title": "Unread, History and Favourites",
+    "items": [
+      "A daily verse you missed is no longer lost: it waits in Unread until you open it.",
+      "History keeps every verse sent to this device.",
+      "Star a verse to keep it in Favourites.",
+      "The app icon shows how many verses are unread."
+    ],
+    "hints": [
+      { "id": "sidebar-unread", "target": "sidebar-unread", "text": "Missed a push? It waits here in Unread." },
+      { "id": "sidebar-history", "target": "sidebar-history", "text": "Every past verse, in one place." },
+      { "id": "sidebar-favourites", "target": "sidebar-favourites", "text": "Verses you star are kept here." },
+      { "id": "favourites-star", "target": "favourites-star", "text": "Tap the star to save a verse to Favourites." }
+    ]
+  }
+]

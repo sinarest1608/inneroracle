@@ -9,6 +9,7 @@ venv/
 
 # Secrets / env
 .env
+.env.local
 
 # Generated data (verses.db, verses_haiku*.db, bm25.json, etc.)
 data/qdrant_local/
