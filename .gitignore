@@ -30,8 +30,6 @@ plans/
 
 # tasks
 tasks/
-tasks/todo.md
-tasks
 
 # claude 
 .claude
@@ -46,3 +44,5 @@ scripts/out/
 # Local notes on .env fields (not published)
 ENV_FIELDS.md
 tasks/todo.md
+tasks/todo.md
+/tasks
