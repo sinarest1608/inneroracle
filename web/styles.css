@@ -127,6 +127,45 @@ body { margin:0; height:100vh; height:100dvh; overflow:hidden; color:var(--ink);
 .daily-err { margin:8px 0 0; padding:6px 9px; border-radius:3px; color:var(--err); background:var(--err-bg); }
 .daily-note { margin:8px 0 0; color:var(--muted); font-size:11px; font-style:italic; line-height:1.4; }
 
+/* ---- unread / history / favourites ---- */
+.inbox-nav { display:flex; flex-direction:column; margin:9px -6px 0; }
+.inbox-nav[hidden] { display:none; }
+.inbox-nav button { padding:7px 6px; border:none; border-radius:3px; background:none; color:var(--ink);
+  font-family:var(--serif); font-size:13.5px; text-align:left; cursor:pointer;
+  transition:background .15s ease, color .15s ease; }
+.inbox-nav button:hover { background:var(--tint); color:var(--accent); }
+.inbox-nav .n { color:var(--accent); font-weight:600; }
+
+.star { flex:none; width:36px; height:36px; padding:0; border:none; border-radius:3px; background:none;
+  color:var(--accent); font-size:19px; line-height:1; cursor:pointer; transition:background .15s ease; }
+.star:hover:not(:disabled) { background:var(--tint); }
+.star:disabled { opacity:.5; cursor:default; }
+
+.inbox { margin:4px 0 26px; animation:rise .3s cubic-bezier(.2,.7,.2,1); }
+.inbox-head { display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding-bottom:10px; border-bottom:1px solid var(--rubric); }
+.inbox-title { margin:0; font-size:17px; font-weight:600; letter-spacing:.02em; color:var(--ink-strong); }
+.inbox-title .danda { color:var(--accent); font-weight:400; }
+.inbox-all { flex:none; padding:6px 12px; border:1px solid var(--line); border-radius:3px; background:none;
+  color:var(--ink); font-family:var(--serif); font-size:12.5px; cursor:pointer;
+  transition:color .15s ease, border-color .15s ease; }
+.inbox-all:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+.inbox-all:disabled { opacity:.55; cursor:default; }
+.inbox-empty { margin:18px 0 0; color:var(--muted); font-style:italic; }
+.inbox-list { list-style:none; margin:0; padding:0; }
+.inbox-item { display:flex; align-items:center; gap:4px; border-bottom:1px solid var(--line-soft); }
+.inbox-item.unread { box-shadow:inset 3px 0 0 var(--accent); }
+.inbox-open { flex:1; min-width:0; display:block; padding:12px 6px 12px 14px; border:none; background:none;
+  color:var(--ink); font-family:var(--serif); text-align:left; cursor:pointer;
+  transition:background .15s ease; }
+.inbox-open:hover { background:var(--tint); }
+.inbox-meta { display:block; font-size:12px; color:var(--muted); margin-bottom:3px; }
+.inbox-ref { color:var(--ink-strong); font-weight:600; letter-spacing:.02em; }
+.inbox-new { color:var(--accent); }
+.inbox-quote { display:block; font-size:15.5px; line-height:1.5; color:var(--ink);
+  overflow-wrap:break-word; }
+.inbox-item.unread .inbox-quote { color:var(--ink-strong); }
+
 /* ---- deep-linked verse card: a rubricated folio, flat ---- */
 .verse-card { margin:4px 0 26px; animation:rise .3s cubic-bezier(.2,.7,.2,1); }
 .vc-today { margin-bottom:16px; padding:4px 0 4px 16px; border-left:3px solid var(--accent); }
@@ -135,6 +174,7 @@ body { margin:0; height:100vh; height:100dvh; overflow:hidden; color:var(--ink);
 .vc-quote { margin:0; font-size:clamp(18px,2.6vw,22px); line-height:1.45; color:var(--ink-strong); }
 .vc-ref { font-size:15px; font-weight:600; letter-spacing:.02em; color:var(--ink-strong); margin-bottom:8px; }
 .vc-ref .danda { color:var(--accent); font-weight:400; }
+.vc-ref .star { margin-left:6px; vertical-align:middle; }
 .verse-card .shloka .dev { white-space:pre-line; }
 .vc-missing { color:var(--muted); font-style:italic; }
 .vc-comm { margin-top:10px; font-size:14px; line-height:1.65; }
@@ -318,7 +358,7 @@ button:focus-visible, .pill:focus-visible, input.q:focus-visible, .icon-btn:focu
   .about-pop { width:min(330px,82vw); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .msg, .empty, .shloka, .about-pop, .verse-card { animation:none; }
+  .msg, .empty, .shloka, .about-pop, .verse-card, .inbox { animation:none; }
   .thinking .thinking-label { animation:none; opacity:.7; }
 }
 ::-webkit-scrollbar { width:9px; } ::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }

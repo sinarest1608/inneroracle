@@ -5,7 +5,8 @@ import { initTheme } from './theme.js';
 import { refresh, newChat, openSidebar, closeSidebar, clearAll } from './views.js';
 import { ask, initCitations } from './chat.js';
 import { initPush } from './push.js';
-import { openVerseLink } from './verselink.js';
+import { openVerseLink, showVerse } from './verselink.js';
+import { initInbox } from './inbox.js';
 
 initTheme();
 
@@ -41,5 +42,6 @@ form.addEventListener('submit', async e=>{
 // ---- boot ----
 refresh();
 input.focus();
+initInbox({ openVerse: showVerse });
 openVerseLink();
 initPush();

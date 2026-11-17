@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import json
 import logging
 import sqlite3
 from datetime import date, timedelta
@@ -78,11 +79,13 @@ class FakePush:
     def __init__(self):
         self.calls: list[str] = []
         self.by_endpoint: dict[str, object] = {}
+        self.payloads: dict[str, dict] = {}
 
     def __call__(self, subscription_info, data, vapid_private_key, vapid_claims, ttl, timeout):
         assert timeout == svc.SEND_TIMEOUT and ttl == svc.TTL
         ep = subscription_info["endpoint"]
         self.calls.append(ep)
+        self.payloads[ep] = json.loads(data)
         r = self.by_endpoint.get(ep, 201)
         if isinstance(r, Exception):
             raise r
@@ -699,3 +702,131 @@ def test_app_code_revalidates_but_images_stay_cacheable():
         assert dict(_asgi_capture(mw, path)[0]["headers"])[b"cache-control"] == b"no-cache", path
     assert b"cache-control" not in dict(_asgi_capture(mw, "/ui/icons/icon-192.png")[0]["headers"])
     assert b"cache-control" not in dict(_asgi_capture(mw, "/chat")[0]["headers"])
+
+
+# ---- device inbox: unread, history, favourites ----------------------------------
+
+def device_headers(client, n=1):
+    d = signup(client, n).json()
+    return {"X-Device-Id": str(d["device_id"]), "X-Device-Secret": d["device_secret"]}
+
+
+def send(env, day, index=0):
+    return asyncio.run(svc.run_daily(env.store, env.writer, slots_for(day)[index]))
+
+
+def test_daily_send_fills_inbox_and_payload_carries_entry_and_unread(env):
+    h = device_headers(env.client)
+    send(env, date(2026, 3, 1), 0)
+    send(env, date(2026, 3, 1), 1)
+    p = env.push.payloads[FCM + "device1"]
+    r = env.client.get("/push/inbox", headers=h).json()
+    assert r["unread"] == 2 and p["unread"] == 2
+    newest = r["entries"][0]
+    assert p["inbox_id"] == newest["id"]
+    assert (newest["date"], newest["time"]) == ("2026-03-01", slots_for(date(2026, 3, 1))[1].time)
+    assert newest["quote"] == "A plain restatement." and newest["verse_id"].startswith("BG-")
+    assert newest["opened"] is False and newest["starred"] is False
+    assert r["entries"][1]["time"] < newest["time"]  # newest first
+
+
+def test_inbox_open_star_and_filters(env):
+    h = device_headers(env.client)
+    for i in range(3):
+        send(env, date(2026, 3, 1) + timedelta(days=i))
+    get = lambda f: env.client.get(f"/push/inbox?filter={f}", headers=h).json()  # noqa: E731
+    a, b, c = (e["id"] for e in get("all")["entries"])
+
+    assert env.client.post(f"/push/inbox/{a}/open", headers=h).json() == {"unread": 2}
+    assert env.client.post(f"/push/inbox/{a}/open", headers=h).json() == {"unread": 2}  # idempotent
+    assert [e["id"] for e in get("unread")["entries"]] == [b, c]
+
+    # starring doesn't mark it read
+    assert env.client.post(f"/push/inbox/{b}/star", headers=h).json() == {"unread": 2, "starred": True}
+    assert [e["id"] for e in get("unread")["entries"]] == [b, c]
+    assert [e["id"] for e in get("starred")["entries"]] == [b]
+
+    # mark all as read: still a favourite, still in history
+    assert env.client.post("/push/inbox/open-all", headers=h).json() == {"unread": 0}
+    assert get("unread")["entries"] == []
+    assert [e["id"] for e in get("starred")["entries"]] == [b]
+    assert len(get("all")["entries"]) == 3
+
+    assert env.client.delete(f"/push/inbox/{b}/star", headers=h).json()["starred"] is False
+    assert get("starred")["entries"] == []
+    assert env.client.get("/push/inbox?filter=nope", headers=h).status_code == 422
+
+
+def test_inbox_is_per_device_and_needs_credentials(env):
+    h1, h2 = device_headers(env.client, 1), device_headers(env.client, 2)
+    send(env, date(2026, 3, 1))
+    mine = env.client.get("/push/inbox", headers=h1).json()["entries"][0]["id"]
+    for method, path in (("post", f"/push/inbox/{mine}/open"), ("post", f"/push/inbox/{mine}/star"),
+                         ("delete", f"/push/inbox/{mine}/star")):
+        assert getattr(env.client, method)(path, headers=h2).status_code == 404
+    assert env.client.get("/push/inbox", headers=h1).json()["unread"] == 1
+    assert env.client.get("/push/inbox").status_code == 401
+    assert env.client.get("/push/inbox", headers={**h1, "X-Device-Secret": "x"}).status_code == 401
+    assert env.client.post("/push/inbox/0/open", headers=h1).status_code == 422
+    assert env.client.post("/push/inbox/999/open", headers=h1).status_code == 404
+
+
+def test_inbox_rows_die_with_the_device(env):
+    h1 = device_headers(env.client, 1)
+    device_headers(env.client, 2)
+    device_headers(env.client, 3)
+    send(env, date(2026, 3, 1))
+    assert count("SELECT COUNT(*) FROM device_inbox") == 3
+    assert env.client.post("/push/unsubscribe", headers=h1).status_code == 204          # unsubscribe
+    env.client.delete("/push/devices/2", headers={"X-Admin-Token": ADMIN})              # admin delete
+    env.push.by_endpoint[FCM + "device3"] = 410                                         # expired
+    send(env, date(2026, 3, 2))
+    assert count("SELECT COUNT(*) FROM device_inbox") == 0
+
+
+def test_failed_push_still_lands_in_history(env):
+    h = device_headers(env.client)
+    env.push.by_endpoint[FCM + "device1"] = 500
+    send(env, date(2026, 3, 1))
+    assert count("SELECT status FROM push_deliveries WHERE kind='daily'") == "failed"
+    assert env.client.get("/push/inbox", headers=h).json()["unread"] == 1
+
+
+def test_forced_resend_keeps_one_entry_and_its_flags(env):
+    h = device_headers(env.client)
+    asyncio.run(svc.run_daily(env.store, env.writer))
+    entry = env.client.get("/push/inbox", headers=h).json()["entries"][0]["id"]
+    env.client.post(f"/push/inbox/{entry}/open", headers=h)
+    r = env.client.post("/push/send-daily?force=true", headers={"X-Admin-Token": ADMIN})
+    assert r.status_code == 200
+    assert env.push.payloads[FCM + "device1"]["inbox_id"] == entry
+    assert env.push.payloads[FCM + "device1"]["unread"] == 0
+    assert count("SELECT COUNT(*) FROM device_inbox") == 1
+
+
+def test_test_and_confirmation_pushes_stay_out_of_the_inbox(env):
+    h = device_headers(env.client)
+    env.client.post("/push/test?device_id=1", headers={"X-Admin-Token": ADMIN})
+    assert "inbox_id" not in env.push.payloads[FCM + "device1"]
+    assert env.client.get("/push/inbox", headers=h).json() == {"unread": 0, "entries": []}
+
+
+def test_purge_drops_old_unstarred_entries_keeps_starred(env):
+    h = device_headers(env.client)
+    for i in range(3):
+        send(env, date(2026, 3, 1) + timedelta(days=i))
+    old, starred_old, fresh = (e["id"] for e in env.client.get("/push/inbox", headers=h).json()["entries"])
+    env.client.post(f"/push/inbox/{starred_old}/star", headers=h)
+    with db() as conn:
+        conn.execute("UPDATE device_inbox SET sent_at = '2020-01-01T00:00:00Z' WHERE id IN (?, ?)",
+                     (old, starred_old))
+    purge()
+    left = [e["id"] for e in env.client.get("/push/inbox", headers=h).json()["entries"]]
+    assert left == [starred_old, fresh]
+
+
+def test_inbox_table_has_no_endpoint_or_ip_columns(env):
+    with db() as conn:
+        cols = {r[1] for r in conn.execute("PRAGMA table_info(device_inbox)")}
+    assert cols == {"id", "device_id", "slot_key", "verse_id", "title", "quote", "sent_at",
+                    "opened_at", "starred_at"}

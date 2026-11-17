@@ -77,6 +77,20 @@ CREATE INDEX IF NOT EXISTS idx_deliveries_sent ON push_deliveries(sent_at);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_deliveries_daily_claim
     ON push_deliveries(run_date, device_id) WHERE kind = 'daily';
 
+CREATE TABLE IF NOT EXISTS device_inbox (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    device_id  INTEGER NOT NULL REFERENCES push_subscriptions(id) ON DELETE CASCADE,
+    slot_key   TEXT NOT NULL,
+    verse_id   TEXT NOT NULL,
+    title      TEXT NOT NULL,
+    quote      TEXT NOT NULL,
+    sent_at    TEXT NOT NULL,
+    opened_at  TEXT,
+    starred_at TEXT,
+    UNIQUE (device_id, slot_key)
+);
+CREATE INDEX IF NOT EXISTS idx_inbox_sent ON device_inbox(sent_at);
+
 CREATE TABLE IF NOT EXISTS verse_rotation (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
     position INTEGER NOT NULL UNIQUE,

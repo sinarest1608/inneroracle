@@ -23,6 +23,11 @@
       <section class="daily" id="daily" aria-label="Daily verse">
         <div class="daily-head">🔔 Daily verse</div>
         <div id="dailyBody"></div>
+        <nav class="inbox-nav" id="inboxNav" aria-label="Verses sent to this device" hidden>
+          <button type="button" data-view="unread">Unread<span class="n" id="unreadCount"></span></button>
+          <button type="button" data-view="all">History</button>
+          <button type="button" data-view="starred">Favourites</button>
+        </nav>
         <p class="daily-note" id="dailyNote" hidden>To prevent abuse, we keep the IP address used to sign up.</p>
       </section>
       <div class="side-foot">

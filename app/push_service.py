@@ -23,6 +23,7 @@ from zoneinfo import ZoneInfo
 
 from pywebpush import WebPushException, webpush
 
+from app import inbox
 from app.config import settings
 from app.daily_verse import (
     Slot, current_slot, local_today, notification_text, send_times, slot_from_key,
@@ -66,10 +67,11 @@ class Message:
     speaker: str | None = None
     speaker_source: str | None = None
     quote_source: str | None = None
+    quote: str | None = None  # the bare quote, for the device's inbox entry
 
-    def payload(self) -> str:
+    def payload(self, extra: dict | None = None) -> str:
         return json.dumps({"title": self.title, "body": self.body,
-                           "url": self.url, "tag": "daily-verse"})
+                           "url": self.url, "tag": "daily-verse", **(extra or {})})
 
 
 # ---- one push ----------------------------------------------------------------
@@ -93,8 +95,18 @@ def _push_sync(endpoint: str, p256dh: str, auth: str, data: str) -> Outcome:
         return Outcome("failed", None, type(e).__name__)
 
 
-async def push(endpoint: str, p256dh: str, auth: str, msg: Message) -> Outcome:
-    return await asyncio.to_thread(_push_sync, endpoint, p256dh, auth, msg.payload())
+async def push(endpoint: str, p256dh: str, auth: str, msg: Message,
+               extra: dict | None = None) -> Outcome:
+    return await asyncio.to_thread(_push_sync, endpoint, p256dh, auth, msg.payload(extra))
+
+
+def inbox_entry(conn: sqlite3.Connection, device_id: int, slot_key: str,
+                msg: Message) -> dict | None:
+    """Put a verse send in the device's inbox; returns the payload extras
+    (`inbox_id`, `unread`). Non-verse messages have no entry."""
+    if msg.verse_id is None:
+        return None
+    return inbox.add(conn, device_id, slot_key, msg.verse_id, msg.title, msg.quote or msg.body)
 
 
 # ---- logging + device bookkeeping ---------------------------------------------
@@ -138,9 +150,18 @@ def apply_outcome(conn: sqlite3.Connection, device_id: int, o: Outcome) -> None:
                      (device_id, MAX_FAILURES))
 
 
-async def send_to_device(row: sqlite3.Row, msg: Message) -> Outcome:
-    """Unclaimed send (test/manual): push, then log the row and update the device."""
-    o = await push(row["endpoint"], row["p256dh"], row["auth"], msg)
+async def send_to_device(row: sqlite3.Row, msg: Message,
+                         slot_key: str | None = None) -> Outcome:
+    """Unclaimed send (test/manual): push, then log the row and update the device.
+    With a slot key, the verse also goes in the device's inbox."""
+    extra = None
+    if slot_key is not None:
+        try:
+            with db() as conn, write_tx(conn):
+                extra = inbox_entry(conn, row["id"], slot_key, msg)
+        except sqlite3.IntegrityError:
+            pass  # device deleted since it was listed; the push below will just fail
+    o = await push(row["endpoint"], row["p256dh"], row["auth"], msg, extra)
     with db() as conn, write_tx(conn):
         insert_delivery(conn, msg, row["id"], o.status, o=o)
         apply_outcome(conn, row["id"], o)
@@ -193,7 +214,7 @@ def test_message() -> Message:
 def verse_message(kind: str, verse: Verse, q: dict) -> Message:
     title, body = notification_text(verse, q)
     return Message(kind, title, body, verse_url(verse.verse_id), verse.verse_id,
-                   q["speaker"], q["speaker_source"], q["quote_source"])
+                   q["speaker"], q["speaker_source"], q["quote_source"], q["quote"])
 
 
 async def ensure_quote(store: VerseStore, writer: QuoteWriter, slot: Slot,
@@ -220,12 +241,15 @@ async def _send_daily_unclaimed(slot: Slot, msg: Message) -> None:
 
     async def one(row: sqlite3.Row) -> None:
         async with sem:
+            # The inbox entry is written with the claim, before the push, so the
+            # payload can carry its id and a failed delivery still shows in History.
             try:
-                with db() as conn:
+                with db() as conn, write_tx(conn):
                     delivery_id = insert_delivery(conn, msg, row["id"], "pending", run_date)
+                    extra = inbox_entry(conn, row["id"], run_date, msg)
             except sqlite3.IntegrityError:
-                return  # another worker claimed this device
-            o = await push(row["endpoint"], row["p256dh"], row["auth"], msg)
+                return  # another worker claimed this device (or it was just deleted)
+            o = await push(row["endpoint"], row["p256dh"], row["auth"], msg, extra)
             with db() as conn, write_tx(conn):
                 conn.execute("UPDATE push_deliveries SET status = ?, http_status = ?, "
                              "error_type = ?, sent_at = ? WHERE id = ?",
@@ -335,7 +359,7 @@ async def force_send(store: VerseStore, writer: QuoteWriter) -> int:
 
     async def one(row: sqlite3.Row) -> None:
         async with sem:
-            await send_to_device(row, msg)
+            await send_to_device(row, msg, slot.key)
 
     await asyncio.gather(*(one(r) for r in devices))
     return len(devices)

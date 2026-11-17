@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
+from app import inbox
 from app.config import settings
 from app.daily_verse import (
     Slot, current_slot, local_today, send_times, slots_for, sync_rotation, verse_for,
@@ -47,7 +48,8 @@ def _ran(slot: Slot) -> bool:
 
 
 def purge() -> None:
-    """Hash-only after PUSH_SIGNUP_IP_DAYS; delete logs after retention."""
+    """Hash-only after PUSH_SIGNUP_IP_DAYS; delete logs and unstarred inbox
+    entries after retention."""
     keep = timedelta(days=settings.push_log_retention_days)
     with db() as conn:
         conn.execute("UPDATE signup_attempts SET ip = NULL WHERE ip IS NOT NULL AND at < ?",
@@ -55,6 +57,7 @@ def purge() -> None:
         conn.execute("DELETE FROM signup_attempts WHERE at < ?", (_ts(keep),))
         conn.execute("DELETE FROM signup_rejections WHERE hour < ?", (_ts(keep),))
         conn.execute("DELETE FROM push_deliveries WHERE sent_at < ?", (_ts(keep),))
+        inbox.purge(conn, _ts(keep))  # starred entries are kept
         conn.execute("DELETE FROM admin_actions WHERE at < ?",
                      (_ts(timedelta(days=ADMIN_ACTIONS_DAYS)),))
 

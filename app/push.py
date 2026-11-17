@@ -18,10 +18,11 @@ from functools import lru_cache
 from typing import Literal
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Path, Query, Request, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
+from app import inbox
 from app.config import settings
 from app.daily_verse import verse_of_the_day
 from app.push_config import admin_token_ok
@@ -258,6 +259,57 @@ def device_check(dev: sqlite3.Row = Depends(device)) -> Response:
         conn.execute("UPDATE push_subscriptions SET last_check_at = ? WHERE id = ?",
                      (utcnow(), dev["id"]))
     return Response(status_code=204, headers={"Cache-Control": "no-store"})
+
+
+# ---- device inbox: unread, history, favourites -----------------------------------
+# Per-device by design (app/inbox.py). Every reply carries the unread count so the
+# client can keep the app-icon badge right without a second request.
+
+EntryId = Path(ge=1, le=2**53)
+
+
+def _inbox_reply(conn: sqlite3.Connection, dev: sqlite3.Row, **fields) -> JSONResponse:
+    return JSONResponse({"unread": inbox.unread_count(conn, dev["id"]), **fields},
+                        headers={"Cache-Control": "no-store"})
+
+
+@router.get("/push/inbox")
+def inbox_list(filter: Literal["unread", "all", "starred"] = "all",
+               dev: sqlite3.Row = Depends(device)) -> JSONResponse:
+    with db() as conn:
+        return _inbox_reply(conn, dev, entries=inbox.entries(conn, dev["id"], filter))
+
+
+@router.post("/push/inbox/open-all")
+def inbox_open_all(dev: sqlite3.Row = Depends(device)) -> JSONResponse:
+    with db() as conn:
+        inbox.mark_all_open(conn, dev["id"])
+        return _inbox_reply(conn, dev)
+
+
+@router.post("/push/inbox/{entry_id}/open")
+def inbox_open(entry_id: int = EntryId, dev: sqlite3.Row = Depends(device)) -> JSONResponse:
+    with db() as conn:
+        if inbox.mark_open(conn, dev["id"], entry_id) is None:
+            raise HTTPException(404, "unknown entry")
+        return _inbox_reply(conn, dev)
+
+
+def _star(dev: sqlite3.Row, entry_id: int, on: bool) -> JSONResponse:
+    with db() as conn:
+        if inbox.set_star(conn, dev["id"], entry_id, on) is None:
+            raise HTTPException(404, "unknown entry")
+        return _inbox_reply(conn, dev, starred=on)
+
+
+@router.post("/push/inbox/{entry_id}/star")
+def inbox_star(entry_id: int = EntryId, dev: sqlite3.Row = Depends(device)) -> JSONResponse:
+    return _star(dev, entry_id, True)
+
+
+@router.delete("/push/inbox/{entry_id}/star")
+def inbox_unstar(entry_id: int = EntryId, dev: sqlite3.Row = Depends(device)) -> JSONResponse:
+    return _star(dev, entry_id, False)
 
 
 # ---- admin ---------------------------------------------------------------------

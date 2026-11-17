@@ -2,6 +2,8 @@
 // turn-off flows, and the quiet on-open re-registration check. Device record
 // lives in IndexedDB via self.pushStore (pushstore.js, shared with sw.js).
 
+import { setInboxEnabled } from './inbox.js';
+
 const ps = self.pushStore;
 const body = document.getElementById('dailyBody');
 const note = document.getElementById('dailyNote');
@@ -34,6 +36,7 @@ function node(tag, cls, text){
 }
 function render(kind, opts = {}){
   body.replaceChildren();
+  if (kind !== 'checking') setInboxEnabled(kind === 'enabled');   // lists + app-icon badge
   note.hidden = kind === 'unavailable' || kind === 'install';
   if (kind === 'unavailable'){
     body.append(node('p', 'daily-status', opts.text || 'Not available in this browser or a private window.'));
@@ -145,8 +148,6 @@ async function check(){
 }
 
 export async function initPush(){
-  // Opening the app counts as seeing the verse: clear the app-icon badge.
-  if ('clearAppBadge' in navigator) navigator.clearAppBadge().catch(()=>{});
   if (!body) return;
   if (isIOS() && !standalone()){ render('install'); return; }
   if (!supported()){ render('unavailable'); return; }
